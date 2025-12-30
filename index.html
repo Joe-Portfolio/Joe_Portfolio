@@ -59,8 +59,11 @@
         <div class="text-blue-500 font-black animate-pulse tracking-widest text-xs uppercase">Initializing Portfolio...</div>
     </div>
     <div id="root"></div>
-    <!-- Load index.tsx as a babel-transformed module -->
-    <script type="text/babel" data-type="module" src="./index.tsx"></script>
+    <!-- 
+      GitHub Pages의 .tsx MIME 타입 이슈 해결을 위해 Babel Standalone의 처리를 명시합니다.
+      data-presets를 추가하여 안정성을 높입니다.
+    -->
+    <script type="text/babel" data-type="module" data-presets="react,typescript" src="./index.tsx"></script>
     <script>
         window.addEventListener('load', () => {
             const loader = document.getElementById('loading-screen');

@@ -19,8 +19,10 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
   const playPromiseRef = useRef<Promise<void> | null>(null);
 
   const safePlay = async () => {
-    if (bgMusicRef.current) {
+    if (bgMusicRef.current && isMusicOn) {
       try {
+        // 이미 진행 중인 play 요청이 있다면 기다림
+        if (playPromiseRef.current) await playPromiseRef.current;
         playPromiseRef.current = bgMusicRef.current.play();
         await playPromiseRef.current;
       } catch (error) {
@@ -34,7 +36,9 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
       if (playPromiseRef.current) {
         try {
           await playPromiseRef.current;
-        } catch (e) {}
+        } catch (e) {
+          // play 요청이 중단되어도 무시하고 중지 진행
+        }
       }
       bgMusicRef.current.pause();
     }
@@ -52,7 +56,6 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
     audio.loop = true;
     bgMusicRef.current = audio;
 
-    // Start playback on first click to satisfy browser policy
     const startAudio = () => {
       if (isMusicOn) safePlay();
       window.removeEventListener('click', startAudio);
@@ -63,17 +66,23 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('click', startAudio);
       safePause();
+      bgMusicRef.current = null;
     };
   }, []);
 
   const toggleMusic = async () => {
     if (!bgMusicRef.current) return;
     if (isMusicOn) {
-      await safePause();
       setIsMusicOn(false);
+      await safePause();
     } else {
-      await safePlay();
       setIsMusicOn(true);
+      // setIsMusicOn이 비동기이므로 직접 safePlay를 호출하기 위해 상태를 반영한 함수 구조 사용
+      setTimeout(() => {
+          if (bgMusicRef.current) {
+              playPromiseRef.current = bgMusicRef.current.play();
+          }
+      }, 0);
     }
   };
 
@@ -85,6 +94,7 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
     }
 
     setIsSpeaking(true);
+    // TTS 시작 시 BGM 일시정지
     await safePause();
 
     const textToSpeak = document.body.innerText.replace(/\n/g, ' ').substring(0, 1500);
@@ -121,6 +131,7 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
         source.connect(ctx.destination);
         source.onended = () => {
           setIsSpeaking(false);
+          // TTS 종료 후 BGM 설정이 켜져있다면 다시 재생
           if (isMusicOn) safePlay();
         };
         source.start();
@@ -129,7 +140,7 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
         if (isMusicOn) safePlay();
       }
     } catch (e) {
-      console.error(e);
+      console.error("TTS Error:", e);
       setIsSpeaking(false);
       if (isMusicOn) safePlay();
     }
@@ -150,11 +161,11 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
         </div>
 
         <div className="flex items-center space-x-4">
-          {/* Controls Capsule - Placed LEFT of Language switcher */}
           <div className="hidden sm:flex items-center space-x-1.5 bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-full p-1 shadow-inner ring-1 ring-white/10">
             <button 
               onClick={toggleMusic}
-              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${isMusicOn ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${isMusicOn ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-500 hover:text-white'}`}
+              title="BGM Toggle"
             >
               {isMusicOn ? (
                 <svg className="w-4 h-4 animate-pulse" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-4z"/></svg>
@@ -165,7 +176,8 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
             <div className="w-px h-4 bg-white/10"></div>
             <button 
               onClick={handleTts}
-              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-slate-500 hover:text-white'}`}
+              title="Site Narration"
             >
               {isSpeaking ? (
                 <div className="flex items-end space-x-0.5 h-2.5">
