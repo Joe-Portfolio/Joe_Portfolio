@@ -59,16 +59,19 @@
         <div class="text-blue-500 font-black animate-pulse tracking-widest text-xs uppercase">Initializing Portfolio...</div>
     </div>
     <div id="root"></div>
-    <!-- 
-      GitHub Pages의 .tsx MIME 타입 이슈 해결을 위해 Babel Standalone의 처리를 명시합니다.
-      data-presets를 추가하여 안정성을 높입니다.
-    -->
+    <!-- Load index.tsx via Babel to handle TypeScript/JSX and local imports -->
     <script type="text/babel" data-type="module" data-presets="react,typescript" src="./index.tsx"></script>
     <script>
         window.addEventListener('load', () => {
             const loader = document.getElementById('loading-screen');
-            if(loader) loader.style.opacity = '0';
-            setTimeout(() => loader && loader.remove(), 500);
+            // 로딩 화면 제거는 React 앱이 정상적으로 마운트된 후 수행되는 것이 좋지만,
+            // 여기서는 기본 로드 완료 후 0.5초 뒤에 사라지게 설정합니다.
+            setTimeout(() => {
+              if(loader) {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 500);
+              }
+            }, 500);
         });
     </script>
 </body>
