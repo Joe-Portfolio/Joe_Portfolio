@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>조현우 | 게임 기획 & 매니지먼트 포트폴리오</title>
+    <title>조현우 | Senior Game Planner Portfolio</title>
     <!-- External Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -15,17 +15,16 @@
     <style>
         body {
             font-family: 'Inter', 'Noto Sans KR', sans-serif;
-            background-color: #0f172a;
+            background-color: #020617;
             color: #f8fafc;
             scroll-behavior: smooth;
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             overflow-x: hidden;
         }
         .glass-morphism {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
         .gradient-text {
             background: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%);
@@ -33,25 +32,15 @@
             -webkit-text-fill-color: transparent;
         }
         #loading-screen {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #0f172a;
-            z-index: 9999;
-            transition: opacity 0.8s ease;
+            position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+            background: #020617; z-index: 9999; transition: opacity 0.8s ease;
         }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes bar { 0%, 100% { height: 3px; } 50% { height: 10px; } }
         .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #020617; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #334155; }
     </style>
 
     <script type="importmap">
@@ -70,16 +59,13 @@
 <body>
     <div id="loading-screen">
         <div class="flex flex-col items-center">
-            <div class="text-blue-500 font-black animate-pulse tracking-[0.3em] text-xs uppercase mb-4">Initializing Portfolio</div>
-            <div class="w-48 h-1 bg-slate-800 rounded-full overflow-hidden">
-                <div class="h-full bg-blue-600 animate-[loading_2s_ease-in-out_infinite]"></div>
+            <div class="text-blue-500 font-black animate-pulse tracking-[0.4em] text-[10px] uppercase mb-4">Initialing CHW Core</div>
+            <div class="w-32 h-0.5 bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full bg-blue-600 animate-[loading_1.5s_ease-in-out_infinite]"></div>
             </div>
         </div>
     </div>
-    <style>
-        @keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-    </style>
-
+    <style> @keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } } </style>
     <div id="root"></div>
 
     <script type="text/babel" data-type="module">
@@ -87,63 +73,115 @@
         import ReactDOM from 'react-dom/client';
         import { GoogleGenAI, Modality } from "@google/genai";
 
-        // --- Data & Types ---
+        // --- Data & Translations ---
         const TRANSLATIONS = {
           ko: {
             nav_home: "홈", nav_experience: "경력", nav_projects: "프로젝트", nav_skills: "기술",
             hero_title: "조현우", hero_subtitle: "시니어 게임 기획자 & 서비스 매니저",
             hero_description: "10년 9개월의 경력을 가진 게임 산업 전문가입니다. VR, 모바일, PC 플랫폼의 글로벌 서비스 런칭과 운영에 특화되어 있으며, 생성형 AI를 활용한 기획 혁신을 선도합니다.",
-            view_portfolio_video: "전체 포트폴리오 보기", projects_title: "주요 프로젝트",
-            projects_subtitle: "핵심 프로젝트 런칭 영상입니다. 클릭하여 상세 내용을 확인하세요.",
-            experience_title: "상세 경력 사항", skills_title: "기술 및 역량",
-            gallery_title: "AI Creative Workflow", gallery_description: "직접 드로잉한 스케치를 생성형 AI로 리터칭하여 시각화 퀄리티를 극대화하는 과정입니다.",
-            gallery_label_ai: "AI Enhanced", view_history: "전체 경력 보기", minimize_history: "경력 요약",
+            projects_title: "핵심 프로젝트", projects_subtitle: "주요 서비스 런칭 영상입니다. 클릭하여 상세 내용을 확인하세요.",
+            experience_title: "상세 경력 사항", skills_title: "보유 기술 및 자격",
+            gallery_title: "AI Creative Flow", gallery_description: "직접 드로잉한 스케치를 생성형 AI로 리터칭하여 비주얼 퀄리티를 극대화하는 워크플로우입니다.",
+            view_history: "경력 전체 보기", minimize_history: "경력 요약",
+            view_projects: "프로젝트 전체 보기", minimize_projects: "프로젝트 요약",
             footer_text: "위의 모든 기재사항은 사실과 다름없음을 확인합니다. 작성자 조현우."
           },
           en: {
-            nav_home: "Home", nav_experience: "Experience", nav_projects: "Projects", nav_skills: "Skills",
+            nav_home: "Home", nav_experience: "Exp", nav_projects: "Work", nav_skills: "Skills",
             hero_title: "Hyunwoo Cho", hero_subtitle: "Senior Game Planner & Manager",
-            hero_description: "Seasoned expert with 10+ years in the game industry. Specialist in global launches for VR/Mobile/PC. Leading planning innovation with Generative AI.",
-            view_portfolio_video: "View Reel", projects_title: "Featured Projects",
-            projects_subtitle: "Core project launch showcases. Click to watch videos.",
-            experience_title: "Experience", skills_title: "Skills & Expertise",
-            gallery_title: "AI Creative Workflow", gallery_description: "Maximizing quality by retouching sketches with Generative AI.",
-            gallery_label_ai: "AI Enhanced", view_history: "Full Career History", minimize_history: "Show Less",
-            footer_text: "All information provided is true. Author: Hyunwoo Cho."
+            hero_description: "Expert with 10+ years in the game industry. Specialist in global launches for VR/Mobile/PC. Leading planning innovation with Generative AI workflows.",
+            projects_title: "Key Projects", projects_subtitle: "Launch showcases of core services. Click to view details.",
+            experience_title: "Work Experience", skills_title: "Skills & Certificates",
+            gallery_title: "AI Creative Flow", gallery_description: "Maximizing visual quality by retouching hand-drawn sketches with Generative AI.",
+            view_history: "View Full History", minimize_history: "Show Less",
+            view_projects: "Show All Projects", minimize_projects: "Show Less",
+            footer_text: "I confirm all information provided is true. Author: Hyunwoo Cho."
           }
         };
 
         const PROJECTS = [
-          { id: "1", title: "LOVE ON (VR)", company: "룩슨", year: "2023-2024", description: "VR 서브컬처 미소녀 연애 시뮬레이션 개발.", videoUrl: "https://www.youtube.com/embed/UdmhKL7XMUQ" },
-          { id: "2", title: "트리플 하츠", company: "써니사이드게임즈", year: "2018-2019", description: "AOS - Unity 프로젝트 글로벌 서비스 오픈 및 관리.", videoUrl: "https://www.youtube.com/embed/TXt9mmxj9yQ" },
+          { id: "1", title: "LOVE ON (VR)", company: "룩슨", year: "2023-2024", description: "VR 서브컬처 미소녀 연애 시뮬레이션 개발 총괄.", videoUrl: "https://www.youtube.com/embed/UdmhKL7XMUQ" },
+          { id: "2", title: "트리플 하츠", company: "써니사이드게임즈", year: "2018-2019", description: "AOS 글로벌 서비스 오픈 및 관리 (6개국).", videoUrl: "https://www.youtube.com/embed/TXt9mmxj9yQ" },
           { id: "3", title: "마비노기", company: "넥슨코리아", year: "2016-2018", description: "MMORPG 해외 라이브 서비스 기획 (일본/미국).", videoUrl: "https://www.youtube.com/embed/_54xPRSNuIY" },
-          { id: "4", title: "크리스탈 하츠", company: "디엠케이팩토리", year: "2015-2016", description: "RPG - Unity 프로젝트 오픈 및 밸런스 기획.", videoUrl: "https://www.youtube.com/embed/0Xe7JE1nLKc" }
+          { id: "4", title: "크리스탈 하츠", company: "디엠케이팩토리", year: "2015-2016", description: "RPG Unity 프로젝트 오픈 및 밸런스 설계.", videoUrl: "https://www.youtube.com/embed/0Xe7JE1nLKc" },
+          { id: "5", title: "BLACKPINK THE GAME", company: "테이크원", year: "2021-2022", description: "K-POP IP 글로벌 서비스 디자인 및 플랫폼 기획.", videoUrl: "https://www.youtube.com/embed/cA6qwchbJk0" },
+          { id: "6", title: "라비린시아X2", company: "세시소프트", year: "2014-2015", description: "TCG & 그래픽 노벨 프로젝트 Unity 포팅 및 PM.", videoUrl: "https://www.youtube.com/embed/pyBuQIOaN1g" },
+          { id: "7", title: "학교 2014", company: "라쿤소프트", year: "2013-2014", description: "SNG 밸런스 및 컨텐츠 기획, 넷마블 퍼블리싱 대응.", videoUrl: "https://www.youtube.com/embed/fW2-CVuJMj8" },
+          { id: "8", title: "Star in the hole", company: "Indie", year: "2024", description: "개인 인디 퍼즐 게임 기획 및 디렉팅.", videoUrl: "https://www.youtube.com/embed/Wy7pRgopvgs" }
         ];
 
         const EXPERIENCES = [
-          { company: "룩슨", role: "VR게임 개발실 과장", period: "2023.12 - 2024.08", highlights: ["LOVE ON (VR) 개발 총괄", "스팀 & 사이드 퀘스트 글로벌 출시", "VR 전용 인터렉션 시스템 설계"] },
-          { company: "테이크원 컴퍼니", role: "퍼블리싱서비스팀 팀장", period: "2020.12 - 2022.09", highlights: ["BLACKPINK THE GAME 글로벌 서비스 디자인", "글로벌 법률(GDPR/COPPA) 대응 기획"] },
-          { company: "넥슨코리아", role: "마비노기 해외사업팀 대리", period: "2016.11 - 2018.04", highlights: ["북미/일본 마비노기 라이브 서비스", "글로벌 콜라보레이션 이벤트 주도"] },
-          { company: "디엠케이팩토리", role: "기획팀 사원", period: "2015.03 - 2016.11", highlights: ["크리스탈 하츠 시스템 & 밸런스 설계", "스토어 매출 상위권 달성"] }
+          { company: "룩슨", role: "VR게임 개발실 과장", period: "2023.12 - 2024.08", summary: "VR 미소녀 연애 시뮬레이션 개발 총괄 및 글로벌 런칭 주도.", details: ["LOVE ON(VR) 개발 총괄", "스팀 & 사이드퀘스트 글로벌 출시", "VR 전용 인터렉션 시스템 설계", "프로세스 리딩 및 시나리오 검수"] },
+          { company: "테이크원 컴퍼니", role: "퍼블리싱서비스팀 팀장", period: "2020.12 - 2022.09", summary: "글로벌 퍼블리싱 플랫폼 구축 및 아티스트 IP 게임 서비스 설계.", details: ["퍼블리싱 서비스 플랫폼 기획/개발 팀 빌딩", "BLACKPINK THE GAME 글로벌 서비스 디자인", "GDPR/COPPA 등 글로벌 법률 대응 시스템 설계", "AKB48W, 뿌까 퍼즐 어드벤처 런칭 지원"] },
+          { company: "2DC", role: "신규사업부 실장", period: "2020.06 - 2020.09", summary: "리디북스 계열사 게임 플랫폼 신규 사업 제안 및 초기 기획.", details: ["게임 플랫폼 신규 사업 제안", "캐릭터 채팅 플랫폼 SDK 기획", "시장 데이터 분석 및 BM 설계"] },
+          { company: "카카오키즈", role: "신규사업부 대리", period: "2019.12 - 2020.05", summary: "자기개발 플랫폼 '유캔두' 게이미피케이션 콘텐츠 설계.", details: ["유캔두 앱 사업 기획 및 분석", "레벨, 뱃지, 랭킹 등 보상 시스템 설계", "테스트 케이스 정리 및 로그 설계"] },
+          { company: "써니사이드게임즈", role: "기획팀 책임연구원", period: "2018.04 - 2019.05", summary: "AOS '트리플 하츠' 6개국 글로벌 서비스 라이브 운영.", details: ["트리플 하츠 글로벌 서비스 라이브 기획", "시스템/콘텐츠(길드, 광산) 기획", "글로벌 재화 소모 및 BM 최적화"] },
+          { company: "넥슨코리아", role: "마비노기 해외사업팀 대리", period: "2016.11 - 2018.04", summary: "마비노기 북미/일본 라이브 서비스 및 대형 콜라보 운영.", details: ["해외 라이브 서비스 기획 (일본/미국)", "Re:제로 등 대형 IP 콜라보 이벤트 주도", "BM 기획 (가챠 및 패키지 상품)"] },
+          { company: "(주)디엠케이팩토리", role: "기획팀 사원", period: "2015.03 - 2016.11", summary: "RPG '크리스탈 하츠' 밸런싱 및 시스템 초기 기획.", details: ["크리스탈 하츠 레벨/밸런스 설계", "시스템/콘텐츠(요일던전, 영웅) 기획", "UI/UX 및 캐릭터 시나리오 기획"] },
+          { company: "세시소프트", role: "기획팀 대리", period: "2014.08 - 2015.03", summary: "라비린시아X2 PM 및 HTML5 게임 Unity 포팅 기획.", details: ["TCG & 그래픽 노벨 프로젝트 오픈", "일정 및 리소스 관리(PM)", "기존 HTML5 게임 엔진 교체 기획"] },
+          { company: "조아라", role: "작가 프리랜서", period: "2012.12 - 2013.05", summary: "동양 판타지 소설 '칠성국' 4권 출간 및 완결.", details: ["동양 판타지 세계관 구축", "리디북스 출판 및 완결", "캐릭터 빌딩 및 시나리오 집필"] },
+          { company: "알트원", role: "기획팀 사원", period: "2012.05 - 2012.12", summary: "무협 MMORPG '십이지천2' 국내외 라이브 운영 지원.", details: ["국내/해외 라이브 서비스 유지 보수", "콘텐츠/이벤트 기획 지원", "스토어 데이터 관리"] },
+          { company: "Fashion Accessories", role: "Designer", period: "2009.05 - 2009.11", summary: "영국 현지 액세서리 브로슈어 및 제품 디자인.", details: ["영국 현지 제품 디자인", "카탈로그 및 광고 제작 디자인", "샘플 도안 및 항목 관리"] }
         ];
 
-        const SKILLS = [
-          { category: "Gen-AI", items: ["Stable Diffusion", "ComfyUI", "Veo3", "Midjourney", "ChatGPT"] },
-          { category: "Planning", items: ["Jira", "Trello", "Redmine", "MS Project"] },
-          { category: "Dev/Design", items: ["Unity", "Unreal Engine", "Figma", "Photoshop", "Git"] }
+        const SKILLS_DATA = [
+          { category: "Generation AI", items: ["Stable Diffusion", "ComfyUI", "Veo3", "Kling", "Suno", "Midjourney", "ChatGPT", "Cursor"] },
+          { category: "Engines & Dev", items: ["Unity(중급)", "Unreal(중급)", "Git", "SVN", "Perforce", "Luascript"] },
+          { category: "Planning Tools", items: ["Jira", "Trello", "Redmine", "Mantis", "MS Project", "GanttChart"] },
+          { category: "Design & Doc", items: ["Photoshop(중급)", "Figma", "Adobe XD", "Vegas", "Goldwave", "PowerPoint(고급)"] },
+          { category: "Certificates", items: ["정보처리기능사", "바리스타 2급", "전산회계운용사 2급", "MOS Master", "컴퓨터그래픽스운용기능사"] }
         ];
 
-        const GALLERY = [
-          { id: 1, name: "Subculture", sketch: "https://i.ibb.co/LhYf7Hw/sketch-1.jpg", result: "https://i.ibb.co/h7n77G1/result-1.jpg" },
-          { id: 2, name: "Sci-fi Mecha", sketch: "https://i.ibb.co/xXfWjG8/sketch-2.jpg", result: "https://i.ibb.co/F6P7Y9t/result-2.jpg" }
+        const GALLERY_DATA = [
+          { id: 1, name: "Subculture Art", sketch: "https://i.ibb.co/LhYf7Hw/sketch-1.jpg", result: "https://i.ibb.co/h7n77G1/result-1.jpg" },
+          { id: 2, name: "Sci-fi Mecha", sketch: "https://i.ibb.co/xXfWjG8/sketch-2.jpg", result: "https://i.ibb.co/F6P7Y9t/result-2.jpg" },
+          { id: 3, name: "Noble Gentleman", sketch: "https://i.ibb.co/0y7x20q/sketch-3.jpg", result: "https://i.ibb.co/Mh77N6f/result-3.jpg" }
         ];
 
+        // --- Utils ---
         const getYoutubeThumbnail = (url) => {
           const id = url.split('embed/')[1];
           return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
         };
 
         // --- Components ---
+
+        const TypingEffect = ({ lines }) => {
+          const [displayText, setDisplayText] = useState([]);
+          const [lineIndex, setLineIndex] = useState(0);
+          const [charIndex, setCharIndex] = useState(0);
+
+          useEffect(() => {
+            if (lineIndex < lines.length) {
+              if (charIndex < lines[lineIndex].length) {
+                const timer = setTimeout(() => {
+                  setDisplayText(prev => {
+                    const newArr = [...prev];
+                    if (!newArr[lineIndex]) newArr[lineIndex] = "";
+                    newArr[lineIndex] += lines[lineIndex][charIndex];
+                    return newArr;
+                  });
+                  setCharIndex(prev => prev + 1);
+                }, 40);
+                return () => clearTimeout(timer);
+              } else {
+                setLineIndex(prev => prev + 1);
+                setCharIndex(0);
+              }
+            }
+          }, [lineIndex, charIndex, lines]);
+
+          return (
+            <div className="space-y-3">
+              {displayText.map((text, i) => (
+                <div key={i} className="flex items-start text-slate-800 text-sm font-bold">
+                  <span className="text-blue-600 mr-2 shrink-0">›</span>
+                  <p>{text}</p>
+                </div>
+              ))}
+            </div>
+          );
+        };
 
         const Header = ({ lang, setLang, t }) => {
           const [scrolled, setScrolled] = useState(false);
@@ -157,7 +195,6 @@
             const audio = new Audio(lang === 'ko' ? 'https://files.catbox.moe/uozrce.mp3' : 'https://files.catbox.moe/9f99i4.mp3');
             audio.loop = true;
             bgMusicRef.current = audio;
-            
             const start = () => { if(isMusicOn && bgMusicRef.current) bgMusicRef.current.play().catch(()=>{}); window.removeEventListener('click', start); };
             window.addEventListener('click', start);
             return () => window.removeEventListener('scroll', handleScroll);
@@ -170,9 +207,9 @@
           };
 
           const handleTts = async () => {
-            if(isSpeaking) { setIsSpeaking(false); if(isMusicOn) bgMusicRef.current.play().catch(()=>{}); return; }
+            if(isSpeaking) { setIsSpeaking(false); if(isMusicOn && bgMusicRef.current) bgMusicRef.current.play().catch(()=>{}); return; }
             setIsSpeaking(true);
-            if (bgMusicRef.current) bgMusicRef.current.pause();
+            if(bgMusicRef.current) bgMusicRef.current.pause();
             try {
               const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
               const resp = await ai.models.generateContent({
@@ -186,9 +223,8 @@
                 const bin = atob(base64);
                 const bytes = new Uint8Array(bin.length);
                 for(let i=0; i<bin.length; i++) bytes[i] = bin.charCodeAt(i);
-                const dataInt16 = new Int16Array(bytes.buffer);
-                const buffer = ctx.createBuffer(1, dataInt16.length, 24000);
-                buffer.getChannelData(0).set(Array.from(dataInt16).map(v => v/32768));
+                const buffer = ctx.createBuffer(1, bytes.length/2, 24000);
+                buffer.getChannelData(0).set(Array.from(new Int16Array(bytes.buffer)).map(v => v/32768));
                 const src = ctx.createBufferSource();
                 src.buffer = buffer; src.connect(ctx.destination);
                 src.onended = () => { setIsSpeaking(false); if(isMusicOn && bgMusicRef.current) bgMusicRef.current.play().catch(()=>{}); };
@@ -198,64 +234,86 @@
           };
 
           return (
-            <nav className={`fixed top-0 left-0 w-full z-50 transition-all ${scrolled ? 'py-4 glass-morphism shadow-lg' : 'py-8'}`}>
+            <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'py-4 glass-morphism shadow-2xl' : 'py-8'}`}>
               <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
                 <div className="text-2xl font-black gradient-text tracking-tighter">CHW.</div>
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2 bg-slate-900/50 p-1 rounded-full border border-white/5">
-                    <button onClick={toggleMusic} disabled={isSpeaking} className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'opacity-20 cursor-not-allowed' : isMusicOn ? 'bg-blue-600' : 'text-slate-400'}`}>
+                <div className="hidden lg:flex space-x-8 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                   <a href="#experience" className="hover:text-white transition-colors">{t.nav_experience}</a>
+                   <a href="#projects" className="hover:text-white transition-colors">{t.nav_projects}</a>
+                   <a href="#skills" className="hover:text-white transition-colors">{t.nav_skills}</a>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center bg-slate-900/60 p-1 rounded-full border border-white/5">
+                    <button onClick={toggleMusic} disabled={isSpeaking} className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'opacity-20' : isMusicOn ? 'bg-blue-600' : 'text-slate-500'}`}>
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-4z"/></svg>
                     </button>
-                    <button onClick={handleTts} className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'bg-purple-600' : 'text-slate-400'}`}>
-                      {isSpeaking ? <div className="flex items-end space-x-0.5 h-2"><div className="w-0.5 bg-white animate-[bar_0.8s_infinite]"></div><div className="w-0.5 bg-white animate-[bar_0.8s_0.2s_infinite]"></div></div> : <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>}
+                    <button onClick={handleTts} className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'bg-purple-600' : 'text-slate-500'}`}>
+                      {isSpeaking ? <div className="flex items-end space-x-0.5 h-2.5"><div className="w-0.5 bg-white animate-[bar_0.8s_infinite]"></div><div className="w-0.5 bg-white animate-[bar_0.8s_0.2s_infinite]"></div></div> : <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>}
                     </button>
                   </div>
-                  <button onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')} className="text-[10px] font-black uppercase bg-slate-800 px-4 py-2 rounded-full text-slate-400 hover:text-white">
-                    {lang === 'ko' ? 'English' : '한국어'}
-                  </button>
+                  <button onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')} className="bg-slate-800 text-white text-[9px] font-black px-4 py-2 rounded-full uppercase tracking-tighter hover:bg-slate-700 transition-all">{lang}</button>
                 </div>
               </div>
             </nav>
           );
         };
 
-        const InteractiveBackground = () => {
-          const ref = useRef(null);
-          useEffect(() => {
-            const canvas = ref.current;
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            let w, h, mouse = {x: -1000, y: -1000};
-            const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-            window.addEventListener('resize', resize);
-            window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-            resize();
-            const hexSize = 35;
-            const render = () => {
-              ctx.clearRect(0, 0, w, h);
-              for(let c=0; c<w/(hexSize*1.5)+1; c++) {
-                for(let r=0; r<h/(hexSize*1.7)+1; r++) {
-                  const x = c*hexSize*1.5;
-                  const y = r*hexSize*1.7 + (c%2*hexSize*0.85);
-                  const dist = Math.sqrt((x-mouse.x)**2 + (y-mouse.y)**2);
-                  ctx.beginPath();
-                  for(let i=0; i<6; i++) ctx.lineTo(x+hexSize*Math.cos(i*Math.PI/3), y+hexSize*Math.sin(i*Math.PI/3));
-                  ctx.closePath();
-                  ctx.strokeStyle = `rgba(96, 165, 250, ${dist < 200 ? 0.3 : 0.05})`;
-                  ctx.stroke();
-                }
-              }
-              requestAnimationFrame(render);
-            };
-            render();
-            return () => window.removeEventListener('resize', resize);
-          }, []);
-          return <canvas ref={ref} className="fixed inset-0 pointer-events-none -z-10 bg-[#0f172a]" />;
+        const iTunesGallery = ({ t }) => {
+          const [activeIndex, setActiveIndex] = useState(1);
+          const next = () => setActiveIndex((prev) => (prev + 1) % GALLERY_DATA.length);
+          const prev = () => setActiveIndex((prev) => (prev - 1 + GALLERY_DATA.length) % GALLERY_DATA.length);
+
+          return (
+            <section className="py-32 px-6 overflow-hidden bg-slate-950/20">
+              <div className="max-w-7xl mx-auto mb-20">
+                <h3 className="text-4xl font-black italic mb-6">{t.gallery_title}</h3>
+                <p className="text-slate-400 max-w-2xl">{t.gallery_description}</p>
+              </div>
+              
+              <div className="relative h-[600px] flex items-center justify-center perspective-[2000px]">
+                {GALLERY_DATA.map((item, idx) => {
+                  const offset = idx - activeIndex;
+                  const isCenter = offset === 0;
+                  const absOffset = Math.abs(offset);
+                  
+                  return (
+                    <div 
+                      key={item.id}
+                      onClick={() => setActiveIndex(idx)}
+                      className="absolute transition-all duration-700 ease-out cursor-pointer group"
+                      style={{
+                        transform: `translateX(${offset * 320}px) translateZ(${isCenter ? 150 : -200}px) rotateY(${offset * -45}deg)`,
+                        zIndex: 10 - absOffset,
+                        opacity: absOffset > 1 ? 0.3 : 1
+                      }}
+                    >
+                      <div className="w-[380px] h-[520px] rounded-[3rem] overflow-hidden border border-white/10 shadow-[0_50px_100px_rgba(0,0,0,0.6)] relative bg-slate-900">
+                         <img src={isCenter ? item.result : item.sketch} className="w-full h-full object-cover transition-opacity duration-1000" alt={item.name} />
+                         <div className={`absolute bottom-0 left-0 w-full p-10 bg-gradient-to-t from-black via-black/40 to-transparent transition-opacity duration-500 ${isCenter ? 'opacity-100' : 'opacity-0'}`}>
+                           <h5 className="text-2xl font-black text-white">{item.name}</h5>
+                           <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mt-2">AI Enhanced Flow</p>
+                         </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="flex justify-center space-x-6 mt-12">
+                <button onClick={prev} className="p-4 rounded-full border border-white/10 hover:bg-white/5 transition-all"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+                <button onClick={next} className="p-4 rounded-full border border-white/10 hover:bg-white/5 transition-all"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg></button>
+              </div>
+            </section>
+          );
         };
 
         const App = () => {
           const [lang, setLang] = useState('ko');
           const [activeVideo, setActiveVideo] = useState(null);
+          const [expExpanded, setExpExpanded] = useState(false);
+          const [projExpanded, setProjExpanded] = useState(false);
+          const [hoveredExp, setHoveredExp] = useState(null);
+          const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
           const t = TRANSLATIONS[lang];
 
           useEffect(() => {
@@ -265,86 +323,99 @@
 
           return (
             <div className="min-h-screen">
-              <InteractiveBackground />
               <Header lang={lang} setLang={setLang} t={t} />
               
-              <main className="relative z-10 pt-32">
+              <main className="relative z-10 pt-48">
                 {/* Hero */}
-                <section className="min-h-[80vh] flex flex-col justify-center items-center px-6 text-center">
-                  <h2 className="text-blue-400 font-bold tracking-[0.3em] uppercase mb-4 animate-fadeInUp">{t.hero_subtitle}</h2>
-                  <h1 className="text-6xl md:text-8xl font-black mb-8 animate-fadeInUp" style={{animationDelay:'0.2s'}}>{t.hero_title}</h1>
-                  <p className="max-w-2xl text-slate-400 text-lg leading-relaxed mb-12 animate-fadeInUp" style={{animationDelay:'0.4s'}}>{t.hero_description}</p>
+                <section className="min-h-[70vh] flex flex-col justify-center items-center px-6 text-center">
+                  <h2 className="text-blue-500 font-black tracking-[0.4em] uppercase mb-6 animate-fadeInUp text-xs">{t.hero_subtitle}</h2>
+                  <h1 className="text-7xl md:text-9xl font-black mb-10 tracking-tighter animate-fadeInUp" style={{animationDelay:'0.2s'}}>{t.hero_title}</h1>
+                  <p className="max-w-2xl text-slate-400 text-lg leading-relaxed animate-fadeInUp font-medium" style={{animationDelay:'0.4s'}}>{t.hero_description}</p>
                 </section>
 
                 {/* Experience */}
-                <section id="experience" className="py-24 px-6 max-w-7xl mx-auto">
-                   <h3 className="text-3xl font-black mb-12 uppercase italic">{t.experience_title}</h3>
-                   <div className="grid md:grid-cols-2 gap-8">
-                     {EXPERIENCES.map((exp, i) => (
-                       <div key={i} className="group p-8 rounded-3xl bg-slate-900/40 border border-white/5 hover:border-blue-500/50 transition-all backdrop-blur-xl">
-                         <div className="flex justify-between items-start mb-4">
-                           <span className="text-[10px] font-black text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/20">{exp.period}</span>
-                           <span className="text-xs font-bold text-slate-500 uppercase">{exp.company}</span>
+                <section id="experience" className="py-32 px-6 max-w-7xl mx-auto relative">
+                   <h3 className="text-4xl font-black mb-16 italic uppercase tracking-tighter">{t.experience_title}</h3>
+                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                     {EXPERIENCES.slice(0, expExpanded ? EXPERIENCES.length : 6).map((exp, i) => (
+                       <div 
+                         key={i} 
+                         onMouseEnter={(e) => { setHoveredExp(exp); setMousePos({ x: e.clientX, y: e.clientY }); }}
+                         onMouseLeave={() => setHoveredExp(null)}
+                         className="group p-10 rounded-[2.5rem] bg-slate-900/30 border border-white/5 hover:border-blue-500/40 transition-all backdrop-blur-3xl animate-fadeInUp flex flex-col h-full cursor-help"
+                       >
+                         <div className="mb-8">
+                           <span className="text-[10px] font-black text-blue-400 bg-blue-500/10 px-4 py-1.5 rounded-full border border-blue-500/10 mb-4 inline-block tracking-tighter">{exp.period}</span>
+                           <h4 className="text-xl font-black text-white group-hover:text-blue-400 transition-colors mb-2">{exp.role}</h4>
+                           <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{exp.company}</p>
                          </div>
-                         <h4 className="text-xl font-black text-white group-hover:text-blue-400 transition-colors mb-4">{exp.role}</h4>
-                         <ul className="space-y-2">
-                           {exp.highlights.map((h, j) => <li key={j} className="text-sm text-slate-400 flex items-start"><span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5 mr-3 shrink-0"></span>{h}</li>)}
-                         </ul>
+                         <p className="text-sm text-slate-400 leading-relaxed line-clamp-2 mt-auto">{exp.summary}</p>
                        </div>
                      ))}
                    </div>
+                   
+                   <div className="mt-20 text-center">
+                     <button onClick={() => setExpExpanded(!expExpanded)} className="px-10 py-4 bg-white/5 border border-white/10 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all">
+                       {expExpanded ? t.minimize_history : t.view_history}
+                     </button>
+                   </div>
+
+                   {/* Hover Popover */}
+                   {hoveredExp && (
+                     <div className="fixed z-[100] pointer-events-none transition-all duration-300" style={{ left: Math.min(mousePos.x + 20, window.innerWidth - 420), top: Math.min(mousePos.y + 20, window.innerHeight - 400) }}>
+                       <div className="bg-white p-10 rounded-[3rem] shadow-[0_50px_100px_rgba(0,0,0,0.7)] w-[380px] border-l-[12px] border-blue-600 animate-zoomIn">
+                         <div className="mb-6 pb-6 border-b border-slate-100">
+                           <span className="text-[10px] font-black text-blue-600 mb-1 block uppercase tracking-widest">{hoveredExp.period}</span>
+                           <h5 className="text-2xl font-black text-slate-950 uppercase leading-none">{hoveredExp.company}</h5>
+                         </div>
+                         <TypingEffect lines={hoveredExp.details} />
+                       </div>
+                     </div>
+                   )}
                 </section>
 
                 {/* Projects */}
-                <section id="projects" className="py-24 px-6 bg-slate-950/30">
+                <section id="projects" className="py-32 px-6 bg-slate-950/40">
                   <div className="max-w-7xl mx-auto">
-                    <h3 className="text-3xl font-black mb-4 uppercase text-center">{t.projects_title}</h3>
-                    <p className="text-slate-500 text-center text-sm mb-16">{t.projects_subtitle}</p>
+                    <h3 className="text-4xl font-black mb-4 italic uppercase text-center">{t.projects_title}</h3>
+                    <p className="text-slate-500 text-center text-sm mb-20">{t.projects_subtitle}</p>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                      {PROJECTS.map(p => (
-                        <div key={p.id} onClick={() => setActiveVideo(p.videoUrl)} className="group cursor-pointer rounded-2xl overflow-hidden bg-slate-900 border border-white/5 hover:border-blue-500 transition-all">
+                      {PROJECTS.slice(0, projExpanded ? PROJECTS.length : 4).map(p => (
+                        <div key={p.id} onClick={() => setActiveVideo(p.videoUrl)} className="group cursor-pointer rounded-3xl overflow-hidden bg-slate-900/50 border border-white/5 hover:border-blue-500/50 transition-all">
                           <div className="aspect-video relative overflow-hidden">
                             <img src={getYoutubeThumbnail(p.videoUrl)} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60 group-hover:opacity-100" alt={p.title} />
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+                              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-2xl"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
                             </div>
                           </div>
-                          <div className="p-4">
-                            <span className="text-[9px] font-black text-blue-500 uppercase mb-1 block">{p.company}</span>
+                          <div className="p-6">
+                            <span className="text-[9px] font-black text-blue-500 uppercase mb-1 block tracking-widest">{p.company}</span>
                             <h4 className="font-bold text-sm text-white line-clamp-1">{p.title}</h4>
                           </div>
                         </div>
                       ))}
                     </div>
+                    <div className="mt-16 text-center">
+                      <button onClick={() => setProjExpanded(!projExpanded)} className="px-10 py-4 border border-white/10 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 hover:border-blue-600 transition-all">
+                        {projExpanded ? t.minimize_projects : t.view_projects}
+                      </button>
+                    </div>
                   </div>
                 </section>
 
-                {/* AI Gallery */}
-                <section className="py-24 px-6 max-w-7xl mx-auto">
-                  <h3 className="text-3xl font-black mb-4 uppercase italic">{t.gallery_title}</h3>
-                  <p className="text-slate-400 mb-12 text-sm">{t.gallery_description}</p>
-                  <div className="grid md:grid-cols-2 gap-12">
-                    {GALLERY.map(g => (
-                      <div key={g.id} className="relative group rounded-3xl overflow-hidden aspect-[4/5] border border-white/10 shadow-2xl">
-                        <img src={g.sketch} className="absolute inset-0 w-full h-full object-cover" alt="Sketch" />
-                        <img src={g.result} className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-1000" alt="Result" />
-                        <div className="absolute top-6 left-6 px-4 py-1.5 bg-black/60 backdrop-blur-xl rounded-full border border-white/20 text-[10px] font-black uppercase text-white tracking-widest group-hover:hidden">Sketch</div>
-                        <div className="absolute top-6 left-6 px-4 py-1.5 bg-blue-600/80 backdrop-blur-xl rounded-full border border-white/20 text-[10px] font-black uppercase text-white tracking-widest hidden group-hover:block">{t.gallery_label_ai}</div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
+                {/* Gallery */}
+                <iTunesGallery t={t} />
 
                 {/* Skills */}
-                <section id="skills" className="py-24 px-6 bg-slate-900/50">
+                <section id="skills" className="py-32 px-6">
                    <div className="max-w-7xl mx-auto">
-                     <h3 className="text-3xl font-black mb-12 text-center">{t.skills_title}</h3>
-                     <div className="grid sm:grid-cols-3 gap-8">
-                       {SKILLS.map((s, i) => (
-                         <div key={i} className="p-8 rounded-3xl bg-slate-950/50 border border-white/5">
-                           <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-6">{s.category}</h4>
+                     <h3 className="text-4xl font-black mb-20 text-center uppercase italic tracking-tighter">{t.skills_title}</h3>
+                     <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                       {SKILLS_DATA.map((s, i) => (
+                         <div key={i} className="p-8 rounded-[2.5rem] bg-slate-900/30 border border-white/5 hover:bg-slate-900/50 transition-all">
+                           <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 mb-8 border-b border-white/5 pb-4">{s.category}</h4>
                            <div className="flex flex-wrap gap-2">
-                             {s.items.map((item, j) => <span key={j} className="px-3 py-1.5 bg-slate-800 rounded-lg text-xs font-bold text-slate-300">{item}</span>)}
+                             {s.items.map((item, j) => <span key={j} className="px-3 py-1.5 bg-white/5 rounded-lg text-[10px] font-bold text-slate-300 hover:text-white transition-colors">{item}</span>)}
                            </div>
                          </div>
                        ))}
@@ -353,27 +424,26 @@
                 </section>
               </main>
 
-              <footer className="py-24 text-center border-t border-white/5 bg-slate-950/80">
-                <div className="text-2xl font-black gradient-text mb-4">CHW.</div>
-                <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-12">Expertise in Global Game Service & Gen-AI</p>
-                <div className="flex justify-center flex-wrap gap-8 mb-12 text-sm">
-                  <a href="mailto:mrs86@naver.com" className="hover:text-blue-400">mrs86@naver.com</a>
-                  <a href="tel:010-3366-4848" className="hover:text-blue-400">010-3366-4848</a>
+              <footer className="py-32 text-center border-t border-white/5 bg-slate-950">
+                <div className="text-3xl font-black gradient-text mb-6">CHW.</div>
+                <div className="flex justify-center space-x-12 mb-12 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                  <a href="mailto:mrs86@naver.com" className="hover:text-blue-400 transition-colors">mrs86@naver.com</a>
+                  <a href="tel:010-3366-4848" className="hover:text-blue-400 transition-colors">010-3366-4848</a>
                 </div>
-                <p className="text-[9px] text-slate-700 font-black uppercase tracking-widest px-6">{t.footer_text}</p>
+                <p className="text-[10px] text-slate-700 font-black uppercase tracking-[0.3em] px-6">{t.footer_text}</p>
               </footer>
 
               {/* Video Modal */}
               {activeVideo && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/95 backdrop-blur-2xl animate-fadeIn" onClick={() => setActiveVideo(null)}>
-                  <div className="relative w-full max-w-5xl aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl animate-zoomIn">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/98 backdrop-blur-3xl animate-fadeIn" onClick={() => setActiveVideo(null)}>
+                  <div className="relative w-full max-w-6xl aspect-video rounded-[3rem] overflow-hidden border border-white/10 shadow-[0_0_100px_rgba(0,0,0,1)] animate-zoomIn">
                     <iframe src={`${activeVideo}?autoplay=1`} className="w-full h-full" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe>
                   </div>
                 </div>
               )}
               <style>{`
                 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-                @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+                @keyframes zoomIn { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
                 .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
                 .animate-zoomIn { animation: zoomIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
               `}</style>
