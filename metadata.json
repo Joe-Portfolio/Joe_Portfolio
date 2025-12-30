@@ -1,5 +1,8 @@
 {
   "name": "CHW Portfolio",
+  "version": "0.1",
   "description": "Interactive Portfolio for Senior Game Planner Cho Hyun-woo. High-fidelity visuals, automatic YouTube thumbnails, and global multi-language support.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "microphone"
+  ]
 }

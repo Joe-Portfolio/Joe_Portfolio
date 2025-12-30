@@ -17,6 +17,15 @@ const App: React.FC = () => {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
   useEffect(() => {
+    // Initial loading screen removal
+    const loader = document.getElementById('loading-screen');
+    if (loader) {
+      setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 800);
+      }, 1000);
+    }
+
     const userLocale = navigator.language.toLowerCase();
     const l = userLocale.includes('ko') ? 'ko' : 'en';
     setLang(l);
@@ -40,7 +49,7 @@ const App: React.FC = () => {
           <AIGallery t={t} lang={lang} />
         </main>
 
-        <footer className="py-24 border-t border-slate-800 bg-slate-950/80 backdrop-blur-xl text-center">
+        <footer className="py-24 border-t border-slate-800 bg-slate-950/80 backdrop-blur-xl text-center relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-2xl font-black gradient-text mb-2">CHW.</div>
             <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.3em] mb-12 max-w-lg mx-auto leading-relaxed">
@@ -60,6 +69,13 @@ const App: React.FC = () => {
             <p className="text-slate-700 text-[9px] font-black tracking-widest uppercase">
               {t.footer_text}
             </p>
+            
+            {/* Version Label */}
+            <div className="mt-20 opacity-30 group">
+                <span className="text-[9px] font-mono tracking-[0.5em] text-slate-800 uppercase px-4 py-1 border border-slate-900 rounded-full group-hover:text-blue-900 transition-colors">
+                  System Ver. 0.1 Release Candidate
+                </span>
+            </div>
           </div>
         </footer>
       </div>
