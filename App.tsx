@@ -1,27 +1,26 @@
 
 import React, { useState, useEffect } from 'react';
-import { Language } from './types';
-import { TRANSLATIONS, PROJECTS, EXPERIENCES } from './data';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Projects from './components/Projects';
-import Experience from './components/Experience';
-import Skills from './components/Skills';
-import VideoModal from './components/VideoModal';
-import InteractiveBackground from './components/InteractiveBackground';
-import AIGallery from './components/AIGallery';
+import { Language } from './types.ts';
+import { TRANSLATIONS, PROJECTS, EXPERIENCES } from './data.ts';
+import Header from './components/Header.tsx';
+import Hero from './components/Hero.tsx';
+import Projects from './components/Projects.tsx';
+import Experience from './components/Experience.tsx';
+import Skills from './components/Skills.tsx';
+import VideoModal from './components/VideoModal.tsx';
+import InteractiveBackground from './components/InteractiveBackground.tsx';
+import AIGallery from './components/AIGallery.tsx';
 
 const App: React.FC = () => {
   const [lang, setLang] = useState<Language>('ko');
+  const [initialLang, setInitialLang] = useState<Language | null>(null);
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
   useEffect(() => {
     const userLocale = navigator.language.toLowerCase();
-    if (userLocale.includes('ko')) {
-      setLang('ko');
-    } else {
-      setLang('en');
-    }
+    const l = userLocale.includes('ko') ? 'ko' : 'en';
+    setLang(l);
+    setInitialLang(l);
   }, []);
 
   const t = TRANSLATIONS[lang];
@@ -31,7 +30,7 @@ const App: React.FC = () => {
       <InteractiveBackground />
       
       <div className="relative z-10">
-        <Header lang={lang} setLang={setLang} t={t} />
+        {initialLang && <Header lang={lang} setLang={setLang} t={t} initialLang={initialLang} />}
         
         <main>
           <Hero t={t} />

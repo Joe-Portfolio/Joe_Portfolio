@@ -1,5 +1,5 @@
 
-import { Project, Experience, Translation, Language, GalleryItem } from './types';
+import { Project, Experience, Translation, Language, GalleryItem } from './types.ts';
 
 export const getYoutubeThumbnail = (url: string) => {
   const videoId = url.split('embed/')[1]?.split('?')[0] || 
@@ -30,8 +30,8 @@ export const TRANSLATIONS: Record<Language, Translation> = {
     exp_hover_full: "전체 경력 상세 보기",
     contact_title: "연락처",
     footer_text: "위의 모든 기재사항은 사실과 다름없음을 확인합니다. 작성자 조현우.",
-    view_history: "전체 타임라인 보기",
-    minimize_history: "타임라인 접기"
+    view_history: "전체 경력 보기",
+    minimize_history: "경력 요약하기"
   },
   en: {
     nav_home: "Home",
@@ -85,133 +85,79 @@ export const EXPERIENCES: Record<Language, Experience[]> = {
       highlights: [
         "LOVE ON (VR 미소녀 연애 시뮬레이션) 개발 총괄",
         "스팀 & 사이드 퀘스트 & 잇치 출시 및 라이브 서비스 (글로벌)",
-        "개발 일정 관리 및 프로세스 리딩",
-        "시스템 및 컨텐츠 기획 및 시나리오, QA 검수",
-        "VR 스킨십 시스템 기획 및 구현",
-        "사업 기획 및 커뮤니티 운영"
+        "VR 스킨십 시스템 기획 및 구현"
       ] 
     },
     { 
       company: "테이크원 컴퍼니", role: "퍼블리싱서비스팀 팀장", period: "2020.12 - 2022.09", 
       highlights: [
         "퍼블리싱 서비스 플랫폼 기획 및 팀 빌딩",
-        "글로벌 서비스를 위한 대시보드, 통계로그, IAP, 푸시, 쿠폰 등 기획",
-        "COPPA/GDPR/일본 자금결제법 등 글로벌 법률 관련 기능 기획",
-        "AKB48W / 뿌까 퍼즐 어드벤처 브랜드 및 서비스 디자인 기획",
-        "Web3.0 NFT PFP/P2E 웹 기획 및 백서 기획 (ZCC 등)",
-        "BLACKPINK THE GAME 글로벌 서비스 디자인 기획"
+        "BLACKPINK THE GAME 글로벌 서비스 디자인 기획",
+        "COPPA/GDPR/일본 자금결제법 등 글로벌 법률 관련 기능 기획"
       ] 
     },
     { 
       company: "2DC", role: "신규사업부 실장", period: "2020.06 - 2020.09", 
       highlights: [
         "창업 초기 게임 플랫폼 신규 사업 기획",
-        "리디북스 계열사 신규 게임 플랫폼 사업 제안",
-        "캐릭터 채팅 플랫폼 및 퍼블리싱 운영/서비스 SDK 기획",
-        "모바일 게임 지표 및 시장 리서치(DAU, 매출) With MobileIndex"
+        "캐릭터 채팅 플랫폼 및 퍼블리싱 운영/서비스 SDK 기획"
       ] 
     },
     { 
       company: "카카오키즈", role: "신규사업부 대리", period: "2019.12 - 2020.05", 
       highlights: [
         "유캔두 사업 기획 및 자기 개발 플랫폼 앱 시장 분석",
-        "신규 사업 정책 및 약관, BM 기획",
-        "로그 & 테스트 케이스 정리",
-        "게이미피케이션 콘텐츠 설계 및 기획/구현 (레벨, 뱃지, 랭킹 등)",
-        "Admin & Biz 페이지 기획"
+        "게이미피케이션 콘텐츠 설계 (레벨, 뱃지, 랭킹 등)"
       ] 
     },
     { 
       company: "주식회사 써니사이드게임즈", role: "기획팀 책임연구원", period: "2018.04 - 2019.05", 
       highlights: [
         "트리플 하츠 기획 (AOS - Unity)",
-        "글로벌 서비스 오픈 및 관리 (한국, 베트남, 태국, 미국, 일본, 중국)",
-        "시스템/콘텐츠 기획 (길드, 광산, 약탈, 퀘스트, 튜토리얼 등)",
-        "사업 지표 관리 (재화 소모, BM 디자인 등)",
-        "PlayStore, AppStore 오픈 및 관리"
+        "글로벌 서비스 오픈 및 관리 (한국, 베트남, 태국, 미국, 일본, 중국)"
       ] 
     },
     { 
       company: "넥슨코리아", role: "마비노기 해외사업팀 대리", period: "2016.11 - 2018.04", 
       highlights: [
         "북미/일본 마비노기 해외 라이브 서비스 기획",
-        "라이브 운영 및 기획 (이벤트, 의상 및 유료 아이템, Re:제로 콜라보)",
-        "해외 서비스 및 BM 기획 (가챠, 패키지 상품)",
-        "스크립트를 사용하여 유지 보수"
+        "Re:제로 콜라보 등 대규모 이벤트 운영"
       ] 
     },
     { 
       company: "(주)디엠케이팩토리", role: "기획팀 사원", period: "2015.03 - 2016.11", 
       highlights: [
         "크리스탈 하츠 기획 (RPG - Unity)",
-        "레벨/밸런스 기획 (스테이터스, 성장, 전투력, 전투 공식, 강화 기획 등)",
-        "시스템/콘텐츠 기획 (시나리오, 대전, 길드, 레이드, 던전, 영웅 등)",
-        "UI/UX 기획 및 캐릭터/시나리오 기획",
-        "연출/사운드 기획 (성우 녹음 프로듀싱)",
-        "BM 기획 (가챠, 마일리지, 인게임 장비 상품)",
+        "레벨/밸런스 및 BM 기획 (가챠, 마일리지)",
         "각 스토어 상위 매출 달성"
       ] 
     },
     { 
       company: "세시소프트", role: "기획팀 대리", period: "2014.08 - 2015.03", 
-      highlights: [
-        "라비린시아X2 기획 & PM",
-        "일정/자원 관리 및 BM 기획",
-        "시스템 기획 (HTML5 기반 라비린시아1을 Unity로 포팅)",
-        "UI/UX 기획 및 스토어 오픈 관리"
-      ] 
+      highlights: ["라비린시아X2 기획 & PM", "HTML5 기반 게임 Unity 포팅"] 
     },
     { 
       company: "(주)라쿤소프트", role: "기획팀 사원", period: "2013.09 - 2014.06", 
-      highlights: [
-        "학교 2014 기획 (SNG - Unity)",
-        "레벨/밸런스 기획 (건물 생산, 학생 레벨 및 획득 밸런스)",
-        "컨텐츠/시스템 기획 (시나리오, 퀘스트, 호감도, 커뮤니티 등)",
-        "연출/사운드 기획 (성우 녹음 프로듀싱)",
-        "일정/자원 관리 (퍼블리셔 넷마블과 일정 조율)"
-      ] 
+      highlights: ["학교 2014 기획 (SNG - Unity)", "넷마블 퍼블리싱 일정 조율"] 
     },
     { 
       company: "조아라", role: "작가 프리랜서", period: "2012.12 - 2013.05", 
-      highlights: [
-        "칠성국 판타지 소설 집필 및 출판",
-        "동양 판타지 소설 집필 (4권 완결)"
-      ] 
+      highlights: ["칠성국 판타지 소설 집필 및 출판"] 
     },
     { 
       company: "(주)주식회사알트원", role: "기획팀 사원", period: "2012.05 - 2012.12", 
-      highlights: [
-        "십이지천2 기획",
-        "국내 및 해외 라이브 서비스 기획 (한국, 유럽, 터키, 미국)",
-        "국내 콘텐츠/이벤트 기획 및 서비스 유지 보수"
-      ] 
+      highlights: ["십이지천2 기획 및 국내/외 서비스 유지 보수"] 
     },
     { 
       company: "Fashion Accessories LTD", role: "Designer", period: "2009.05 - 2009.11", 
-      highlights: [
-        "영국 현지 악세서리 및 브로슈어 디자인",
-        "샘플 도안, 카탈로그 제작, 광고 제작 디자인",
-        "제품 항목 및 관리"
-      ] 
+      highlights: ["영국 현지 제품 및 브로슈어 디자인"] 
     }
   ],
   en: [
-    { 
-      company: "Luxon", role: "Manager, VR Development", period: "2023.12 - 2024.08", 
-      highlights: ["Lead planner for 'LOVE ON' VR dating sim", "Global launch on Steam/SideQuest", "Managed VR interaction systems and scenario writing"] 
-    },
-    { 
-      company: "Takeone Company", role: "Publishing Team Lead", period: "2020.12 - 2022.09", 
-      highlights: ["Built publishing service platforms", "Global compliance planning (GDPR/COPPA)", "Web3.0 NFT PFP project management"] 
-    },
-    { 
-      company: "Nexon Korea", role: "Assistant Manager, Mabinogi", period: "2016.11 - 2018.04", 
-      highlights: ["Live operation for NA/JP markets", "Managed IP collaboration (Re:Zero)", "Monetization and event planning"] 
-    },
-    { 
-      company: "DMK Factory", role: "Lead Planner", period: "2015.03 - 2016.11", 
-      highlights: ["Crystal Hearts RPG system & balance", "Audio production lead", "Achieved top store rankings"] 
-    }
+    { company: "Luxon", role: "VR Manager", period: "2023.12 - 2024.08", highlights: ["LOVE ON VR Lead Planner"] },
+    { company: "Takeone Company", role: "Publishing Lead", period: "2020.12 - 2022.09", highlights: ["BLACKPINK THE GAME Global Service Design"] },
+    { company: "Nexon Korea", role: "Overseas Manager", period: "2016.11 - 2018.04", highlights: ["Mabinogi NA/JP Live Operation"] },
+    { company: "DMK Factory", role: "Lead Planner", period: "2015.03 - 2016.11", highlights: ["Crystal Hearts System & Balance"] }
   ]
 };
 
