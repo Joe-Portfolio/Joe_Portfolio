@@ -24,19 +24,17 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
         playPromiseRef.current = bgMusicRef.current.play();
         await playPromiseRef.current;
       } catch (error) {
-        console.log("BGM Playback was blocked or interrupted:", error);
+        console.log("BGM Playback interrupted or blocked:", error);
       }
     }
   };
 
   const safePause = async () => {
     if (bgMusicRef.current) {
-      if (playPromiseRef.current !== null) {
+      if (playPromiseRef.current) {
         try {
           await playPromiseRef.current;
-        } catch (e) {
-          // Promise failed or was interrupted, we can still pause
-        }
+        } catch (e) {}
       }
       bgMusicRef.current.pause();
     }
@@ -54,14 +52,17 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
     audio.loop = true;
     bgMusicRef.current = audio;
 
-    if (isMusicOn) {
-      safePlay();
-    }
+    // Start playback on first click to satisfy browser policy
+    const startAudio = () => {
+      if (isMusicOn) safePlay();
+      window.removeEventListener('click', startAudio);
+    };
+    window.addEventListener('click', startAudio);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('click', startAudio);
       safePause();
-      bgMusicRef.current = null;
     };
   }, []);
 
@@ -79,13 +80,11 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
   const handleTts = async () => {
     if (isSpeaking) {
       setIsSpeaking(false);
-      // Resume music if it was on before TTS
-      if (isMusicOn) await safePlay();
+      if (isMusicOn) safePlay();
       return;
     }
 
     setIsSpeaking(true);
-    // Pause BGM regardless of state to prioritize voice
     await safePause();
 
     const textToSpeak = document.body.innerText.replace(/\n/g, ' ').substring(0, 1500);
@@ -122,16 +121,15 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
         source.connect(ctx.destination);
         source.onended = () => {
           setIsSpeaking(false);
-          // Resume BGM if it was originally "on"
           if (isMusicOn) safePlay();
         };
         source.start();
       } else {
-          setIsSpeaking(false);
-          if (isMusicOn) safePlay();
+        setIsSpeaking(false);
+        if (isMusicOn) safePlay();
       }
     } catch (e) {
-      console.error("TTS Generation Error:", e);
+      console.error(e);
       setIsSpeaking(false);
       if (isMusicOn) safePlay();
     }
@@ -152,12 +150,11 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
         </div>
 
         <div className="flex items-center space-x-4">
-          {/* Audio/TTS Capsule - Placed Left of the Language Switcher */}
+          {/* Controls Capsule - Placed LEFT of Language switcher */}
           <div className="hidden sm:flex items-center space-x-1.5 bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-full p-1 shadow-inner ring-1 ring-white/10">
             <button 
               onClick={toggleMusic}
-              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${isMusicOn ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-500 hover:text-white'}`}
-              title="BGM Toggle"
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${isMusicOn ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}
             >
               {isMusicOn ? (
                 <svg className="w-4 h-4 animate-pulse" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-4z"/></svg>
@@ -168,8 +165,7 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, t, initialLang }) => {
             <div className="w-px h-4 bg-white/10"></div>
             <button 
               onClick={handleTts}
-              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-slate-500 hover:text-white'}`}
-              title="Site Narration"
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}
             >
               {isSpeaking ? (
                 <div className="flex items-end space-x-0.5 h-2.5">

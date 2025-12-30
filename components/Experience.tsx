@@ -44,7 +44,7 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
                 onMouseEnter={() => setHoveredIdx(idx)}
                 onMouseLeave={() => setHoveredIdx(null)}
               >
-                <div className="flex flex-col mb-6">
+                <div className="flex flex-col mb-6 relative z-10">
                   <div className="flex justify-between items-start mb-6">
                     <span className="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em] px-4 py-1.5 bg-blue-500/10 rounded-full border border-blue-500/20">
                       {exp.period}
@@ -56,8 +56,7 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
                   </h4>
                 </div>
                 
-                {/* Abbreviated Content (Max 3 lines) */}
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-3 mb-8 relative z-10">
                   {exp.highlights.slice(0, 3).map((item, i) => (
                     <li key={i} className="flex items-start text-slate-400 text-sm leading-relaxed">
                       <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5 mr-3 shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
@@ -66,18 +65,18 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
                   ))}
                 </ul>
                 
-                <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest mt-auto group-hover:text-blue-400 transition-colors flex items-center">
+                <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest mt-auto group-hover:text-blue-400 transition-colors flex items-center relative z-10">
                   <svg className="w-3 h-3 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                  Hover to expand
+                  Hover to Expand
                 </div>
 
-                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
               </div>
             );
           })}
         </div>
 
-        {/* Floating Post-it Style Detail Popover */}
+        {/* Hover Floating Popover (Post-it Style) */}
         {hoveredIdx !== null && (
           <div 
             className="fixed z-[200] pointer-events-none transition-transform duration-75 ease-out"
@@ -86,8 +85,8 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
               top: Math.min(mousePos.y + 25, window.innerHeight - 380),
             }}
           >
-            <div className="bg-white text-slate-900 p-8 rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.6)] min-w-[340px] max-w-[400px] border-l-[12px] border-blue-500 animate-postitIn relative overflow-hidden">
-              <div className="absolute top-[-20px] right-[-20px] text-[120px] font-black text-slate-100/40 select-none leading-none">”</div>
+            <div className="bg-white text-slate-900 p-8 rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.6)] min-w-[340px] max-w-[420px] border-l-[12px] border-blue-600 animate-postitIn relative overflow-hidden">
+              <div className="absolute top-[-20px] right-[-20px] text-[120px] font-black text-slate-100 select-none leading-none opacity-50">”</div>
               
               <div className="relative z-10">
                 <div className="mb-6 pb-4 border-b border-slate-100">
@@ -100,7 +99,7 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
                 <ul className="space-y-4">
                   {experiences[hoveredIdx].highlights.map((highlight, i) => (
                     <li key={i} className="text-sm font-semibold leading-relaxed flex items-start text-slate-700">
-                      <span className="mr-3 text-blue-500 font-black mt-0.5 select-none">›</span>
+                      <span className="mr-3 text-blue-500 font-black mt-0.5">›</span>
                       {highlight}
                     </li>
                   ))}
@@ -113,7 +112,7 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
         <div className="mt-20 text-center">
           <button 
             onClick={() => setIsExpanded(!isExpanded)}
-            className="group px-12 py-5 rounded-full border border-slate-700 bg-slate-900/50 hover:border-blue-500 transition-all duration-300 relative overflow-hidden shadow-2xl shadow-blue-500/5"
+            className="group px-12 py-5 rounded-full border border-slate-700 bg-slate-900/50 hover:border-blue-500 transition-all duration-300 relative overflow-hidden shadow-2xl"
           >
             <span className="relative z-10 text-[11px] font-black uppercase tracking-[0.25em] text-slate-400 group-hover:text-white transition-colors">
               {isExpanded ? t.minimize_history : t.view_history}

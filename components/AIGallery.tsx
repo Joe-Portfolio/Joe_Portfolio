@@ -17,15 +17,15 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Large sizing for "Cover Flow" effect
-  const cardWidth = 500;
-  const gap = 20;
+  // High-fidelity sizing for "Cinema Flow" effect
+  const cardWidth = 550;
+  const gap = 30;
 
   useEffect(() => {
     if (!isHovered && !selectedImage) {
       autoPlayRef.current = setInterval(() => {
         handleNext();
-      }, 4000);
+      }, 5000);
     } else if (autoPlayRef.current) {
       clearInterval(autoPlayRef.current);
     }
@@ -42,12 +42,12 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
       setTimeout(() => {
         setIsTransitioning(false);
         setActiveIndex(baseItems.length);
-      }, 1000);
+      }, 1100);
     } else if (activeIndex < baseItems.length) {
       setTimeout(() => {
         setIsTransitioning(false);
         setActiveIndex(baseItems.length * 2 - 1);
-      }, 1000);
+      }, 1100);
     }
   }, [activeIndex, baseItems.length]);
 
@@ -73,7 +73,7 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
       </div>
 
       <div 
-        className="relative w-full overflow-hidden py-16"
+        className="relative w-full overflow-hidden py-24"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -88,16 +88,16 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
             return (
               <div 
                 key={`${item.id}-${idx}`} 
-                className={`flex-shrink-0 relative rounded-[3rem] overflow-hidden cursor-pointer transform transition-all duration-1000 ${
+                className={`flex-shrink-0 relative rounded-[3.5rem] overflow-hidden cursor-pointer transform transition-all duration-1000 ${
                   isCenter 
-                    ? 'z-20 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)] scale-100 opacity-100' 
-                    : 'scale-75 opacity-20 blur-[3px]'
+                    ? 'z-20 shadow-[0_60px_120px_-30px_rgba(0,0,0,0.9)] scale-100 opacity-100' 
+                    : 'scale-75 opacity-20 blur-[4px]'
                 }`}
                 style={{ 
                   width: `${cardWidth}px`, 
-                  height: '600px', 
+                  height: '700px', 
                   margin: `0 ${gap/2}px`,
-                  perspective: '1000px'
+                  perspective: '1200px'
                 }}
                 onClick={() => handleItemClick(idx, item.result)}
               >
@@ -115,16 +115,19 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
                 </div>
                 
                 {isCenter && (
-                   <div className="absolute top-10 left-10 z-30">
-                     <span className="px-5 py-2 bg-black/50 backdrop-blur-xl rounded-full border border-white/20 text-xs font-black text-white uppercase tracking-widest">
+                   <div className="absolute top-12 left-12 z-30">
+                     <span className="px-6 py-2.5 bg-black/60 backdrop-blur-2xl rounded-full border border-white/20 text-xs font-black text-white uppercase tracking-widest shadow-2xl">
                        {t.gallery_label_ai}
                      </span>
                    </div>
                 )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-12">
-                  <h5 className="text-white font-black text-3xl mb-2">{item.name}</h5>
-                  <div className="text-blue-400 text-sm font-bold tracking-widest uppercase">Click to Enlarge</div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-16">
+                  <h5 className="text-white font-black text-4xl mb-3">{item.name}</h5>
+                  <div className="text-blue-400 text-sm font-bold tracking-widest uppercase flex items-center">
+                    <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                    View HD Masterpiece
+                  </div>
                 </div>
               </div>
             );
@@ -132,7 +135,7 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 mt-16 flex justify-center items-center space-x-4">
+      <div className="max-w-7xl mx-auto px-6 mt-16 flex justify-center items-center space-x-5">
         {baseItems.map((_, i) => (
           <button 
             key={i}
@@ -140,17 +143,17 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
               setIsTransitioning(true);
               setActiveIndex(baseItems.length + i);
             }}
-            className={`h-2 transition-all duration-500 rounded-full ${activeIndex % baseItems.length === i ? 'w-16 bg-blue-500' : 'w-4 bg-slate-800'}`}
+            className={`h-2.5 transition-all duration-700 rounded-full ${activeIndex % baseItems.length === i ? 'w-20 bg-blue-500' : 'w-5 bg-slate-800 hover:bg-slate-700'}`}
           />
         ))}
       </div>
 
       {selectedImage && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-8 bg-slate-950/98 backdrop-blur-3xl animate-fadeIn cursor-zoom-out" onClick={() => setSelectedImage(null)}>
-          <button className="absolute top-10 right-10 text-white opacity-50 hover:opacity-100 transition-opacity">
-            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-12 bg-slate-950/98 backdrop-blur-3xl animate-fadeIn cursor-zoom-out" onClick={() => setSelectedImage(null)}>
+          <button className="absolute top-12 right-12 text-white/50 hover:text-white transition-colors">
+            <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
-          <img src={selectedImage} className="max-w-full max-h-full rounded-3xl shadow-2xl animate-zoomIn border border-white/10" alt="Zoom View" />
+          <img src={selectedImage} className="max-w-full max-h-full rounded-[3rem] shadow-[0_0_100px_rgba(0,0,0,0.8)] animate-zoomIn border border-white/5" alt="Zoom View" />
         </div>
       )}
     </section>
