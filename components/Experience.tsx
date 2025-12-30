@@ -57,7 +57,6 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
                 </div>
                 <h4 className="text-xl font-bold text-white group-hover:text-yellow-400 transition-colors duration-300 mb-4">{exp.role}</h4>
                 
-                {/* Preview Highlights inside the card */}
                 <ul className="space-y-2 mb-6 opacity-70 group-hover:opacity-100 transition-opacity">
                   {previewHighlights.map((item, i) => (
                     <li key={i} className="flex items-start text-slate-400 text-[11px] leading-snug line-clamp-1">
@@ -66,20 +65,19 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
                     </li>
                   ))}
                   {exp.highlights.length > 2 && (
-                    <li className="text-[9px] text-blue-500/70 font-bold italic ml-3">+ {exp.highlights.length - 2} more details...</li>
+                    <li className="text-[9px] text-blue-500/70 font-bold italic ml-3">+ {exp.highlights.length - 2} more...</li>
                   )}
                 </ul>
 
                 <div className="mt-auto text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center pt-2 border-t border-slate-800/50 group-hover:border-yellow-400/30">
                   <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-2 animate-pulse"></span>
-                  Hover for Full Details
+                  {t.exp_hover_hint}
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* Floating Post-it Popup with FULL Highlights */}
         {hoveredIdx !== null && (
           <div 
             className="fixed z-[200] pointer-events-none transition-transform duration-100 ease-out"
@@ -90,7 +88,6 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
             }}
           >
             <div className="bg-yellow-200 text-slate-900 p-6 rounded-sm shadow-[20px_20px_60px_rgba(0,0,0,0.5)] min-w-[300px] max-w-[380px] relative animate-postitIn border-b-8 border-yellow-400/30">
-              {/* Tape visual effect */}
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-7 bg-white/40 rotate-1 backdrop-blur-sm"></div>
               
               <div className="mb-4 pb-2 border-b border-slate-900/10">
@@ -113,8 +110,7 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
                 ))}
               </ul>
               
-              <div className="absolute bottom-1 right-2 text-[8px] font-black opacity-20 uppercase">Resume Snippet</div>
-              {/* Post-it folded corner look */}
+              <div className="absolute bottom-1 right-2 text-[8px] font-black opacity-20 uppercase tracking-tighter">{t.exp_hover_full}</div>
               <div className="absolute bottom-0 right-0 w-6 h-6 bg-yellow-400/40 rounded-tl-full"></div>
             </div>
           </div>
@@ -127,7 +123,7 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
               className="group relative px-10 py-4 rounded-full overflow-hidden border border-slate-700 bg-slate-900/50 hover:border-yellow-500/50 transition-all duration-300"
             >
               <div className="relative z-10 flex items-center space-x-3 text-xs font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-white">
-                <span>{isExpanded ? "Minimize History" : "Full Career Timeline"}</span>
+                <span>{isExpanded ? t.minimize_history : t.view_history}</span>
                 <svg 
                   className={`w-4 h-4 transform transition-transform duration-500 ${isExpanded ? 'rotate-180' : ''}`} 
                   fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -149,19 +145,10 @@ const Experience: React.FC<ExperienceProps> = ({ experiences, t }) => {
           from { opacity: 0; transform: translateX(-5px); }
           to { opacity: 1; transform: translateX(0); }
         }
-        .animate-postitIn {
-          animation: postitIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        .animate-writingIn {
-          animation: writingIn 0.3s ease-out forwards;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 3px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(0,0,0,0.1);
-          border-radius: 10px;
-        }
+        .animate-postitIn { animation: postitIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .animate-writingIn { animation: writingIn 0.3s ease-out forwards; }
+        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
       `}</style>
     </section>
   );

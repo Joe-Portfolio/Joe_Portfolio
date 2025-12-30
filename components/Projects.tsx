@@ -20,7 +20,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects, t, onVideoSelect }) => {
         <div className="mb-20 text-center">
           <h3 className="text-4xl md:text-5xl font-black mb-6 tracking-tight text-white uppercase">{t.projects_title}</h3>
           <div className="w-24 h-1.5 bg-blue-600 mx-auto rounded-full mb-8"></div>
-          <p className="text-slate-400 max-w-2xl mx-auto text-sm">핵심 프로젝트 런칭 영상입니다. 카드를 클릭하여 상세 영상을 감상하세요.</p>
+          <p className="text-slate-400 max-w-2xl mx-auto text-sm">{t.projects_subtitle}</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-700">
@@ -71,7 +71,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects, t, onVideoSelect }) => {
               onClick={() => setIsExpanded(!isExpanded)}
               className="px-12 py-4 rounded-2xl border border-blue-500/20 bg-blue-600/5 hover:bg-blue-600/10 hover:border-blue-500/50 text-white font-bold text-xs uppercase tracking-widest transition-all duration-300 flex items-center space-x-3 mx-auto shadow-[0_0_20px_rgba(59,130,246,0.1)]"
             >
-              <span>{isExpanded ? "Show Highlights Only" : "Explore All Projects"}</span>
+              <span>{isExpanded ? "Minimize History" : "Explore All Projects"}</span>
               <svg 
                 className={`w-4 h-4 transform transition-transform duration-500 ${isExpanded ? 'rotate-180' : ''}`} 
                 fill="none" stroke="currentColor" viewBox="0 0 24 24"

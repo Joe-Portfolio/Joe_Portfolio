@@ -9,6 +9,7 @@ import Experience from './components/Experience';
 import Skills from './components/Skills';
 import VideoModal from './components/VideoModal';
 import InteractiveBackground from './components/InteractiveBackground';
+import AIGallery from './components/AIGallery';
 
 const App: React.FC = () => {
   const [lang, setLang] = useState<Language>('ko');
@@ -37,6 +38,7 @@ const App: React.FC = () => {
           <Experience experiences={EXPERIENCES[lang]} t={t} />
           <Projects projects={PROJECTS[lang]} t={t} onVideoSelect={setActiveVideo} />
           <Skills t={t} />
+          <AIGallery t={t} lang={lang} />
         </main>
 
         <footer className="py-24 border-t border-slate-800 bg-slate-950/80 backdrop-blur-xl text-center">

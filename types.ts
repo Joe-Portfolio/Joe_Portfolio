@@ -19,6 +19,13 @@ export interface Experience {
   highlights: string[];
 }
 
+export interface GalleryItem {
+  id: number;
+  name: string;
+  sketch: string;
+  result: string;
+}
+
 export interface Translation {
   nav_home: string;
   nav_experience: string;
@@ -30,7 +37,16 @@ export interface Translation {
   view_portfolio_video: string;
   experience_title: string;
   projects_title: string;
+  projects_subtitle: string;
   skills_title: string;
+  gallery_title: string;
+  gallery_description: string;
+  gallery_label_sketch: string;
+  gallery_label_ai: string;
+  exp_hover_hint: string;
+  exp_hover_full: string;
   contact_title: string;
   footer_text: string;
+  view_history: string;
+  minimize_history: string;
 }
