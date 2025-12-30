@@ -9,24 +9,45 @@ interface AIGalleryProps {
 }
 
 const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const baseItems = GALLERY_ITEMS[lang];
+  // Create a tripled list for seamless looping (previous, current, next)
+  const [items, setItems] = useState([...baseItems, ...baseItems, ...baseItems]);
+  const [activeIndex, setActiveIndex] = useState(baseItems.length);
   const [isHovered, setIsHovered] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  const items = GALLERY_ITEMS[lang];
 
   useEffect(() => {
     if (!isHovered) {
       autoPlayRef.current = setInterval(() => {
-        setActiveIndex(idx => (idx + 1) % items.length);
+        handleNext();
       }, 3500);
     } else if (autoPlayRef.current) {
       clearInterval(autoPlayRef.current);
     }
     return () => { if (autoPlayRef.current) clearInterval(autoPlayRef.current); };
-  }, [isHovered, items.length]);
+  }, [isHovered, activeIndex]);
+
+  const handleNext = () => {
+    setIsTransitioning(true);
+    setActiveIndex(prev => prev + 1);
+  };
+
+  // Reset to middle set when reaching the ends for seamless loop
+  useEffect(() => {
+    if (activeIndex >= baseItems.length * 2) {
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setActiveIndex(baseItems.length);
+      }, 1000); // match transition duration
+    } else if (activeIndex < baseItems.length) {
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setActiveIndex(baseItems.length * 2 - 1);
+      }, 1000);
+    }
+  }, [activeIndex, baseItems.length]);
 
   return (
     <section id="gallery" className="py-32 relative z-10 overflow-hidden">
@@ -40,70 +61,71 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
         </p>
       </div>
 
-      {/* Horizontal Slider - Full Width */}
       <div 
         className="relative w-full overflow-hidden py-10"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <div 
-          className="flex transition-transform duration-1000 ease-in-out px-[10%] md:px-[30%]"
-          style={{ transform: `translateX(-${activeIndex * 320}px)` }}
+          className={`flex ${isTransitioning ? 'transition-transform duration-1000 ease-in-out' : ''} px-[10%] md:px-[35%]`}
+          style={{ transform: `translateX(-${activeIndex * 336}px)` }}
         >
-          {items.map((item, idx) => (
-            <div 
-              key={item.id} 
-              className={`flex-shrink-0 w-80 h-96 mx-4 relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-700 transform group ${
-                activeIndex === idx ? 'scale-110 z-20 shadow-[0_30px_60px_rgba(0,0,0,0.5)] rotate-0' : 'scale-90 opacity-40 blur-[1px] rotate-2'
-              }`}
-              onClick={() => setSelectedImage(activeIndex === idx ? item.result : null)}
-            >
-              {/* Overlapping Animation Sketch to Result */}
-              <div className="absolute inset-0">
-                <img 
-                  src={item.sketch} 
-                  alt="Sketch"
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${activeIndex === idx ? 'opacity-0' : 'opacity-100'}`}
-                />
-                <img 
-                  src={item.result} 
-                  alt="AI Result"
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${activeIndex === idx ? 'opacity-100' : 'opacity-0'}`}
-                />
-              </div>
+          {items.map((item, idx) => {
+            const isCenter = activeIndex === idx;
+            return (
+              <div 
+                key={`${item.id}-${idx}`} 
+                className={`flex-shrink-0 w-80 h-96 mx-2 relative rounded-3xl overflow-hidden cursor-pointer transform group ${
+                  isCenter ? 'scale-110 z-20 shadow-[0_30px_60px_rgba(0,0,0,0.6)] rotate-0' : 'scale-90 opacity-30 blur-[1px] rotate-2'
+                } transition-all duration-700`}
+                onClick={() => setSelectedImage(isCenter ? item.result : null)}
+              >
+                <div className="absolute inset-0">
+                  <img 
+                    src={item.sketch} 
+                    alt="Sketch"
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${isCenter ? 'opacity-0' : 'opacity-100'}`}
+                  />
+                  <img 
+                    src={item.result} 
+                    alt="AI Result"
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${isCenter ? 'opacity-100' : 'opacity-0'}`}
+                  />
+                </div>
 
-              {/* Labels */}
-              <div className="absolute top-6 left-6 z-30">
-                 <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10 text-[10px] font-black text-white uppercase tracking-widest">
-                   {activeIndex === idx ? t.gallery_label_ai : t.gallery_label_sketch}
-                 </span>
+                <div className="absolute top-6 left-6 z-30">
+                   <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10 text-[10px] font-black text-white uppercase tracking-widest">
+                     {isCenter ? t.gallery_label_ai : t.gallery_label_sketch}
+                   </span>
+                </div>
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
+                  <h5 className="text-white font-bold text-lg">{item.name}</h5>
+                </div>
               </div>
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
-                <h5 className="text-white font-bold text-lg">{item.name}</h5>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
-      {/* Slider Nav */}
       <div className="max-w-7xl mx-auto px-6 mt-12 flex items-center space-x-6">
         <div className="flex space-x-2">
-          {items.map((_, i) => (
+          {baseItems.map((_, i) => (
             <button 
               key={i}
-              onClick={() => setActiveIndex(i)}
-              className={`h-1 transition-all duration-500 rounded-full ${activeIndex === i ? 'w-12 bg-blue-500' : 'w-4 bg-slate-800 hover:bg-slate-600'}`}
+              onClick={() => {
+                setIsTransitioning(true);
+                setActiveIndex(baseItems.length + i);
+              }}
+              className={`h-1 transition-all duration-500 rounded-full ${activeIndex % baseItems.length === i ? 'w-12 bg-blue-500' : 'w-4 bg-slate-800 hover:bg-slate-600'}`}
             />
           ))}
         </div>
         <div className="text-[11px] font-black text-slate-600 uppercase tracking-widest">
-          {activeIndex + 1} / {items.length}
+          {(activeIndex % baseItems.length) + 1} / {baseItems.length}
         </div>
       </div>
 
-      {/* Image Zoom Overlay */}
       {selectedImage && (
         <div 
           className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-20 bg-slate-950/95 backdrop-blur-3xl animate-fadeIn cursor-zoom-out"
