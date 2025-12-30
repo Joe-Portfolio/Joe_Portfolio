@@ -32,13 +32,13 @@ const InteractiveBackground: React.FC = () => {
     window.addEventListener('mousemove', handleMouseMove);
     resize();
 
-    const hexSize = 35;
+    const hexSize = 38; // Increased for better resolution
     const hexHeight = Math.sqrt(3) * hexSize;
     const hexWidth = 2 * hexSize;
     const columns = Math.ceil(width / (hexWidth * 0.75)) + 1;
     const rows = Math.ceil(height / hexHeight) + 1;
 
-    const drawHex = (x: number, y: number, radius: number, hue: number, opacity: number) => {
+    const drawHex = (x: number, y: number, radius: number, hue: number, opacity: number, lineWidth: number) => {
       ctx.beginPath();
       for (let i = 0; i < 6; i++) {
         const angle = (Math.PI / 3) * i;
@@ -49,7 +49,7 @@ const InteractiveBackground: React.FC = () => {
       }
       ctx.closePath();
       ctx.strokeStyle = `hsla(${hue}, 80%, 60%, ${opacity})`;
-      ctx.lineWidth = 1;
+      ctx.lineWidth = lineWidth;
       ctx.stroke();
     };
 
@@ -67,20 +67,21 @@ const InteractiveBackground: React.FC = () => {
           const dy = y - mouseY;
           const dist = Math.sqrt(dx * dx + dy * dy);
           
-          let hue = 220; // Default slate blue
-          let opacity = 0.08;
+          let hue = 220; 
+          let opacity = 0.15; // Increased base opacity for silver glow
+          let lineWidth = 1;
 
-          // Rainbow hover effect
-          if (dist < 250) {
-            hue = (time * 0.1 + dist * 0.5) % 360;
-            opacity = 0.2 + (1 - dist / 250) * 0.3;
+          // Expanded rainbow hover effect (Ver.0.1 style)
+          if (dist < 400) {
+            hue = (time * 0.08 + dist * 0.3) % 360;
+            opacity = 0.5 * (1 - dist / 400);
+            lineWidth = 1.2;
           } else {
-            // Subtle glossy animation for others
             const noise = Math.sin(x * 0.01 + y * 0.01 + timeOffset);
-            opacity = 0.08 + noise * 0.02;
+            opacity = 0.12 + noise * 0.05;
           }
 
-          drawHex(x, y, hexSize * 0.9, hue, opacity);
+          drawHex(x, y, hexSize * 0.9, hue, opacity, lineWidth);
         }
       }
 
@@ -100,7 +101,7 @@ const InteractiveBackground: React.FC = () => {
     <canvas 
       ref={canvasRef} 
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ background: 'linear-gradient(to bottom, #0f172a, #020617)' }}
+      style={{ background: '#020617' }}
     />
   );
 };

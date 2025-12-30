@@ -18,20 +18,25 @@ export const TRANSLATIONS: Record<Language, Translation> = {
     hero_subtitle: "시니어 게임 기획자 & 서비스 매니저",
     hero_description: "10년 9개월의 경력을 가진 게임 산업 전문가입니다. VR, 모바일, PC 플랫폼의 글로벌 서비스 런칭과 운영에 특화되어 있으며, 생성형 AI를 활용한 기획 혁신을 선도합니다.",
     view_portfolio_video: "전체 포트폴리오 보기",
+    experience_label: "PROFESSIONAL CAREER",
     experience_title: "상세 경력 사항",
+    projects_label: "PORTFOLIO REEL",
     projects_title: "주요 프로젝트 영상",
     projects_subtitle: "핵심 프로젝트 런칭 영상입니다. 클릭하여 상세 내용을 확인하세요.",
+    skills_label: "TECHNICAL STACK",
     skills_title: "기술 및 역량",
+    gallery_label: "CREATIVE PIPELINE",
     gallery_title: "AI Creative Workflow",
     gallery_description: "직접 드로잉한 스케치를 생성형 AI로 리터칭하여 시각화 퀄리티를 극대화하는 과정입니다.",
     gallery_label_sketch: "Sketch",
     gallery_label_ai: "AI Retouched",
-    exp_hover_hint: "상세 내용 확인을 위해 호버하세요",
+    exp_hover_hint: "상세 내용 확인을 위해 마우스를 올리세요",
     exp_hover_full: "전체 경력 상세 보기",
     contact_title: "연락처",
     footer_text: "위의 모든 기재사항은 사실과 다름없음을 확인합니다. 작성자 조현우.",
     view_history: "전체 경력 보기",
-    minimize_history: "경력 요약하기"
+    minimize_history: "경력 요약하기",
+    explore_projects: "더 많은 프로젝트 보기"
   },
   en: {
     nav_home: "Home",
@@ -42,20 +47,25 @@ export const TRANSLATIONS: Record<Language, Translation> = {
     hero_subtitle: "Senior Game Planner & Service Manager",
     hero_description: "A seasoned expert with 10+ years of experience. Specialist in global service launches for VR, Mobile, and PC platforms. Pioneering planning innovation with Generative AI.",
     view_portfolio_video: "View Portfolio Reel",
+    experience_label: "PROFESSIONAL CAREER",
     experience_title: "Work Experience",
+    projects_label: "PORTFOLIO REEL",
     projects_title: "Featured Projects",
     projects_subtitle: "Core project launch showcases. Click to watch detailed videos.",
+    skills_label: "TECHNICAL STACK",
     skills_title: "Skills & Expertise",
+    gallery_label: "CREATIVE PIPELINE",
     gallery_title: "AI Creative Workflow",
     gallery_description: "The process of maximizing visualization quality by retouching hand-drawn sketches with Generative AI.",
     gallery_label_sketch: "Original Sketch",
     gallery_label_ai: "AI Enhanced",
-    exp_hover_hint: "Hover for full details",
+    exp_hover_hint: "Hover over for full details",
     exp_hover_full: "Detailed Resume Snippet",
     contact_title: "Contact",
     footer_text: "I confirm that all information provided is true. Author: Hyunwoo Cho.",
     view_history: "Full Career History",
-    minimize_history: "Show Less"
+    minimize_history: "Show Less",
+    explore_projects: "Explore All Projects"
   }
 };
 
@@ -165,18 +175,12 @@ export const GALLERY_ITEMS: Record<Language, GalleryItem[]> = {
   ko: [
     { id: 1, name: "서브컬처 미소녀", sketch: "https://i.ibb.co/LhYf7Hw/sketch-1.jpg", result: "https://i.ibb.co/h7n77G1/result-1.jpg" },
     { id: 2, name: "SF 메카닉", sketch: "https://i.ibb.co/xXfWjG8/sketch-2.jpg", result: "https://i.ibb.co/F6P7Y9t/result-2.jpg" },
-    { id: 3, name: "신사 캐릭터", sketch: "https://i.ibb.co/0y7x20q/sketch-3.jpg", result: "https://i.ibb.co/Mh77N6f/result-3.jpg" },
-    { id: 4, name: "기사 캐릭터", sketch: "https://i.ibb.co/YyYf8Hw/sketch-4.jpg", result: "https://i.ibb.co/h7n77G1/result-4.jpg" },
-    { id: 5, name: "궁수 캐릭터", sketch: "https://i.ibb.co/LhYf7Hw/sketch-5.jpg", result: "https://i.ibb.co/h7n77G1/result-5.jpg" },
-    { id: 6, name: "무도가 캐릭터", sketch: "https://i.ibb.co/LhYf7Hw/sketch-6.jpg", result: "https://i.ibb.co/h7n77G1/result-6.jpg" }
+    { id: 3, name: "신사 캐릭터", sketch: "https://i.ibb.co/0y7x20q/sketch-3.jpg", result: "https://i.ibb.co/Mh77N6f/result-3.jpg" }
   ],
   en: [
     { id: 1, name: "Subculture Character", sketch: "https://i.ibb.co/LhYf7Hw/sketch-1.jpg", result: "https://i.ibb.co/h7n77G1/result-1.jpg" },
     { id: 2, name: "Sci-fi Mecha", sketch: "https://i.ibb.co/xXfWjG8/sketch-2.jpg", result: "https://i.ibb.co/F6P7Y9t/result-2.jpg" },
-    { id: 3, name: "Gentleman", sketch: "https://i.ibb.co/0y7x20q/sketch-3.jpg", result: "https://i.ibb.co/Mh77N6f/result-3.jpg" },
-    { id: 4, name: "Knight", sketch: "https://i.ibb.co/YyYf8Hw/sketch-4.jpg", result: "https://i.ibb.co/h7n77G1/result-4.jpg" },
-    { id: 5, name: "Archer", sketch: "https://i.ibb.co/LhYf7Hw/sketch-5.jpg", result: "https://i.ibb.co/h7n77G1/result-5.jpg" },
-    { id: 6, name: "Martial Artist", sketch: "https://i.ibb.co/LhYf7Hw/sketch-6.jpg", result: "https://i.ibb.co/h7n77G1/result-6.jpg" }
+    { id: 3, name: "Gentleman", sketch: "https://i.ibb.co/0y7x20q/sketch-3.jpg", result: "https://i.ibb.co/Mh77N6f/result-3.jpg" }
   ]
 };
 

@@ -35,10 +35,14 @@ export interface Translation {
   hero_subtitle: string;
   hero_description: string;
   view_portfolio_video: string;
+  experience_label: string;
   experience_title: string;
+  projects_label: string;
   projects_title: string;
   projects_subtitle: string;
+  skills_label: string;
   skills_title: string;
+  gallery_label: string;
   gallery_title: string;
   gallery_description: string;
   gallery_label_sketch: string;
@@ -49,4 +53,5 @@ export interface Translation {
   footer_text: string;
   view_history: string;
   minimize_history: string;
+  explore_projects: string;
 }

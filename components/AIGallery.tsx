@@ -17,7 +17,6 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // High-fidelity sizing for "Cinema Flow" effect
   const cardWidth = 550;
   const gap = 30;
 
@@ -61,19 +60,20 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
   };
 
   return (
-    <section id="gallery" className="py-32 relative z-10 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 mb-24">
-        <h3 className="text-5xl font-black mb-6 tracking-tight text-white uppercase italic">
+    <section id="gallery" className="py-20 relative z-10 overflow-hidden bg-slate-950/60">
+      <div className="max-w-7xl mx-auto px-6 mb-12 text-center">
+        <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2">{t.gallery_label}</p>
+        <h3 className="text-5xl font-black mb-4 tracking-tight text-white uppercase italic">
           {t.gallery_title}
         </h3>
-        <div className="w-24 h-2 bg-blue-600 rounded-full mb-8"></div>
-        <p className="text-slate-400 max-w-2xl text-base leading-relaxed">
+        <div className="w-24 h-2 bg-blue-600 rounded-full mx-auto mb-6"></div>
+        <p className="text-slate-400 max-w-2xl mx-auto text-base leading-relaxed">
           {t.gallery_description}
         </p>
       </div>
 
       <div 
-        className="relative w-full overflow-hidden py-24"
+        className="relative w-full overflow-hidden py-16"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -122,8 +122,8 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
                    </div>
                 )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-16">
-                  <h5 className="text-white font-black text-4xl mb-3">{item.name}</h5>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-16 text-left">
+                  <h5 className="text-white font-black text-4xl mb-3 tracking-tighter">{item.name}</h5>
                   <div className="text-blue-400 text-sm font-bold tracking-widest uppercase flex items-center">
                     <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
                     View HD Masterpiece
@@ -135,7 +135,7 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 mt-16 flex justify-center items-center space-x-5">
+      <div className="max-w-7xl mx-auto px-6 mt-8 flex justify-center items-center space-x-5">
         {baseItems.map((_, i) => (
           <button 
             key={i}
