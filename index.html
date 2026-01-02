@@ -203,7 +203,7 @@
         const TRANSLATIONS = {
             ko: {
                 nav_home: "홈", nav_experience: "경력", nav_projects: "프로젝트", nav_skills: "기술",
-                hero_title: "조현우", hero_subtitle: "시니어 게임 기획자 & 프로젝트 매니저",
+                hero_title: "조현우", hero_subtitle: "게임 기획자 & 프로젝트 매니저",
                 hero_description: "10년 이상의 경력을 가진 게임 및 어플리케이션 기획 전문가입니다. VR, 모바일, PC 플랫폼의 글로벌 서비스 런칭과 운영에 특화되어 있으며, 생성형 AI를 활용한 기획 혁신을 선도합니다.",
                 view_experience: "상세 경력 보기",
                 view_portfolio_video: "포트폴리오 영상 보기",
@@ -228,7 +228,7 @@
             },
             en: {
                 nav_home: "Home", nav_experience: "Experience", nav_projects: "Projects", nav_skills: "Skills",
-                hero_title: "Hyunwoo Cho", hero_subtitle: "Senior Game Planner & Project Manager",
+                hero_title: "Hyunwoo Cho", hero_subtitle: "Game Planner & Project Manager",
                 hero_description: "Expert with 10+ years in game and application planning. Specialized in global launches and operations for VR, Mobile, and PC platforms. Leading planning innovation with Generative AI.",
                 view_experience: "View Detailed Career",
                 view_portfolio_video: "View Portfolio Reel",
@@ -345,75 +345,7 @@
             );
         };
 
-        const FavoriteGames = () => {
-            const [isInView, setIsInView] = useState(false);
-            const sectionRef = useRef(null);
 
-            useEffect(() => {
-                const observer = new IntersectionObserver(([entry]) => {
-                    if (entry.isIntersecting) setIsInView(true);
-                }, { threshold: 0.1 });
-                if (sectionRef.current) observer.observe(sectionRef.current);
-                return () => observer.disconnect();
-            }, []);
-
-            const games = [
-                { id: 1, name: "League of Legends", logo: "./components/images/Logo/game logo/league-of-legends-riot-games-logo-5.png", link: "https://namu.wiki/w/League%20of%20Legends", size: "large", origin: { x: -200, y: -100 } },
-                { id: 2, name: "Diablo IV", logo: "./components/images/Logo/game logo/Diablo_Logo.png", link: "https://namu.wiki/w/%EB%94%94%EC%95%84%EB%B8%94%EB%A1%9C%204", size: "large", origin: { x: 200, y: -150 } },
-                { id: 3, name: "StarCraft II", logo: "./components/images/Logo/game logo/StarCraft_Logo.png", link: "https://namu.wiki/w/%EC%8A%A4%ED%83%80%ED%81%AC%EB%9E%98%ED%94%84%ED%8A%B8%202", size: "medium", origin: { x: -300, y: 100 } },
-                { id: 4, name: "Dark Souls III", logo: "./components/images/Logo/game logo/1846479816_91777198_DarkSouls_logo.png", link: "https://namu.wiki/w/%EB%8B%A4%ED%81%AC%20%EC%86%8C%EC%9A%B8%203", size: "medium", origin: { x: 300, y: 50 } },
-                { id: 5, name: "Death Stranding", logo: "./components/images/Logo/game logo/Death_Stranding_Logo.png", link: "https://namu.wiki/w/Death%20Stranding", size: "medium", origin: { x: 0, y: 250 } },
-                { id: 6, name: "Overwatch 2", logo: "./components/images/Logo/game logo/Overwatch_text_logo.svg.png", link: "https://namu.wiki/w/%EC%98%A4%EB%B2%84%EC%9B%8C%EC%B9%98%202", size: "small", origin: { x: -400, y: 0 } },
-                { id: 7, name: "It Takes Two", logo: "./components/images/Logo/game logo/It-Takes-Two-logo.webp", link: "https://namu.wiki/w/It%20Takes%20Two", size: "small", origin: { x: 400, y: -200 } },
-                { id: 8, name: "Spider-Man", logo: "./components/images/Logo/game logo/1559828585Marvel-Spider-Man-Logo-Png.png", link: "https://namu.wiki/w/Marvel's%20Spider-Man", size: "small", origin: { x: 150, y: 300 } },
-                { id: 9, name: "GTA V", logo: "./components/images/Logo/game logo/Grand_Theft_Auto_logo_series.png", link: "https://namu.wiki/w/Grand%20Theft%20Auto%20V", size: "small", origin: { x: -150, y: -300 } },
-                { id: 10, name: "Devil May Cry 5", logo: "./components/images/Logo/game logo/Devil-may-cry.png", link: "https://namu.wiki/w/Devil%20May%20Cry%205", size: "small", origin: { x: 0, y: -400 } }
-            ];
-
-            return (
-                <section ref={sectionRef} className="py-40 px-6 relative z-10 overflow-hidden">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="mb-24 text-center">
-                            <p className="text-blue-500 font-bold tracking-[0.4em] uppercase mb-4 block">FAVORITE TITLES</p>
-                            <h3 className="text-5xl md:text-6xl font-black mb-8 italic uppercase text-white block">Inspiring Games</h3>
-                            <div className="w-32 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
-                        </div>
-
-                        {/* White Frame Container */}
-                        <div className="relative bg-white rounded-[5rem] p-16 md:p-32 shadow-[0_80px_150px_rgba(0,0,0,0.6)] border border-white/20 min-h-[600px] flex items-center justify-center overflow-hidden">
-                            {/* Decorative Grid Background for Frame */}
-                            <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(#0066ff 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }}></div>
-
-                            <div className="relative w-full h-full flex flex-wrap justify-center items-center gap-x-16 gap-y-24">
-                                {games.map((game, i) => (
-                                    <a
-                                        key={game.id}
-                                        href={game.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`group transition-all duration-[1200ms] cubic-bezier(0.34, 1.56, 0.64, 1) transform ${isInView ? 'translate-x-0 translate-y-0 opacity-100 scale-100 rotate-0' : 'opacity-0 scale-50 rotate-12'
-                                            } hover:scale-110 relative ${game.size === 'large' ? 'w-56 md:w-72' :
-                                                game.size === 'medium' ? 'w-40 md:w-52' : 'w-28 md:w-40'
-                                            }`}
-                                        style={{
-                                            transitionDelay: `${i * 150}ms`,
-                                            transform: !isInView ? `translate(${game.origin.x}px, ${game.origin.y}px)` : 'translate(0, 0)'
-                                        }}
-                                    >
-                                        <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/10 rounded-3xl blur-3xl transition-all duration-700"></div>
-                                        <img
-                                            src={game.logo}
-                                            alt={game.name}
-                                            className="w-full h-auto object-contain relative z-10 transition-all duration-500 filter drop-shadow(0 0 0 rgba(59,130,246,0)) group-hover:drop-shadow(0 15px-30px rgba(59,130,246,0.2))"
-                                        />
-                                    </a>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            );
-        };
 
         // --- Helper Components ---
         const TypingEffect = ({ lines }) => {
@@ -516,21 +448,23 @@
         };
 
         const GallerySection = ({ t, onImageSelect }) => {
-            const [scrollPos, setScrollPos] = useState(0);
             const [isDragging, setIsDragging] = useState(false);
             const [dragStart, setDragStart] = useState(0);
             const [containerWidth, setContainerWidth] = useState(1000);
 
-            const scrollRef = useRef(0);
+            // Constants for 3D effect
+            const ITEM_WIDTH = 320;
+            const ITEM_SPACING = 250;
+            const TOTAL_ITEMS = GALLERY_ITEMS.length;
+            const TOTAL_WIDTH = TOTAL_ITEMS * ITEM_SPACING;
+
+            const initialRandomScroll = Math.floor(Math.random() * TOTAL_ITEMS) * ITEM_SPACING;
+
+            const scrollRef = useRef(initialRandomScroll);
+            const [scrollPos, setScrollPos] = useState(initialRandomScroll);
             const requestRef = useRef();
             const lastDragPos = useRef(0);
             const autoAutoPlayRef = useRef(true);
-
-            // Constants for 3D effect
-            const ITEM_WIDTH = 320;
-            const ITEM_SPACING = 250; // Significantly reduced for tighter overlap/spacing
-            const TOTAL_ITEMS = GALLERY_ITEMS.length;
-            const TOTAL_WIDTH = TOTAL_ITEMS * ITEM_SPACING;
 
             useEffect(() => {
                 const handleResize = () => setContainerWidth(window.innerWidth);
@@ -794,7 +728,7 @@
                     {/* Header */}
                     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'py-4 glass-morphism shadow-xl' : 'py-8 bg-transparent'}`}>
                         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-                            <div className="text-2xl font-black gradient-text tracking-tighter">CHW.</div>
+                            <div className="text-2xl font-black gradient-text tracking-tighter">Joe</div>
                             <div className="flex items-center space-x-6">
                                 <button onClick={toggleMusic} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isMusicOn ? 'bg-blue-600/20 text-blue-400' : 'text-slate-500'}`}>
                                     {isMusicOn ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-4z" /></svg> : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>}
@@ -947,20 +881,17 @@
 
                         {/* AI Gallery - Infinite Flow Implementation */}
                         <GallerySection t={t} onImageSelect={setSelectedImage} />
-
-                        {/* Favorite Games Section */}
-                        <FavoriteGames />
                     </main>
 
                     {/* Footer */}
                     <footer className="py-24 border-t border-white/5 bg-slate-950 text-center relative overflow-hidden z-10">
-                        <div className="text-3xl font-black gradient-text mb-10 tracking-tighter">CHW.</div>
+                        <div className="text-3xl font-black gradient-text mb-10 tracking-tighter">Joe</div>
                         <div className="flex justify-center space-x-12 mb-16 text-[11px] font-black text-slate-500 uppercase tracking-widest">
                             <a href="mailto:mrs86@naver.com" className="hover:text-blue-400 transition-colors">mrs86@naver.com</a>
                             <a href="tel:010-3366-4848" className="hover:text-blue-400 transition-colors">010-3366-4848</a>
                         </div>
                         <p className="text-[10px] text-slate-700 font-bold uppercase tracking-[0.4em] mb-12 max-w-xl mx-auto px-6">{t.footer_text}</p>
-                        <div className="opacity-20"><span className="text-[9px] font-mono border border-slate-800 px-6 py-2 rounded-full uppercase tracking-[0.5em]">System Ver. 0.1 / Release Candidate 250320</span></div>
+                        <div className="opacity-20"><span className="text-[9px] font-mono border border-slate-800 px-6 py-2 rounded-full uppercase tracking-[0.5em]">System Ver. 1.0</span></div>
                     </footer>
 
                     {/* Video Modal */}
@@ -982,7 +913,6 @@
                             </div>
                         </div>
                     )}
-                    <Portrait />
                 </div>
             );
         };
