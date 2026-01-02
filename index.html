@@ -1,20 +1,22 @@
-
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>조현우 | Senior Game Planner Portfolio Ver.0.1+</title>
-    
+
     <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
 
     <script>
-      window.process = { env: { API_KEY: "" } };
+        window.process = { env: { API_KEY: "" } };
     </script>
 
     <script type="importmap">
@@ -34,42 +36,91 @@
             font-family: 'Inter', 'Noto Sans KR', sans-serif;
             background-color: #020617;
             color: #f8fafc;
-            margin: 0; padding: 0;
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
+
         .glass-morphism {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(25px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
+
         .gradient-text {
             background: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         #loading-screen {
-            position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-            background: #020617; z-index: 9999; transition: opacity 0.8s ease;
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #020617;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
         }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #020617; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-        
-        @keyframes bar { 0%, 100% { height: 3px; } 50% { height: 10px; } }
-        .animate-bar { animation: bar 0.8s infinite; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+
+        @keyframes bar {
+
+            0%,
+            100% {
+                height: 3px;
+            }
+
+            50% {
+                height: 10px;
+            }
+        }
+
+        .animate-bar {
+            animation: bar 0.8s infinite;
+        }
 
         .experience-grid {
             display: grid;
             gap: 1.5rem;
         }
+
         @media (min-width: 768px) {
             .experience-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
         @media (min-width: 1024px) {
             .experience-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -78,27 +129,36 @@
 
         /* 갤러리 무한 스크롤 애니메이션 */
         @keyframes galleryScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-33.3333%); }
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-33.3333%);
+            }
         }
+
         .animate-galleryScroll {
             animation: galleryScroll 40s linear infinite;
         }
+
         .animate-galleryScroll:hover {
             animation-play-state: paused;
         }
     </style>
 </head>
+
 <body>
     <div id="loading-screen">
         <div class="flex flex-col items-center">
-            <div class="text-blue-500 font-black animate-pulse tracking-[0.4em] text-[10px] uppercase mb-4">Initializing CHW Portfolio Ver.0.1+</div>
+            <div class="text-blue-500 font-black animate-pulse tracking-[0.4em] text-[10px] uppercase mb-4">Initializing
+                CHW Portfolio Ver.0.1+</div>
             <div class="w-32 h-0.5 bg-slate-800 rounded-full overflow-hidden">
                 <div class="h-full bg-blue-600 animate-[loading_1.5s_ease-in-out_infinite]"></div>
             </div>
         </div>
     </div>
-    
+
     <div id="root"></div>
 
     <script type="text/babel" data-type="module">
@@ -195,11 +255,15 @@
             { category: "Dev & Design", items: ["Unity", "Unreal Engine", "Figma", "Photoshop", "Vegas", "Luascript"] }
         ];
 
-        const GALLERY_ITEMS = [
-            { id: 1, name: "Subculture", sketch: "https://i.ibb.co/LhYf7Hw/sketch-1.jpg", result: "https://i.ibb.co/h7n77G1/result-1.jpg" },
-            { id: 2, name: "Sci-fi Mecha", sketch: "https://i.ibb.co/xXfWjG8/sketch-2.jpg", result: "https://i.ibb.co/F6P7Y9t/result-2.jpg" },
-            { id: 3, name: "Gentleman", sketch: "https://i.ibb.co/0y7x20q/sketch-3.jpg", result: "https://i.ibb.co/Mh77N6f/result-3.jpg" }
-        ];
+        const GALLERY_ITEMS = Array.from({ length: 61 }, (_, i) => {
+            const num = String(i + 1).padStart(3, '0');
+            return {
+                id: i + 1,
+                name: `Creative Work ${num}`,
+                sketch: `./components/images/gallary/gallary_${num}.png`,
+                result: `./components/images/gallary/gallary_${num}_ai.png`
+            };
+        });
 
         // --- Helper Components ---
         const TypingEffect = ({ lines }) => {
@@ -256,7 +320,7 @@
                 window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
                 resize();
 
-                const hexSize = 38; 
+                const hexSize = 38;
                 const hexHeight = Math.sqrt(3) * hexSize;
                 const hexWidth = 2 * hexSize;
 
@@ -270,8 +334,8 @@
                             const x = c * hexWidth * 0.75;
                             const y = r * hexHeight + (c % 2 === 1 ? hexHeight / 2 : 0);
                             const dist = Math.sqrt((x - mouseX) ** 2 + (y - mouseY) ** 2);
-                            
-                            let opacity = 0.15 + Math.sin(time * 0.001 + (x+y)*0.01) * 0.05;
+
+                            let opacity = 0.15 + Math.sin(time * 0.001 + (x + y) * 0.01) * 0.05;
                             let color = `hsla(220, 80%, 60%, ${opacity})`;
 
                             if (dist < 400) {
@@ -324,12 +388,12 @@
                 window.addEventListener('scroll', handleScroll);
                 const loader = document.getElementById('loading-screen');
                 if (loader) setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 800); }, 1000);
-                
+
                 const audio = new Audio('https://files.catbox.moe/uozrce.mp3');
                 audio.loop = true; audio.crossOrigin = "anonymous";
                 bgMusicRef.current = audio;
-                
-                const startAudio = () => { if(isMusicOn && bgMusicRef.current) bgMusicRef.current.play().catch(()=>{}); };
+
+                const startAudio = () => { if (isMusicOn && bgMusicRef.current) bgMusicRef.current.play().catch(() => { }); };
                 window.addEventListener('click', startAudio, { once: true });
                 return () => window.removeEventListener('scroll', handleScroll);
             }, [isMusicOn]);
@@ -337,7 +401,7 @@
             const toggleMusic = () => {
                 if (!bgMusicRef.current) return;
                 if (isMusicOn) { bgMusicRef.current.pause(); setIsMusicOn(false); }
-                else { bgMusicRef.current.play().catch(()=>{}); setIsMusicOn(true); }
+                else { bgMusicRef.current.play().catch(() => { }); setIsMusicOn(true); }
             };
 
             const handleTts = async () => {
@@ -366,23 +430,23 @@
                         for (let i = 0; i < dataInt16.length; i++) channelData[i] = dataInt16[i] / 32768.0;
                         const source = ctx.createBufferSource();
                         source.buffer = buffer; source.connect(ctx.destination);
-                        source.onended = () => { setIsSpeaking(false); if(prevMusicState) bgMusicRef.current.play().catch(()=>{}); };
+                        source.onended = () => { setIsSpeaking(false); if (prevMusicState) bgMusicRef.current.play().catch(() => { }); };
                         source.start();
-                    } else { setIsSpeaking(false); if(prevMusicState) bgMusicRef.current.play().catch(()=>{}); }
-                } catch (e) { setIsSpeaking(false); if(prevMusicState) bgMusicRef.current.play().catch(()=>{}); }
+                    } else { setIsSpeaking(false); if (prevMusicState) bgMusicRef.current.play().catch(() => { }); }
+                } catch (e) { setIsSpeaking(false); if (prevMusicState) bgMusicRef.current.play().catch(() => { }); }
             };
 
             return (
                 <div className="relative z-10">
                     <InteractiveBackground />
-                    
+
                     {/* Header */}
                     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'py-4 glass-morphism shadow-xl' : 'py-8 bg-transparent'}`}>
                         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
                             <div className="text-2xl font-black gradient-text tracking-tighter">CHW.</div>
                             <div className="flex items-center space-x-6">
                                 <button onClick={toggleMusic} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isMusicOn ? 'bg-blue-600/20 text-blue-400' : 'text-slate-500'}`}>
-                                    {isMusicOn ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-4z"/></svg> : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>}
+                                    {isMusicOn ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-4z" /></svg> : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>}
                                 </button>
                                 <button onClick={handleTts} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'bg-purple-600 text-white' : 'text-slate-400'}`}>
                                     {isSpeaking ? <div className="flex space-x-0.5"><div className="w-1 h-3 bg-white animate-bar"></div><div className="w-1 h-3 bg-white animate-bar [animation-delay:0.2s]"></div><div className="w-1 h-3 bg-white animate-bar [animation-delay:0.4s]"></div></div> : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>}
@@ -398,9 +462,9 @@
                         {/* Hero Section */}
                         <section className="px-6 text-center max-w-4xl mx-auto mb-32 relative z-10">
                             <h2 className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-6 animate-fadeInUp">{t.hero_subtitle}</h2>
-                            <h1 className="text-7xl md:text-9xl font-black mb-12 tracking-tighter text-white animate-fadeInUp" style={{animationDelay:'0.2s'}}>{t.hero_title}</h1>
-                            <p className="text-slate-400 text-lg md:text-xl leading-relaxed mb-12 animate-fadeInUp" style={{animationDelay:'0.4s'}}>{t.hero_description}</p>
-                            <div className="flex justify-center gap-6 animate-fadeInUp" style={{animationDelay:'0.6s'}}>
+                            <h1 className="text-7xl md:text-9xl font-black mb-12 tracking-tighter text-white animate-fadeInUp" style={{ animationDelay: '0.2s' }}>{t.hero_title}</h1>
+                            <p className="text-slate-400 text-lg md:text-xl leading-relaxed mb-12 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>{t.hero_description}</p>
+                            <div className="flex justify-center gap-6 animate-fadeInUp" style={{ animationDelay: '0.6s' }}>
                                 <a href="#experience" className="px-10 py-4 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-500 transition-all shadow-xl shadow-blue-600/20">{t.experience_title}</a>
                                 <button onClick={() => window.open('https://youtu.be/mlGaxMZkyx8', '_blank')} className="px-10 py-4 border border-slate-700 hover:border-slate-500 text-white rounded-full font-bold transition-all">{t.view_portfolio_video}</button>
                             </div>
@@ -416,9 +480,9 @@
                             </div>
                             <div className="experience-grid">
                                 {visibleExp.map((exp, i) => (
-                                    <div key={i} 
-                                        onMouseEnter={(e) => { setHoveredExp(i); setMousePos({x: e.clientX, y: e.clientY}); }}
-                                        onMouseMove={(e) => setMousePos({x: e.clientX, y: e.clientY})}
+                                    <div key={i}
+                                        onMouseEnter={(e) => { setHoveredExp(i); setMousePos({ x: e.clientX, y: e.clientY }); }}
+                                        onMouseMove={(e) => setMousePos({ x: e.clientX, y: e.clientY })}
                                         onMouseLeave={() => setHoveredExp(null)}
                                         className="group p-10 rounded-[2.5rem] bg-slate-900/40 border border-white/5 hover:border-blue-500/50 transition-all cursor-help relative min-h-[220px] flex flex-col justify-between shadow-xl backdrop-blur-md"
                                     >
@@ -432,9 +496,9 @@
                                     </div>
                                 ))}
                             </div>
-                            
+
                             <div className="mt-10 text-center">
-                                <button 
+                                <button
                                     onClick={() => setIsExpExpanded(!isExpExpanded)}
                                     className="px-12 py-5 rounded-full border border-slate-700 bg-slate-900/50 hover:border-blue-500 transition-all group mx-auto flex items-center justify-center space-x-3 shadow-lg"
                                 >
@@ -476,7 +540,7 @@
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img src={`https://img.youtube.com/vi/${p.videoUrl.split('embed/')[1]}/maxresdefault.jpg`} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 opacity-40 group-hover:opacity-100 grayscale group-hover:grayscale-0" alt={p.title} />
                                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-blue-600/20 backdrop-blur-sm">
-                                                    <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-xl"><svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+                                                    <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-xl"><svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></div>
                                                 </div>
                                             </div>
                                             <div className="p-8 text-left">
@@ -488,7 +552,7 @@
                                     ))}
                                 </div>
                                 <div className="mt-10 text-center">
-                                    <button 
+                                    <button
                                         onClick={() => setIsProjExpanded(!isProjExpanded)}
                                         className="px-12 py-4 rounded-2xl border border-blue-500/20 bg-blue-600/5 hover:bg-blue-600/10 hover:border-blue-500 text-white font-bold text-xs uppercase tracking-widest transition-all mx-auto flex items-center justify-center space-x-3 shadow-lg"
                                     >
@@ -525,11 +589,11 @@
                                 <div className="w-24 h-2 bg-blue-600 rounded-full mx-auto mb-6"></div>
                                 <p className="text-slate-400 max-w-2xl mx-auto text-base leading-relaxed block">{t.gallery_description}</p>
                             </div>
-                            
+
                             {/* 무한 롤링을 위해 아이템을 3배 복제 */}
                             <div className="flex space-x-12 px-12 animate-galleryScroll whitespace-nowrap">
                                 {[...GALLERY_ITEMS, ...GALLERY_ITEMS, ...GALLERY_ITEMS].map((item, i) => (
-                                    <div key={i} 
+                                    <div key={i}
                                         onClick={() => setSelectedImage(item.result)}
                                         className="flex-shrink-0 w-[450px] aspect-[4/5] rounded-[3.5rem] overflow-hidden relative group shadow-2xl border border-white/5 cursor-zoom-in"
                                     >
@@ -589,4 +653,5 @@
         root.render(<App />);
     </script>
 </body>
+
 </html>

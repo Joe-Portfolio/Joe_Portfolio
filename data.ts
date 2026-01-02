@@ -2,9 +2,9 @@
 import { Project, Experience, Translation, Language, GalleryItem } from './types.ts';
 
 export const getYoutubeThumbnail = (url: string) => {
-  const videoId = url.split('embed/')[1]?.split('?')[0] || 
-                  url.split('v=')[1]?.split('&')[0] || 
-                  url.split('youtu.be/')[1]?.split('?')[0];
+  const videoId = url.split('embed/')[1]?.split('?')[0] ||
+    url.split('v=')[1]?.split('&')[0] ||
+    url.split('youtu.be/')[1]?.split('?')[0];
   return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : "https://picsum.photos/seed/game/800/450";
 };
 
@@ -90,77 +90,77 @@ export const PROJECTS: Record<Language, Project[]> = {
 
 export const EXPERIENCES: Record<Language, Experience[]> = {
   ko: [
-    { 
-      company: "룩슨", role: "VR게임 개발실 과장", period: "2023.12 - 2024.08", 
+    {
+      company: "룩슨", role: "VR게임 개발실 과장", period: "2023.12 - 2024.08",
       highlights: [
         "LOVE ON (VR 미소녀 연애 시뮬레이션) 개발 총괄",
         "스팀 & 사이드 퀘스트 & 잇치 출시 및 라이브 서비스 (글로벌)",
         "VR 스킨십 시스템 기획 및 구현"
-      ] 
+      ]
     },
-    { 
-      company: "테이크원 컴퍼니", role: "퍼블리싱서비스팀 팀장", period: "2020.12 - 2022.09", 
+    {
+      company: "테이크원 컴퍼니", role: "퍼블리싱서비스팀 팀장", period: "2020.12 - 2022.09",
       highlights: [
         "퍼블리싱 서비스 플랫폼 기획 및 팀 빌딩",
         "BLACKPINK THE GAME 글로벌 서비스 디자인 기획",
         "COPPA/GDPR/일본 자금결제법 등 글로벌 법률 관련 기능 기획"
-      ] 
+      ]
     },
-    { 
-      company: "2DC", role: "신규사업부 실장", period: "2020.06 - 2020.09", 
+    {
+      company: "2DC", role: "신규사업부 실장", period: "2020.06 - 2020.09",
       highlights: [
         "창업 초기 게임 플랫폼 신규 사업 기획",
         "캐릭터 채팅 플랫폼 및 퍼블리싱 운영/서비스 SDK 기획"
-      ] 
+      ]
     },
-    { 
-      company: "카카오키즈", role: "신규사업부 대리", period: "2019.12 - 2020.05", 
+    {
+      company: "카카오키즈", role: "신규사업부 대리", period: "2019.12 - 2020.05",
       highlights: [
         "유캔두 사업 기획 및 자기 개발 플랫폼 앱 시장 분석",
         "게이미피케이션 콘텐츠 설계 (레벨, 뱃지, 랭킹 등)"
-      ] 
+      ]
     },
-    { 
-      company: "주식회사 써니사이드게임즈", role: "기획팀 책임연구원", period: "2018.04 - 2019.05", 
+    {
+      company: "주식회사 써니사이드게임즈", role: "기획팀 책임연구원", period: "2018.04 - 2019.05",
       highlights: [
         "트리플 하츠 기획 (AOS - Unity)",
         "글로벌 서비스 오픈 및 관리 (한국, 베트남, 태국, 미국, 일본, 중국)"
-      ] 
+      ]
     },
-    { 
-      company: "넥슨코리아", role: "마비노기 해외사업팀 대리", period: "2016.11 - 2018.04", 
+    {
+      company: "넥슨코리아", role: "마비노기 해외사업팀 대리", period: "2016.11 - 2018.04",
       highlights: [
         "북미/일본 마비노기 해외 라이브 서비스 기획",
         "Re:제로 콜라보 등 대규모 이벤트 운영"
-      ] 
+      ]
     },
-    { 
-      company: "(주)디엠케이팩토리", role: "기획팀 사원", period: "2015.03 - 2016.11", 
+    {
+      company: "(주)디엠케이팩토리", role: "기획팀 사원", period: "2015.03 - 2016.11",
       highlights: [
         "크리스탈 하츠 기획 (RPG - Unity)",
         "레벨/밸런스 및 BM 기획 (가챠, 마일리지)",
         "각 스토어 상위 매출 달성"
-      ] 
+      ]
     },
-    { 
-      company: "세시소프트", role: "기획팀 대리", period: "2014.08 - 2015.03", 
-      highlights: ["라비린시아X2 기획 & PM", "HTML5 기반 게임 Unity 포팅"] 
+    {
+      company: "세시소프트", role: "기획팀 대리", period: "2014.08 - 2015.03",
+      highlights: ["라비린시아X2 기획 & PM", "HTML5 기반 게임 Unity 포팅"]
     },
-    { 
-      company: "(주)라쿤소프트", role: "기획팀 사원", period: "2013.09 - 2014.06", 
-      highlights: ["학교 2014 기획 (SNG - Unity)", "넷마블 퍼블리싱 일정 조율"] 
+    {
+      company: "(주)라쿤소프트", role: "기획팀 사원", period: "2013.09 - 2014.06",
+      highlights: ["학교 2014 기획 (SNG - Unity)", "넷마블 퍼블리싱 일정 조율"]
     },
-    { 
-      company: "조아라", role: "작가 프리랜서", period: "2012.12 - 2013.05", 
-      highlights: ["칠성국 판타지 소설 집필 및 출판"] 
+    {
+      company: "조아라", role: "작가 프리랜서", period: "2012.12 - 2013.05",
+      highlights: ["칠성국 판타지 소설 집필 및 출판"]
     },
-    { 
-      company: "(주)주식회사알트원", role: "기획팀 사원", period: "2012.05 - 2012.12", 
-      highlights: ["십이지천2 기획 및 국내/외 서비스 유지 보수"] 
+    {
+      company: "(주)주식회사알트원", role: "기획팀 사원", period: "2012.05 - 2012.12",
+      highlights: ["십이지천2 기획 및 국내/외 서비스 유지 보수"]
     },
-    { 
-      company: "Fashion Accessories LTD", role: "Designer", period: "2009.05 - 2009.11", 
-      highlights: ["영국 현지 제품 및 브로슈어 디자인"] 
+    {
+      company: "Fashion Accessories LTD", role: "Designer", period: "2009.05 - 2009.11",
+      highlights: ["영국 현지 제품 및 브로슈어 디자인"]
     }
   ],
   en: [
@@ -171,17 +171,21 @@ export const EXPERIENCES: Record<Language, Experience[]> = {
   ]
 };
 
+const generateGalleryItems = (): GalleryItem[] => {
+  return Array.from({ length: 61 }, (_, i) => {
+    const num = String(i + 1).padStart(3, '0');
+    return {
+      id: i + 1,
+      name: `Creative Work ${num}`, // Generic name, handled by UI text mostly
+      sketch: `./components/images/gallary/gallary_${num}.png`,
+      result: `./components/images/gallary/gallary_${num}_ai.png`
+    };
+  });
+};
+
 export const GALLERY_ITEMS: Record<Language, GalleryItem[]> = {
-  ko: [
-    { id: 1, name: "서브컬처 미소녀", sketch: "https://i.ibb.co/LhYf7Hw/sketch-1.jpg", result: "https://i.ibb.co/h7n77G1/result-1.jpg" },
-    { id: 2, name: "SF 메카닉", sketch: "https://i.ibb.co/xXfWjG8/sketch-2.jpg", result: "https://i.ibb.co/F6P7Y9t/result-2.jpg" },
-    { id: 3, name: "신사 캐릭터", sketch: "https://i.ibb.co/0y7x20q/sketch-3.jpg", result: "https://i.ibb.co/Mh77N6f/result-3.jpg" }
-  ],
-  en: [
-    { id: 1, name: "Subculture Character", sketch: "https://i.ibb.co/LhYf7Hw/sketch-1.jpg", result: "https://i.ibb.co/h7n77G1/result-1.jpg" },
-    { id: 2, name: "Sci-fi Mecha", sketch: "https://i.ibb.co/xXfWjG8/sketch-2.jpg", result: "https://i.ibb.co/F6P7Y9t/result-2.jpg" },
-    { id: 3, name: "Gentleman", sketch: "https://i.ibb.co/0y7x20q/sketch-3.jpg", result: "https://i.ibb.co/Mh77N6f/result-3.jpg" }
-  ]
+  ko: generateGalleryItems(),
+  en: generateGalleryItems()
 };
 
 export const SKILLS = [

@@ -72,54 +72,53 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
         </p>
       </div>
 
-      <div 
+      <div
         className="relative w-full overflow-hidden py-16"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div 
+        <div
           className={`flex items-center ${isTransitioning ? 'transition-transform duration-1000 cubic-bezier(0.16, 1, 0.3, 1)' : ''}`}
-          style={{ 
-            transform: `translateX(calc(50% - ${activeIndex * (cardWidth + gap) + (cardWidth / 2)}px))` 
+          style={{
+            transform: `translateX(calc(50% - ${activeIndex * (cardWidth + gap) + (cardWidth / 2)}px))`
           }}
         >
           {items.map((item, idx) => {
             const isCenter = activeIndex === idx;
             return (
-              <div 
-                key={`${item.id}-${idx}`} 
-                className={`flex-shrink-0 relative rounded-[3.5rem] overflow-hidden cursor-pointer transform transition-all duration-1000 ${
-                  isCenter 
-                    ? 'z-20 shadow-[0_60px_120px_-30px_rgba(0,0,0,0.9)] scale-100 opacity-100' 
+              <div
+                key={`${item.id}-${idx}`}
+                className={`flex-shrink-0 relative rounded-[3.5rem] overflow-hidden cursor-pointer transform transition-all duration-1000 ${isCenter
+                    ? 'z-20 shadow-[0_60px_120px_-30px_rgba(0,0,0,0.9)] scale-100 opacity-100'
                     : 'scale-75 opacity-20 blur-[4px]'
-                }`}
-                style={{ 
-                  width: `${cardWidth}px`, 
-                  height: '700px', 
-                  margin: `0 ${gap/2}px`,
+                  }`}
+                style={{
+                  width: `${cardWidth}px`,
+                  height: '700px',
+                  margin: `0 ${gap / 2}px`,
                   perspective: '1200px'
                 }}
                 onClick={() => handleItemClick(idx, item.result)}
               >
                 <div className="absolute inset-0">
-                  <img 
-                    src={item.sketch} 
+                  <img
+                    src={item.sketch}
                     alt="Sketch"
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${isCenter ? 'opacity-0' : 'opacity-100'}`}
                   />
-                  <img 
-                    src={item.result} 
+                  <img
+                    src={item.result}
                     alt="AI Result"
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${isCenter ? 'opacity-100' : 'opacity-0'}`}
                   />
                 </div>
-                
+
                 {isCenter && (
-                   <div className="absolute top-12 left-12 z-30">
-                     <span className="px-6 py-2.5 bg-black/60 backdrop-blur-2xl rounded-full border border-white/20 text-xs font-black text-white uppercase tracking-widest shadow-2xl">
-                       {t.gallery_label_ai}
-                     </span>
-                   </div>
+                  <div className="absolute top-12 left-12 z-30">
+                    <span className="px-6 py-2.5 bg-black/60 backdrop-blur-2xl rounded-full border border-white/20 text-xs font-black text-white uppercase tracking-widest shadow-2xl">
+                      {t.gallery_label_ai}
+                    </span>
+                  </div>
                 )}
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-16 text-left">
@@ -135,17 +134,24 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 mt-8 flex justify-center items-center space-x-5">
-        {baseItems.map((_, i) => (
-          <button 
-            key={i}
-            onClick={() => {
-              setIsTransitioning(true);
-              setActiveIndex(baseItems.length + i);
-            }}
-            className={`h-2.5 transition-all duration-700 rounded-full ${activeIndex % baseItems.length === i ? 'w-20 bg-blue-500' : 'w-5 bg-slate-800 hover:bg-slate-700'}`}
-          />
-        ))}
+      <div className="max-w-xl mx-auto px-6 mt-12 flex items-center space-x-4">
+        <span className="text-xs font-bold text-slate-600 transition-colors duration-300">01</span>
+        <input
+          type="range"
+          min="0"
+          max={baseItems.length - 1}
+          value={activeIndex % baseItems.length}
+          onChange={(e) => {
+            setIsTransitioning(true);
+            setActiveIndex(baseItems.length + parseInt(e.target.value));
+          }}
+          className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer outline-none
+            [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-12 [&::-webkit-slider-thumb]:h-1.5 
+            [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:rounded-full 
+            [&::-webkit-slider-thumb]:transition-all hover:[&::-webkit-slider-thumb]:bg-blue-500 
+            [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(37,99,235,0.5)]"
+        />
+        <span className="text-xs font-bold text-slate-600 transition-colors duration-300">{String(baseItems.length).padStart(2, '0')}</span>
       </div>
 
       {selectedImage && (
