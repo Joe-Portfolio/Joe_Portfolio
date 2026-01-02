@@ -365,6 +365,140 @@
             return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" style={{ background: '#020617' }} />;
         };
 
+        const GallerySection = ({ t, onImageSelect }) => {
+            const [scrollPos, setScrollPos] = useState(0);
+            const [isDragging, setIsDragging] = useState(false);
+            const [dragStart, setDragStart] = useState(0);
+            const [itemWidth, setItemWidth] = useState(400);
+
+            const scrollRef = useRef(0);
+            const requestRef = useRef();
+            const lastDragPos = useRef(0);
+
+            // Double the items for seamless loop
+            const displayItems = React.useMemo(() => [...GALLERY_ITEMS, ...GALLERY_ITEMS], []);
+
+            useEffect(() => {
+                const handleResize = () => {
+                    const width = window.innerWidth;
+                    if (width < 768) setItemWidth(width * 0.6); // Mobile: ~1.6 items
+                    else if (width < 1024) setItemWidth(width * 0.3); // Tablet
+                    else if (width < 1600) setItemWidth(width * 0.2); // Desktop
+                    else setItemWidth(width * 0.14); // 4K: ~7 items
+                };
+                handleResize();
+                window.addEventListener('resize', handleResize);
+                return () => window.removeEventListener('resize', handleResize);
+            }, []);
+
+            const singleSetWidth = GALLERY_ITEMS.length * itemWidth;
+
+            const animate = () => {
+                if (!isDragging) {
+                    scrollRef.current += 1; // Speed
+                    if (scrollRef.current >= singleSetWidth) {
+                        scrollRef.current = 0;
+                    }
+                    setScrollPos(scrollRef.current);
+                }
+                requestRef.current = requestAnimationFrame(animate);
+            };
+
+            useEffect(() => {
+                requestRef.current = requestAnimationFrame(animate);
+                return () => cancelAnimationFrame(requestRef.current);
+            }, [isDragging, singleSetWidth]);
+
+            const handleMouseDown = (e) => {
+                setIsDragging(true);
+                setDragStart(e.clientX);
+                lastDragPos.current = scrollRef.current;
+            };
+
+            const handleMouseMove = (e) => {
+                if (!isDragging) return;
+                const delta = dragStart - e.clientX;
+                let newPos = lastDragPos.current + delta;
+
+                // Handle wrapping during drag
+                if (newPos < 0) newPos += singleSetWidth;
+                if (newPos >= singleSetWidth) newPos -= singleSetWidth;
+
+                scrollRef.current = newPos;
+                setScrollPos(newPos);
+            };
+
+            const handleMouseUp = () => setIsDragging(false);
+
+            // Slider Change
+            const handleSliderChange = (e) => {
+                const pct = parseFloat(e.target.value);
+                scrollRef.current = (pct / 100) * singleSetWidth;
+                setScrollPos(scrollRef.current);
+            };
+
+            return (
+                <section id="gallery" className="py-20 bg-slate-950/80 overflow-hidden relative z-10 select-none">
+                    <div className="max-w-7xl mx-auto mb-10 text-center">
+                        <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2 block">{t.gallery_label}</p>
+                        <h3 className="text-5xl font-black mb-4 italic uppercase text-white tracking-tighter block">{t.gallery_title}</h3>
+                        <div className="w-24 h-2 bg-blue-600 rounded-full mx-auto mb-6"></div>
+                        <p className="text-slate-400 max-w-2xl mx-auto text-base leading-relaxed block">{t.gallery_description}</p>
+                    </div>
+
+                    <div
+                        className="w-full relative h-[50vh] min-h-[400px] cursor-grab active:cursor-grabbing"
+                        onMouseDown={handleMouseDown}
+                        onMouseMove={handleMouseMove}
+                        onMouseUp={handleMouseUp}
+                        onMouseLeave={handleMouseUp}
+                    >
+                        <div
+                            className="flex items-center absolute top-1/2 -translate-y-1/2 left-0 h-full will-change-transform"
+                            style={{
+                                transform: `translate3d(-${scrollPos}px, 0, 0)`,
+                                width: `${singleSetWidth * 2}px`
+                            }}
+                        >
+                            {displayItems.map((item, i) => (
+                                <div
+                                    key={i}
+                                    className="relative shrink-0 px-3 group"
+                                    style={{ width: `${itemWidth}px` }}
+                                    onClick={() => onImageSelect(item.result)}
+                                >
+                                    <div className="w-full aspect-[3/4] rounded-[2rem] overflow-hidden relative shadow-2xl border border-white/5 bg-slate-900 transition-transform duration-300 group-hover:scale-105 group-hover:z-10">
+                                        <img src={item.sketch} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-100 group-hover:opacity-0" alt="Sketch" />
+                                        <img src={item.result} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-0 group-hover:opacity-100" alt="Result" />
+
+                                        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest block mb-1">AI Enhanced</span>
+                                            <p className="text-white font-bold text-lg leading-none">{item.name}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="max-w-xl mx-auto px-10 mt-8 relative z-20 flex items-center gap-4">
+                        <span className="text-xs font-bold text-slate-500">0%</span>
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="0.1"
+                            value={(scrollPos / singleSetWidth) * 100 || 0}
+                            onChange={handleSliderChange}
+                            className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-125"
+                        />
+                        <span className="text-xs font-bold text-slate-500">100%</span>
+                    </div>
+                </section>
+            );
+
+        };
+
         const App = () => {
             const [lang, setLang] = useState('ko');
             const [scrolled, setScrolled] = useState(false);
@@ -378,45 +512,7 @@
             const [isProjExpanded, setIsProjExpanded] = useState(false);
             const bgMusicRef = useRef(null);
 
-            // Gallery State
-            const [galleryItems, setGalleryItems] = useState([]);
-            const [galleryIndex, setGalleryIndex] = useState(0);
-            const [isDragging, setIsDragging] = useState(false);
-            const [dragStart, setDragStart] = useState(0);
-            const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
-            const autoPlayRef = useRef(null);
-
-            useEffect(() => {
-                // Triple the items for infinite loop illusion
-                const tripled = [...GALLERY_ITEMS, ...GALLERY_ITEMS, ...GALLERY_ITEMS];
-                setGalleryItems(tripled);
-                setGalleryIndex(GALLERY_ITEMS.length); // Start in middle
-
-                const handleResize = () => setIsDesktop(window.innerWidth > 768);
-                window.addEventListener('resize', handleResize);
-                return () => window.removeEventListener('resize', handleResize);
-            }, []);
-
-            // Gallery Infinite Loop Logic
-            useEffect(() => {
-                if (galleryIndex < GALLERY_ITEMS.length / 2) {
-                    setTimeout(() => setGalleryIndex(prev => prev + GALLERY_ITEMS.length), 0);
-                } else if (galleryIndex >= GALLERY_ITEMS.length * 2.5) {
-                    setTimeout(() => setGalleryIndex(prev => prev - GALLERY_ITEMS.length), 0);
-                }
-            }, [galleryIndex]);
-
-            const startAutoPlay = () => {
-                if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-                autoPlayRef.current = setInterval(() => {
-                    setGalleryIndex(prev => prev + 1);
-                }, 3000);
-            };
-
-            useEffect(() => {
-                startAutoPlay();
-                return () => clearInterval(autoPlayRef.current);
-            }, []);
+            // Gallery State Removed (Moved to GallerySection)
 
             const t = TRANSLATIONS[lang];
             const currentExp = EXPERIENCES[lang];
@@ -622,101 +718,7 @@
                         </section>
 
                         {/* AI Gallery - Infinite Flow Implementation */}
-                        {/* AI Gallery - Interactive Cover Flow Implementation */}
-                        <section id="gallery" className="py-20 bg-slate-950/80 overflow-hidden relative z-10 select-none">
-                            <div className="max-w-7xl mx-auto mb-10 text-center">
-                                <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2 block">{t.gallery_label}</p>
-                                <h3 className="text-5xl font-black mb-4 italic uppercase text-white tracking-tighter block">{t.gallery_title}</h3>
-                                <div className="w-24 h-2 bg-blue-600 rounded-full mx-auto mb-6"></div>
-                                <p className="text-slate-400 max-w-2xl mx-auto text-base leading-relaxed block">{t.gallery_description}</p>
-                            </div>
-
-                            <div
-                                className="relative w-full h-[600px] flex items-center justify-center perspective-[1000px]"
-                                onMouseDown={(e) => {
-                                    setDragStart(e.clientX);
-                                    setIsDragging(true);
-                                    if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-                                }}
-                                onMouseMove={(e) => {
-                                    if (!isDragging) return;
-                                    const delta = e.clientX - dragStart;
-                                    if (Math.abs(delta) > 50) {
-                                        if (delta > 0) setGalleryIndex(prev => prev - 1);
-                                        else setGalleryIndex(prev => prev + 1);
-                                        setDragStart(e.clientX);
-                                    }
-                                }}
-                                onMouseUp={() => {
-                                    setIsDragging(false);
-                                    startAutoPlay();
-                                }}
-                                onMouseLeave={() => {
-                                    setIsDragging(false);
-                                    startAutoPlay();
-                                }}
-                            >
-                                <div className="absolute flex h-full items-center transition-transform duration-500 ease-out"
-                                    style={{ transformStyle: 'preserve-3d' }}>
-                                    {galleryItems.map((item, i) => {
-                                        const offset = i - galleryIndex;
-                                        const absOffset = Math.abs(offset);
-                                        const isActive = offset === 0;
-
-                                        // Visible range optimization
-                                        if (absOffset > 4 && !isDesktop) return null; // Mobile optimization
-                                        if (absOffset > 6) return null; // Desktop optimization
-
-                                        let transform = `translateX(${offset * 120}px) translateZ(${-absOffset * 300}px) rotateY(${offset * -45}deg)`;
-                                        if (isActive) transform = `translateZ(0) scale(1.1)`;
-                                        else transform += ` scale(0.8)`;
-
-                                        return (
-                                            <div key={i}
-                                                onClick={() => {
-                                                    if (isActive) setSelectedImage(item.result);
-                                                    else setGalleryIndex(i);
-                                                }}
-                                                className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[400px] aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-500 cursor-pointer border border-white/5 bg-slate-900 ${isActive ? 'z-50 brightness-110' : 'z-10 brightness-50 hover:brightness-75'}`}
-                                                style={{
-                                                    transform,
-                                                    opacity: Math.max(0, 1 - absOffset * 0.15)
-                                                }}
-                                            >
-                                                <img src={item.sketch} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isActive ? 'opacity-0 group-hover:opacity-0' : 'opacity-100'}`} alt="Sketch" />
-                                                <img src={item.result} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isActive ? 'opacity-100' : 'opacity-0'}`} alt="Result" />
-
-                                                {isActive && (
-                                                    <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-black/90 to-transparent">
-                                                        <span className="px-3 py-1 bg-blue-600 text-white text-[10px] font-black uppercase rounded-full tracking-widest mb-2 inline-block">AI Enhanced</span>
-                                                        <h5 className="text-white text-xl font-bold">{item.name}</h5>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
-                            {/* Slider Control */}
-                            <div className="max-w-xl mx-auto px-10 mt-8 relative z-20 flex items-center gap-4">
-                                <span className="text-xs font-bold text-slate-500">01</span>
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max={GALLERY_ITEMS.length - 1}
-                                    value={galleryIndex % GALLERY_ITEMS.length}
-                                    onChange={(e) => {
-                                        // Calculate closest index matching the visual loop
-                                        const targetBase = parseInt(e.target.value);
-                                        const currentBase = galleryIndex % GALLERY_ITEMS.length;
-                                        setGalleryIndex(galleryIndex + (targetBase - currentBase));
-                                    }}
-                                    className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-125"
-                                />
-                                <span className="text-xs font-bold text-slate-500">{String(GALLERY_ITEMS.length).padStart(2, '0')}</span>
-                            </div>
-                        </section>
+                        <GallerySection t={t} onImageSelect={setSelectedImage} />
                     </main>
 
                     {/* Footer */}
