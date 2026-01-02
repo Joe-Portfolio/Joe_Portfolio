@@ -78,25 +78,73 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div
-          className={`flex items-center ${isTransitioning ? 'transition-transform duration-1000 cubic-bezier(0.16, 1, 0.3, 1)' : ''}`}
+          className={`flex items-center ${isTransitioning ? 'transition-transform duration-700 cubic-bezier(0.2, 0.8, 0.2, 1)' : ''}`}
           style={{
-            transform: `translateX(calc(50% - ${activeIndex * (cardWidth + gap) + (cardWidth / 2)}px))`
+            transform: `translateX(calc(50% - ${activeIndex * (cardWidth + gap) + (cardWidth / 2)}px))`,
+            transformStyle: 'preserve-3d',
+            perspective: '1000px'
           }}
         >
           {items.map((item, idx) => {
-            const isCenter = activeIndex === idx;
+            const offset = idx - activeIndex;
+            const isCenter = offset === 0;
+            const dist = Math.abs(offset);
+
+            // iTunes Cover Flow logic
+            let rotateY = 0;
+            let translateX = 0;
+            let translateZ = 0;
+            let scale = 1;
+            let zIndex = 20 - dist;
+            let opacity = 1;
+
+            if (dist === 0) {
+              // Center item
+              rotateY = 0;
+              scale = 1;
+              zIndex = 30;
+              opacity = 1;
+            } else {
+              // Side items
+              const direction = offset < 0 ? 1 : -1;
+              rotateY = 50 * direction; // Face inwards
+              scale = 0.8;
+              translateZ = -200;
+              // Squeeze them together
+              translateX = 150 * direction;
+              opacity = Math.max(0.2, 1 - (dist * 0.3));
+            }
+
+            // Only render visible items to improve performance/visuals if needed, 
+            // but for smooth sliding we render all.
+            // We can hide far items
+            const isVisible = dist < 5;
+
             return (
               <div
                 key={`${item.id}-${idx}`}
-                className={`flex-shrink-0 relative rounded-[3.5rem] overflow-hidden cursor-pointer transform transition-all duration-1000 ${isCenter
-                    ? 'z-20 shadow-[0_60px_120px_-30px_rgba(0,0,0,0.9)] scale-100 opacity-100'
-                    : 'scale-75 opacity-20 blur-[4px]'
-                  }`}
+                className={`flex-shrink-0 relative rounded-[3.5rem] overflow-hidden cursor-pointer transition-all duration-700 ease-out
+                  ${isCenter ? 'shadow-[0_60px_120px_-30px_rgba(0,0,0,0.9)] ring-4 ring-white/10' : ''}
+                `}
                 style={{
                   width: `${cardWidth}px`,
                   height: '700px',
+                  // We use absolute positioning modifiers via transform to achieve the stack effect
+                  // But we are in a flex container, so we use margin or just transform
+                  // If we use translateX in transform, it moves visually but takes same space.
+                  // To stack, we might want negative margins?
+                  // Let's rely on the flex container's natural spacing + translateX to pull them in.
                   margin: `0 ${gap / 2}px`,
-                  perspective: '1200px'
+                  transform: `
+                    perspective(1000px)
+                    translateX(${translateX}px)
+                    translateZ(${translateZ}px)
+                    rotateY(${rotateY}deg)
+                    scale(${scale})
+                  `,
+                  zIndex: zIndex,
+                  opacity: isVisible ? opacity : 0,
+                  transformStyle: 'preserve-3d'
                 }}
                 onClick={() => handleItemClick(idx, item.result)}
               >
@@ -149,7 +197,8 @@ const AIGallery: React.FC<AIGalleryProps> = ({ t, lang }) => {
             [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-12 [&::-webkit-slider-thumb]:h-1.5 
             [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:rounded-full 
             [&::-webkit-slider-thumb]:transition-all hover:[&::-webkit-slider-thumb]:bg-blue-500 
-            [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(37,99,235,0.5)]"
+            [&::-webkit-slider-thumb]:shadow-[0_0_20px_rgba(37,99,235,0.8)]
+            hover:bg-slate-700 transition-colors"
         />
         <span className="text-xs font-bold text-slate-600 transition-colors duration-300">{String(baseItems.length).padStart(2, '0')}</span>
       </div>
