@@ -378,7 +378,7 @@
 
             // Constants for 3D effect 
             const ITEM_WIDTH = 320;
-            const ITEM_SPACING = 380; // Reduced from 500 to 380 for tighter horizontal spacing
+            const ITEM_SPACING = 250; // Significantly reduced for tighter overlap/spacing
             const TOTAL_ITEMS = GALLERY_ITEMS.length;
             const TOTAL_WIDTH = TOTAL_ITEMS * ITEM_SPACING;
 
@@ -486,7 +486,7 @@
                     </div>
 
                     <div
-                        className="w-full h-[500px] relative perspective-[2000px] cursor-grab active:cursor-grabbing"
+                        className="w-full h-[600px] relative perspective-[2000px] cursor-grab active:cursor-grabbing"
                         onMouseDown={handleMouseDown}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
@@ -502,7 +502,7 @@
                                 const x = centerX + item.dist;
 
                                 // Enhanced 3D Cover Flow Parameters
-                                const z = Math.max(-2000, -absDist * 800);
+                                const z = Math.max(-2000, -absDist * 600);
                                 const rotateY = Math.max(-75, Math.min(75, distParam * -60));
                                 const scale = isCenter ? 1.4 : 0.9;
                                 const opacity = Math.max(0, 1 - absDist * 0.4);
