@@ -485,8 +485,9 @@
                         <span className="text-xs font-black text-slate-600 w-12 text-left">{String(TOTAL_ITEMS).padStart(2, '0')}</span>
                     </div>
 
+                    {/* Gallery Container - Height adjusted to 300px per user request input */}
                     <div
-                        className="w-full h-[600px] relative perspective-[2000px] cursor-grab active:cursor-grabbing"
+                        className="w-full h-[300px] relative perspective-[2000px] cursor-grab active:cursor-grabbing"
                         onMouseDown={handleMouseDown}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
