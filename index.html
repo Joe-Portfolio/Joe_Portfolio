@@ -170,7 +170,7 @@
         const TRANSLATIONS = {
             ko: {
                 nav_home: "홈", nav_experience: "경력", nav_projects: "프로젝트", nav_skills: "기술",
-                hero_title: "조현우", hero_subtitle: "시니어 게임 기획자 & 서비스 매니저",
+                hero_title: "조현우", hero_subtitle: "시니어 게임 기획자 & 프로젝트 매니저",
                 hero_description: "10년 이상의 경력을 가진 게임 및 어플리케이션 기획 전문가입니다. VR, 모바일, PC 플랫폼의 글로벌 서비스 런칭과 운영에 특화되어 있으며, 생성형 AI를 활용한 기획 혁신을 선도합니다.",
                 view_experience: "상세 경력 보기",
                 view_portfolio_video: "포트폴리오 영상 보기",
@@ -195,11 +195,13 @@
             },
             en: {
                 nav_home: "Home", nav_experience: "Experience", nav_projects: "Projects", nav_skills: "Skills",
-                hero_title: "Hyunwoo Cho", hero_subtitle: "Senior Game Planner & Manager",
-                hero_description: "Expert with 10+ years in the game industry. Specialist in global launches for VR/Mobile/PC. Leading planning innovation with Generative AI.",
+                hero_title: "Hyunwoo Cho", hero_subtitle: "Senior Game Planner & Project Manager",
+                hero_description: "Expert with 10+ years in game and application planning. Specialized in global launches and operations for VR, Mobile, and PC platforms. Leading planning innovation with Generative AI.",
+                view_experience: "View Detailed Career",
                 view_portfolio_video: "View Portfolio Reel",
-                experience_label: "PROFESSIONAL CAREER",
-                experience_title: "Detailed Career History",
+                about_label: "About Me",
+                about_title: "10+ Years Expert Game Planner",
+                about_description: "Leveraging Data Loops and Generative AI,",
                 exp_hover_hint: "Hover over for full details",
                 projects_label: "PORTFOLIO REEL",
                 projects_title: "Featured Projects",
@@ -234,21 +236,29 @@
                 { company: "Fashion Accessories LTD", role: "Designer", period: "2009.05 - 2009.11", highlights: ["영국 현지 제품 및 브로슈어 디자인"] }
             ],
             en: [
-                { company: "Luxon", logo: "./components/images/Logo/룩슨.png", role: "VR Manager", period: "2023.12 - 2024.08", highlights: ["LOVE ON VR Lead Planner", "Steam Global Launch", "VR Interaction Design"] },
-                { company: "Takeone Company", logo: "./components/images/Logo/테이크원 컴퍼니.png", role: "Publishing Lead", period: "2020.12 - 2022.09", highlights: ["BLACKPINK THE GAME Global Service", "Compliance Strategy", "Team Building"] },
-                { company: "Nexon Korea", logo: "./components/images/Logo/넥슨.png", role: "Overseas Manager", period: "2016.11 - 2018.04", highlights: ["Mabinogi NA/JP Live Operation"] },
-                { company: "DMK Factory", logo: "./components/images/Logo/디엠케이 팩토리.png", role: "Lead Planner", period: "2015.03 - 2016.11", highlights: ["Crystal Hearts System & Balance"] }
+                { company: "Luxon", logo: "./components/images/Logo/룩슨.png", role: "VR Development Dept. Manager", period: "2023.12 - 2024.08", highlights: ["Directed development of LOVE ON (VR Dating Sim)", "Global Launch & Live Ops on Steam, SideQuest, Itch.io", "Planned and implemented VR haptic/interaction systems"] },
+                { company: "Takeone Company", logo: "./components/images/Logo/테이크원 컴퍼니.png", role: "Publishing Service Team Lead", period: "2020.12 - 2022.09", highlights: ["Planned publishing service platform & Team building", "Design planning for BLACKPINK THE GAME Global Service", "Planned features for global compliance (COPPA/GDPR/PSA)"] },
+                { company: "2DC", logo: "./components/images/Logo/2DC.png", role: "New Business Division Director", period: "2020.06 - 2020.09", highlights: ["New business planning for early-stage game platform", "Planned character chat platform & publishing service SDK"] },
+                { company: "Kakao Kids", logo: "./components/images/Logo/카카오키즈.png", role: "New Business Assistant Manager", period: "2019.12 - 2020.05", highlights: ["Business planning & market analysis for 'U-Can-Do'", "Designed gamification content (Level, Badge, Ranking, etc.)"] },
+                { company: "Sunnyside Games", logo: "./components/images/Logo/써니사이드 게임즈.png", role: "Senior Planner", period: "2018.04 - 2019.05", highlights: ["Planning for Triple Hearts (AOS - Unity)", "Global service open & management (KR, VN, TH, US, JP, CN)"] },
+                { company: "Nexon Korea", logo: "./components/images/Logo/넥슨.png", role: "Overseas Business Assistant Manager", period: "2016.11 - 2018.04", highlights: ["NA/JP live service planning for Mabinogi", "Managed large-scale events (e.g., Re:Zero Collaboration)"] },
+                { company: "DMK Factory", logo: "./components/images/Logo/디엠케이 팩토리.png", role: "Planner", period: "2015.03 - 2016.11", highlights: ["Planning for Crystal Hearts (RPG - Unity)", "Level/Balance & BM planning (Gacha, Mileage)", "Achieved top store revenue rankings"] },
+                { company: "Sesisoft", logo: "./components/images/Logo/세시 소프트.png", role: "Assistant Manager", period: "2014.08 - 2015.03", highlights: ["Labyrinthia X2 Planning & PM", "Unity porting of HTML5-based games"] },
+                { company: "Raccoon Soft", logo: "./components/images/Logo/라쿤 소프트.png", role: "Planner", period: "2013.09 - 2014.06", highlights: ["Planning for School 2014 (SNG - Unity)", "Coordinated Netmarble publishing schedule"] },
+                { company: "Joara", logo: "./components/images/Logo/조아라.png", role: "Freelance Writer", period: "2012.12 - 2013.05", highlights: ["Authored and published fantasy novel 'Seven Stars'"] },
+                { company: "Alt1", logo: "./components/images/Logo/(주) 알트원.png", role: "Planner", period: "2012.05 - 2012.12", highlights: ["Twelve Sky 2 planning & domestic/international maintenance"] },
+                { company: "Fashion Accessories LTD", role: "Designer", period: "2009.05 - 2009.11", highlights: ["Product and brochure design in the UK"] }
             ]
         };
 
         const PROJECTS = [
-            { id: "1", title: "LOVE ON (VR)", company: "룩슨", videoUrl: "https://www.youtube.com/embed/UdmhKL7XMUQ", description: "VR 서브컬처 미소녀 연애 시뮬레이션 개발. 스팀, 사이드퀘스트 글로벌 출시." },
-            { id: "2", title: "트리플 하츠", company: "써니사이드게임즈", videoUrl: "https://www.youtube.com/embed/TXt9mmxj9yQ", description: "AOS Unity 프로젝트 글로벌 서비스 오픈 및 관리 (한국, 베트남, 태국, 미국, 일본, 중국)." },
-            { id: "3", title: "마비노기", company: "넥슨코리아", videoUrl: "https://www.youtube.com/embed/_54xPRSNuIY", description: "MMORPG 해외 라이브 서비스 기획 (일본/미국). Re:제로 콜라보 등 대형 이벤트 주도." },
-            { id: "4", title: "크리스탈 하츠", company: "디엠케이팩토리", videoUrl: "https://www.youtube.com/embed/0Xe7JE1nLKc", description: "RPG Unity 프로젝트 오픈. 밸런스, 시스템, UI/UX 기획 및 상위 매출 달성." },
-            { id: "5", title: "BLACKPINK THE GAME", company: "테이크원", videoUrl: "https://www.youtube.com/embed/cA6qwchbJk0", description: "글로벌 아티스트 IP 모바일 게임 브랜드 및 서비스 디자인 기획." },
-            { id: "6", title: "라비린시아X2", company: "세시소프트", videoUrl: "https://www.youtube.com/embed/pyBuQIOaN1g", description: "TCG & 그래픽 노벨 프로젝트 Unity 포팅 및 일정/리소스 관리." },
-            { id: "7", title: "학교 2014", company: "라쿤소프트", videoUrl: "https://www.youtube.com/embed/fW2-CVuJMj8", description: "SNG 장르 밸런스 및 컨텐츠 기획. 넷마블 퍼블리싱 일정 조율." }
+            { id: "1", title: "LOVE ON (VR)", company: "Luxon", videoUrl: "https://www.youtube.com/embed/UdmhKL7XMUQ", description: { ko: "VR 서브컬처 미소녀 연애 시뮬레이션 개발. 스팀, 사이드퀘스트 글로벌 출시.", en: "Developed VR subculture dating simulation. Global launch on Steam and SideQuest." } },
+            { id: "2", title: "Triple Hearts", company: "Sunnyside Games", videoUrl: "https://www.youtube.com/embed/TXt9mmxj9yQ", description: { ko: "AOS Unity 프로젝트 글로벌 서비스 오픈 및 관리 (한국, 베트남, 태국, 미국, 일본, 중국).", en: "AOS Unity project global service launch & management (KR, VN, TH, US, JP, CN)." } },
+            { id: "3", title: "Mabinogi", company: "Nexon Korea", videoUrl: "https://www.youtube.com/embed/_54xPRSNuIY", description: { ko: "MMORPG 해외 라이브 서비스 기획 (일본/미국). Re:제로 콜라보 등 대형 이벤트 주도.", en: "Managed overseas live service for MMORPG (JP/NA). Led major events like Re:Zero Collab." } },
+            { id: "4", title: "Crystal Hearts", company: "DMK Factory", videoUrl: "https://www.youtube.com/embed/0Xe7JE1nLKc", description: { ko: "RPG Unity 프로젝트 오픈. 밸런스, 시스템, UI/UX 기획 및 상위 매출 달성.", en: "Launched RPG Unity project. System, UI/UX, and balance planning. Achieved top revenue." } },
+            { id: "5", title: "BLACKPINK THE GAME", company: "Takeone", videoUrl: "https://www.youtube.com/embed/cA6qwchbJk0", description: { ko: "글로벌 아티스트 IP 모바일 게임 브랜드 및 서비스 디자인 기획.", en: "Brand and service design planning for global artist IP mobile game." } },
+            { id: "6", title: "Labyrinthia X2", company: "Sesisoft", videoUrl: "https://www.youtube.com/embed/pyBuQIOaN1g", description: { ko: "TCG & 그래픽 노벨 프로젝트 Unity 포팅 및 일정/리소스 관리.", en: "Ported TCG & Graphic Novel project to Unity. Managed schedule and resources." } },
+            { id: "7", title: "School 2014", company: "Raccoon Soft", videoUrl: "https://www.youtube.com/embed/fW2-CVuJMj8", description: { ko: "SNG 장르 밸런스 및 컨텐츠 기획. 넷마블 퍼블리싱 일정 조율.", en: "SNG genre balance and content planning. Coordinated Netmarble publishing schedule." } }
         ];
 
         const SKILLS = [
@@ -575,6 +585,18 @@
                 const loader = document.getElementById('loading-screen');
                 if (loader) setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 800); }, 1000);
 
+                const checkLocation = async () => {
+                    try {
+                        const res = await fetch('https://ipapi.co/json/');
+                        const data = await res.json();
+                        if (data.country_code !== 'KR' && lang === 'ko') {
+                            // Redirect to English page if outside KR
+                            window.location.href = 'index_en.html';
+                        }
+                    } catch (e) { console.error("Location check failed", e); }
+                };
+                checkLocation();
+
                 const audio = new Audio('https://files.catbox.moe/uozrce.mp3');
                 audio.loop = true; audio.crossOrigin = "anonymous";
                 bgMusicRef.current = audio;
@@ -637,8 +659,8 @@
                                 <button onClick={handleTts} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'bg-purple-600 text-white' : 'text-slate-400'}`}>
                                     {isSpeaking ? <div className="flex space-x-0.5"><div className="w-1 h-3 bg-white animate-bar"></div><div className="w-1 h-3 bg-white animate-bar [animation-delay:0.2s]"></div><div className="w-1 h-3 bg-white animate-bar [animation-delay:0.4s]"></div></div> : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>}
                                 </button>
-                                <button onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')} className="bg-slate-800 text-[10px] font-black px-4 py-2 rounded-full uppercase text-slate-300">
-                                    {lang}
+                                <button onClick={() => window.location.href = 'index_en.html'} className="bg-slate-800 text-[10px] font-black px-4 py-2 rounded-full uppercase text-slate-300">
+                                    EN
                                 </button>
                             </div>
                         </div>
@@ -652,7 +674,7 @@
                             <p className="text-slate-400 text-lg md:text-xl leading-relaxed mb-12 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>{t.hero_description}</p>
                             <div className="flex justify-center gap-6 animate-fadeInUp" style={{ animationDelay: '0.6s' }}>
                                 <a href="#experience" className="px-10 py-4 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-500 transition-all shadow-xl shadow-blue-600/20">{t.view_experience}</a>
-                                <button onClick={() => window.open('https://youtu.be/mlGaxMZkyx8', '_blank')} className="px-10 py-4 border border-slate-700 hover:border-slate-500 text-white rounded-full font-bold transition-all">{t.view_portfolio_video}</button>
+                                <button onClick={() => setActiveVideo('https://www.youtube.com/embed/mlGaxMZkyx8')} className="px-10 py-4 border border-slate-700 hover:border-slate-500 text-white rounded-full font-bold transition-all">{t.view_portfolio_video}</button>
                             </div>
                         </section>
 
@@ -730,7 +752,7 @@
                                     {visibleProjects.map(p => (
                                         <div key={p.id} onClick={() => setActiveVideo(p.videoUrl)} className="group cursor-pointer rounded-3xl overflow-hidden bg-slate-900/60 border border-white/5 hover:border-blue-500/40 transition-all shadow-2xl relative">
                                             <div className="aspect-video relative overflow-hidden">
-                                                <img src={`https://img.youtube.com/vi/${p.videoUrl.split('embed/')[1]}/maxresdefault.jpg`} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 opacity-40 group-hover:opacity-100 grayscale group-hover:grayscale-0" alt={p.title} />
+                                                <img src={`https://img.youtube.com/vi/${p.videoUrl.split('embed/')[1]}/hqdefault.jpg`} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 opacity-40 group-hover:opacity-100 grayscale group-hover:grayscale-0" alt={p.title} />
                                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-blue-600/20 backdrop-blur-sm">
                                                     <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-xl"><svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></div>
                                                 </div>
@@ -738,7 +760,7 @@
                                             <div className="p-8 text-left">
                                                 <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest block mb-2">{p.company}</span>
                                                 <h4 className="text-lg font-bold text-white mb-3 leading-tight group-hover:text-blue-400 transition-colors">{p.title}</h4>
-                                                <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2 h-8">{p.description}</p>
+                                                <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2 h-8">{p.description[lang]}</p>
                                             </div>
                                         </div>
                                     ))}
