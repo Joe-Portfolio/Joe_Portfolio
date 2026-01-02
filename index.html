@@ -369,36 +369,33 @@
             const [scrollPos, setScrollPos] = useState(0);
             const [isDragging, setIsDragging] = useState(false);
             const [dragStart, setDragStart] = useState(0);
-            const [itemWidth, setItemWidth] = useState(400);
+            const [containerWidth, setContainerWidth] = useState(1000);
 
             const scrollRef = useRef(0);
             const requestRef = useRef();
             const lastDragPos = useRef(0);
+            const autoAutoPlayRef = useRef(true);
 
-            // Double the items for seamless loop
-            const displayItems = React.useMemo(() => [...GALLERY_ITEMS, ...GALLERY_ITEMS], []);
+            // Constants for 3D effect
+            const ITEM_WIDTH = 400; // Base width of the item in 3D space
+            const ITEM_SPACING = 200; // Distance between items center-to-center
+            const TOTAL_ITEMS = GALLERY_ITEMS.length;
+            const TOTAL_WIDTH = TOTAL_ITEMS * ITEM_SPACING;
 
             useEffect(() => {
-                const handleResize = () => {
-                    const width = window.innerWidth;
-                    if (width < 768) setItemWidth(width * 0.6); // Mobile: ~1.6 items
-                    else if (width < 1024) setItemWidth(width * 0.3); // Tablet
-                    else if (width < 1600) setItemWidth(width * 0.2); // Desktop
-                    else setItemWidth(width * 0.14); // 4K: ~7 items
-                };
+                const handleResize = () => setContainerWidth(window.innerWidth);
                 handleResize();
                 window.addEventListener('resize', handleResize);
                 return () => window.removeEventListener('resize', handleResize);
             }, []);
 
-            const singleSetWidth = GALLERY_ITEMS.length * itemWidth;
-
             const animate = () => {
-                if (!isDragging) {
-                    scrollRef.current += 1; // Speed
-                    if (scrollRef.current >= singleSetWidth) {
-                        scrollRef.current = 0;
-                    }
+                if (!isDragging && autoAutoPlayRef.current) {
+                    scrollRef.current += 1; // Auto scroll speed
+                    // Normalize scroll to [0, TOTAL_WIDTH)
+                    if (scrollRef.current >= TOTAL_WIDTH) scrollRef.current -= TOTAL_WIDTH;
+                    if (scrollRef.current < 0) scrollRef.current += TOTAL_WIDTH;
+
                     setScrollPos(scrollRef.current);
                 }
                 requestRef.current = requestAnimationFrame(animate);
@@ -407,10 +404,11 @@
             useEffect(() => {
                 requestRef.current = requestAnimationFrame(animate);
                 return () => cancelAnimationFrame(requestRef.current);
-            }, [isDragging, singleSetWidth]);
+            }, [isDragging]);
 
             const handleMouseDown = (e) => {
                 setIsDragging(true);
+                autoAutoPlayRef.current = false;
                 setDragStart(e.clientX);
                 lastDragPos.current = scrollRef.current;
             };
@@ -420,26 +418,60 @@
                 const delta = dragStart - e.clientX;
                 let newPos = lastDragPos.current + delta;
 
-                // Handle wrapping during drag
-                if (newPos < 0) newPos += singleSetWidth;
-                if (newPos >= singleSetWidth) newPos -= singleSetWidth;
-
-                scrollRef.current = newPos;
                 setScrollPos(newPos);
+                scrollRef.current = newPos;
             };
 
-            const handleMouseUp = () => setIsDragging(false);
+            const handleMouseUp = () => {
+                setIsDragging(false);
+                autoAutoPlayRef.current = true;
+                // Normalize after drag
+                let normalized = scrollRef.current % TOTAL_WIDTH;
+                if (normalized < 0) normalized += TOTAL_WIDTH;
+                scrollRef.current = normalized;
+                setScrollPos(normalized);
+            };
 
-            // Slider Change
+            // Slider Logic
+            const currentIndex = Math.round((scrollPos % TOTAL_WIDTH) / ITEM_SPACING);
+            const normalizedIndex = (currentIndex + TOTAL_ITEMS) % TOTAL_ITEMS; // Safe mod
+            const displayIndex = normalizedIndex + 1; // 1-based index for display
+
             const handleSliderChange = (e) => {
-                const pct = parseFloat(e.target.value);
-                scrollRef.current = (pct / 100) * singleSetWidth;
+                const idx = parseInt(e.target.value);
+                // When slider moves, we want to jump to that index
+                // But we want to keep the current cycle if possible, or reset.
+                // Simplest is to just set scrollPos to idx * SPACING
+                scrollRef.current = idx * ITEM_SPACING;
                 setScrollPos(scrollRef.current);
             };
 
+            // Render Logic
+            const centerOffset = scrollPos;
+            const visibleItems = [];
+            // Visible buffer: enough to cover screen width.
+            const buffer = Math.ceil(containerWidth / ITEM_SPACING / 2) + 2;
+            const baseIndex = Math.floor(centerOffset / ITEM_SPACING);
+
+            for (let i = baseIndex - buffer; i <= baseIndex + buffer; i++) {
+                let realIndex = i % TOTAL_ITEMS;
+                if (realIndex < 0) realIndex += TOTAL_ITEMS;
+                const item = GALLERY_ITEMS[realIndex];
+
+                const itemCenter = i * ITEM_SPACING;
+                const distFromCenter = itemCenter - centerOffset;
+
+                visibleItems.push({
+                    ...item,
+                    virtualIndex: i,
+                    dist: distFromCenter,
+                    realIndex: realIndex
+                });
+            }
+
             return (
-                <section id="gallery" className="py-20 bg-slate-950/80 overflow-hidden relative z-10 select-none">
-                    <div className="max-w-7xl mx-auto mb-10 text-center">
+                <section id="gallery" className="py-24 bg-slate-950/80 overflow-hidden relative z-10 select-none flex flex-col items-center">
+                    <div className="max-w-7xl mx-auto mb-16 text-center px-6">
                         <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2 block">{t.gallery_label}</p>
                         <h3 className="text-5xl font-black mb-4 italic uppercase text-white tracking-tighter block">{t.gallery_title}</h3>
                         <div className="w-24 h-2 bg-blue-600 rounded-full mx-auto mb-6"></div>
@@ -447,56 +479,79 @@
                     </div>
 
                     <div
-                        className="w-full relative h-[50vh] min-h-[400px] cursor-grab active:cursor-grabbing"
+                        className="w-full h-[600px] relative perspective-[1000px] cursor-grab active:cursor-grabbing mb-12"
                         onMouseDown={handleMouseDown}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
                         onMouseLeave={handleMouseUp}
                     >
-                        <div
-                            className="flex items-center absolute top-1/2 -translate-y-1/2 left-0 h-full will-change-transform"
-                            style={{
-                                transform: `translate3d(-${scrollPos}px, 0, 0)`,
-                                width: `${singleSetWidth * 2}px`
-                            }}
-                        >
-                            {displayItems.map((item, i) => (
-                                <div
-                                    key={i}
-                                    className="relative shrink-0 px-3 group"
-                                    style={{ width: `${itemWidth}px` }}
-                                    onClick={() => onImageSelect(item.result)}
-                                >
-                                    <div className="w-full aspect-[3/4] rounded-[2rem] overflow-hidden relative shadow-2xl border border-white/5 bg-slate-900 transition-transform duration-300 group-hover:scale-105 group-hover:z-10">
-                                        <img src={item.sketch} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-100 group-hover:opacity-0" alt="Sketch" />
-                                        <img src={item.result} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-0 group-hover:opacity-100" alt="Result" />
+                        <div className="absolute top-0 left-0 w-full h-full transform-style-3d">
+                            {visibleItems.map((item) => {
+                                // 3D Transform Logic
+                                // We map dist (pixels from center) to Rotation and Z
+                                const distParam = item.dist / (ITEM_SPACING * 1.5);
+                                const absDist = Math.abs(distParam);
+                                const isCenter = Math.abs(item.dist) < ITEM_SPACING / 2;
 
-                                        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest block mb-1">AI Enhanced</span>
-                                            <p className="text-white font-bold text-lg leading-none">{item.name}</p>
+                                const centerX = containerWidth / 2;
+                                const x = centerX + item.dist;
+
+                                // Cover Flow parameters
+                                const z = Math.max(-1000, -absDist * 500);
+                                const rotateY = Math.max(-60, Math.min(60, distParam * -45));
+                                const scale = isCenter ? 1.2 : 0.8;
+                                const opacity = Math.max(0, 1 - absDist * 0.5);
+                                const zIndex = Math.floor(100 - absDist * 10);
+
+                                return (
+                                    <div
+                                        key={item.virtualIndex}
+                                        className="absolute top-1/2 left-0 w-[400px] aspect-[4/5] -translate-x-1/2 -translate-y-1/2 transition-transform duration-75 ease-linear will-change-transform"
+                                        style={{
+                                            transform: `translate3d(${x}px, 0, ${z}px) rotateY(${rotateY}deg) scale(${scale})`,
+                                            zIndex: zIndex,
+                                            opacity: opacity
+                                        }}
+                                        onClick={() => {
+                                            if (isCenter) onImageSelect(item.result);
+                                            else {
+                                                const target = item.virtualIndex * ITEM_SPACING;
+                                                setScrollPos(target); scrollRef.current = target;
+                                            }
+                                        }}
+                                    >
+                                        <div className={`w-full h-full rounded-[2rem] overflow-hidden shadow-2xl border border-white/5 bg-slate-900 relative group ${isCenter ? 'brightness-110' : 'brightness-50'}`}>
+                                            <img src={item.sketch} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isCenter ? 'opacity-0' : 'opacity-100'}`} alt="Sketch" />
+                                            <img src={item.result} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isCenter ? 'opacity-100' : 'opacity-0'}`} alt="Result" />
+
+                                            {isCenter && (
+                                                <div className="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/90 to-transparent">
+                                                    <span className="px-3 py-1 bg-blue-600 text-white text-[10px] font-black uppercase rounded-full tracking-widest mb-2 inline-block">AI Enhanced</span>
+                                                    <h5 className="text-white text-xl font-bold">{item.name}</h5>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
 
-                    <div className="max-w-xl mx-auto px-10 mt-8 relative z-20 flex items-center gap-4">
-                        <span className="text-xs font-bold text-slate-500">0%</span>
+                    <div className="max-w-xl w-full px-10 relative z-20 flex items-center gap-6">
+                        <span className="text-xs font-black text-blue-500 w-12 text-right">{String(displayIndex).padStart(2, '0')}</span>
                         <input
                             type="range"
                             min="0"
-                            max="100"
-                            step="0.1"
-                            value={(scrollPos / singleSetWidth) * 100 || 0}
+                            max={TOTAL_ITEMS - 1}
+                            step="1"
+                            value={normalizedIndex}
                             onChange={handleSliderChange}
-                            className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-125"
+                            className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-150"
                         />
-                        <span className="text-xs font-bold text-slate-500">100%</span>
+                        <span className="text-xs font-black text-slate-600 w-12 text-left">{String(TOTAL_ITEMS).padStart(2, '0')}</span>
                     </div>
                 </section>
             );
-
         };
 
         const App = () => {
