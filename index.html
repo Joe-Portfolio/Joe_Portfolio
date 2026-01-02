@@ -376,9 +376,9 @@
             const lastDragPos = useRef(0);
             const autoAutoPlayRef = useRef(true);
 
-            // Constants for 3D effect
-            const ITEM_WIDTH = 400; // Base width of the item in 3D space
-            const ITEM_SPACING = 200; // Distance between items center-to-center
+            // Constants for 3D effect - Adjusted for wider spread
+            const ITEM_WIDTH = 400;
+            const ITEM_SPACING = 500; // Increased spacing for wider layout
             const TOTAL_ITEMS = GALLERY_ITEMS.length;
             const TOTAL_WIDTH = TOTAL_ITEMS * ITEM_SPACING;
 
@@ -392,10 +392,8 @@
             const animate = () => {
                 if (!isDragging && autoAutoPlayRef.current) {
                     scrollRef.current += 1; // Auto scroll speed
-                    // Normalize scroll to [0, TOTAL_WIDTH)
                     if (scrollRef.current >= TOTAL_WIDTH) scrollRef.current -= TOTAL_WIDTH;
                     if (scrollRef.current < 0) scrollRef.current += TOTAL_WIDTH;
-
                     setScrollPos(scrollRef.current);
                 }
                 requestRef.current = requestAnimationFrame(animate);
@@ -417,7 +415,6 @@
                 if (!isDragging) return;
                 const delta = dragStart - e.clientX;
                 let newPos = lastDragPos.current + delta;
-
                 setScrollPos(newPos);
                 scrollRef.current = newPos;
             };
@@ -425,7 +422,6 @@
             const handleMouseUp = () => {
                 setIsDragging(false);
                 autoAutoPlayRef.current = true;
-                // Normalize after drag
                 let normalized = scrollRef.current % TOTAL_WIDTH;
                 if (normalized < 0) normalized += TOTAL_WIDTH;
                 scrollRef.current = normalized;
@@ -434,14 +430,11 @@
 
             // Slider Logic
             const currentIndex = Math.round((scrollPos % TOTAL_WIDTH) / ITEM_SPACING);
-            const normalizedIndex = (currentIndex + TOTAL_ITEMS) % TOTAL_ITEMS; // Safe mod
-            const displayIndex = normalizedIndex + 1; // 1-based index for display
+            const normalizedIndex = (currentIndex + TOTAL_ITEMS) % TOTAL_ITEMS;
+            const displayIndex = normalizedIndex + 1;
 
             const handleSliderChange = (e) => {
                 const idx = parseInt(e.target.value);
-                // When slider moves, we want to jump to that index
-                // But we want to keep the current cycle if possible, or reset.
-                // Simplest is to just set scrollPos to idx * SPACING
                 scrollRef.current = idx * ITEM_SPACING;
                 setScrollPos(scrollRef.current);
             };
@@ -449,7 +442,6 @@
             // Render Logic
             const centerOffset = scrollPos;
             const visibleItems = [];
-            // Visible buffer: enough to cover screen width.
             const buffer = Math.ceil(containerWidth / ITEM_SPACING / 2) + 2;
             const baseIndex = Math.floor(centerOffset / ITEM_SPACING);
 
@@ -471,7 +463,7 @@
 
             return (
                 <section id="gallery" className="py-24 bg-slate-950/80 overflow-hidden relative z-10 select-none flex flex-col items-center">
-                    <div className="max-w-7xl mx-auto mb-16 text-center px-6">
+                    <div className="max-w-7xl mx-auto mb-4 text-center px-6">
                         <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2 block">{t.gallery_label}</p>
                         <h3 className="text-5xl font-black mb-4 italic uppercase text-white tracking-tighter block">{t.gallery_title}</h3>
                         <div className="w-24 h-2 bg-blue-600 rounded-full mx-auto mb-6"></div>
@@ -479,7 +471,7 @@
                     </div>
 
                     <div
-                        className="w-full h-[600px] relative perspective-[1000px] cursor-grab active:cursor-grabbing mb-12"
+                        className="w-full h-[700px] relative perspective-[2000px] cursor-grab active:cursor-grabbing mb-8"
                         onMouseDown={handleMouseDown}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
@@ -487,8 +479,6 @@
                     >
                         <div className="absolute top-0 left-0 w-full h-full transform-style-3d">
                             {visibleItems.map((item) => {
-                                // 3D Transform Logic
-                                // We map dist (pixels from center) to Rotation and Z
                                 const distParam = item.dist / (ITEM_SPACING * 1.5);
                                 const absDist = Math.abs(distParam);
                                 const isCenter = Math.abs(item.dist) < ITEM_SPACING / 2;
@@ -496,12 +486,12 @@
                                 const centerX = containerWidth / 2;
                                 const x = centerX + item.dist;
 
-                                // Cover Flow parameters
-                                const z = Math.max(-1000, -absDist * 500);
-                                const rotateY = Math.max(-60, Math.min(60, distParam * -45));
-                                const scale = isCenter ? 1.2 : 0.8;
-                                const opacity = Math.max(0, 1 - absDist * 0.5);
-                                const zIndex = Math.floor(100 - absDist * 10);
+                                // Enhanced 3D Cover Flow Parameters
+                                const z = Math.max(-2000, -absDist * 800);
+                                const rotateY = Math.max(-75, Math.min(75, distParam * -60));
+                                const scale = isCenter ? 1.4 : 0.9;
+                                const opacity = Math.max(0, 1 - absDist * 0.4);
+                                const zIndex = Math.floor(1000 - absDist * 100);
 
                                 return (
                                     <div
@@ -520,7 +510,7 @@
                                             }
                                         }}
                                     >
-                                        <div className={`w-full h-full rounded-[2rem] overflow-hidden shadow-2xl border border-white/5 bg-slate-900 relative group ${isCenter ? 'brightness-110' : 'brightness-50'}`}>
+                                        <div className={`w-full h-full rounded-[2rem] overflow-hidden shadow-2xl border border-white/5 bg-slate-900 relative group ${isCenter ? 'brightness-110' : 'brightness-50 shadow-[0_0_50px_rgba(37,99,235,0.3)]'}`}>
                                             <img src={item.sketch} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isCenter ? 'opacity-0' : 'opacity-100'}`} alt="Sketch" />
                                             <img src={item.result} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isCenter ? 'opacity-100' : 'opacity-0'}`} alt="Result" />
 
@@ -537,7 +527,7 @@
                         </div>
                     </div>
 
-                    <div className="max-w-xl w-full px-10 relative z-20 flex items-center gap-6">
+                    <div className="max-w-xl w-full px-10 relative z-50 flex items-center gap-6 mt-4">
                         <span className="text-xs font-black text-blue-500 w-12 text-right">{String(displayIndex).padStart(2, '0')}</span>
                         <input
                             type="range"
@@ -546,7 +536,7 @@
                             step="1"
                             value={normalizedIndex}
                             onChange={handleSliderChange}
-                            className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-150"
+                            className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-150 relative z-50"
                         />
                         <span className="text-xs font-black text-slate-600 w-12 text-left">{String(TOTAL_ITEMS).padStart(2, '0')}</span>
                     </div>
