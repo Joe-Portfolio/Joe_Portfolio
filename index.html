@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>조현우 | Senior Game Planner Portfolio</title>
+    <title>Project Manager | Joe-Portfolio</title>
 
     <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,6 +14,20 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
         rel="stylesheet">
+
+    <!-- Social Media Metadata (Open Graph / Twitter Card) -->
+    <meta property="og:title" content="Project Manager | Joe-Portfolio">
+    <meta property="og:description" content="10년 이상의 경력을 가진 게임 및 어플리케이션 기획 전문가 조현우의 포트폴리오입니다.">
+    <meta property="og:image" content="./components/images/og-thumbnail.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://joe-portfolio.com">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Joe Portfolio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Project Manager | Joe-Portfolio">
+    <meta name="twitter:description" content="10년 이상의 경력을 가진 게임 및 어플리케이션 기획 전문가 조현우의 포트폴리오입니다.">
+    <meta name="twitter:image" content="./components/images/og-thumbnail.png">
 
     <script>
         window.process = { env: { API_KEY: "" } };
@@ -730,12 +744,16 @@
                         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
                             <div className="text-2xl font-black gradient-text tracking-tighter">Joe</div>
                             <div className="flex items-center space-x-6">
+                                {/* 배경음악 기능 - 차후 추가 예정
                                 <button onClick={toggleMusic} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isMusicOn ? 'bg-blue-600/20 text-blue-400' : 'text-slate-500'}`}>
                                     {isMusicOn ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-4z" /></svg> : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>}
                                 </button>
+                                */}
+                                {/* TTS 기능 - 차후 추가 예정
                                 <button onClick={handleTts} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'bg-purple-600 text-white' : 'text-slate-400'}`}>
                                     {isSpeaking ? <div className="flex space-x-0.5"><div className="w-1 h-3 bg-white animate-bar"></div><div className="w-1 h-3 bg-white animate-bar [animation-delay:0.2s]"></div><div className="w-1 h-3 bg-white animate-bar [animation-delay:0.4s]"></div></div> : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>}
                                 </button>
+                                */}
                                 <button
                                     onClick={() => {
                                         const newLang = lang === 'ko' ? 'en' : 'ko';
