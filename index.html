@@ -376,9 +376,9 @@
             const lastDragPos = useRef(0);
             const autoAutoPlayRef = useRef(true);
 
-            // Constants for 3D effect - Reduced size by 20% (400 -> 320)
+            // Constants for 3D effect 
             const ITEM_WIDTH = 320;
-            const ITEM_SPACING = 500; // Increased spacing for wider layout
+            const ITEM_SPACING = 380; // Reduced from 500 to 380 for tighter horizontal spacing
             const TOTAL_ITEMS = GALLERY_ITEMS.length;
             const TOTAL_WIDTH = TOTAL_ITEMS * ITEM_SPACING;
 
@@ -470,8 +470,8 @@
                         <p className="text-slate-400 max-w-2xl mx-auto text-base leading-relaxed block">{t.gallery_description}</p>
                     </div>
 
-                    {/* Slider Moved to Top */}
-                    <div className="max-w-xl w-full px-10 relative z-50 flex items-center gap-6 mb-8">
+                    {/* Slider Moved to Top - Reduced margin */}
+                    <div className="max-w-xl w-full px-10 relative z-50 flex items-center gap-6 mb-2">
                         <span className="text-xs font-black text-blue-500 w-12 text-right">{String(displayIndex).padStart(2, '0')}</span>
                         <input
                             type="range"
@@ -486,7 +486,7 @@
                     </div>
 
                     <div
-                        className="w-full h-[700px] relative perspective-[2000px] cursor-grab active:cursor-grabbing"
+                        className="w-full h-[500px] relative perspective-[2000px] cursor-grab active:cursor-grabbing"
                         onMouseDown={handleMouseDown}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
