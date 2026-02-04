@@ -15,34 +15,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
         rel="stylesheet">
 
-    <!-- Social Media Metadata (Open Graph / Twitter Card) -->
+    <!-- Social Media Metadata -->
     <meta property="og:title" content="Project Manager | Joe-Portfolio">
     <meta property="og:description" content="10년 이상의 경력을 가진 게임 및 어플리케이션 기획 전문가 조현우의 포트폴리오입니다.">
     <meta property="og:image" content="./components/images/og-thumbnail.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://joe-portfolio.com">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Joe Portfolio">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Project Manager | Joe-Portfolio">
-    <meta name="twitter:description" content="10년 이상의 경력을 가진 게임 및 어플리케이션 기획 전문가 조현우의 포트폴리오입니다.">
-    <meta name="twitter:image" content="./components/images/og-thumbnail.png">
 
     <script>
+        // 글로벌 환경 변수 설정
         window.process = { env: { API_KEY: "" } };
-    </script>
-
-    <script type="importmap">
-    {
-      "imports": {
-        "react": "https://esm.sh/react@18.2.0",
-        "react-dom": "https://esm.sh/react-dom@18.2.0?deps=react@18.2.0",
-        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client?deps=react@18.2.0",
-        "react/": "https://esm.sh/react@18.2.0/",
-        "@google/genai": "https://esm.sh/@google/genai@1.34.0"
-      }
-    }
     </script>
 
     <style>
@@ -142,25 +124,6 @@
             }
         }
 
-        /* 갤러리 무한 스크롤 애니메이션 */
-        @keyframes galleryScroll {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-33.3333%);
-            }
-        }
-
-        .animate-galleryScroll {
-            animation: galleryScroll 40s linear infinite;
-        }
-
-        .animate-galleryScroll:hover {
-            animation-play-state: paused;
-        }
-
         @keyframes gradient {
             0% {
                 background-position: 0% 50%;
@@ -209,21 +172,24 @@
     <div id="root"></div>
 
     <script type="text/babel" data-type="module">
-        import React, { useState, useEffect, useRef } from 'react';
-        import { createRoot } from 'react-dom/client';
-        import { GoogleGenAI, Modality } from "@google/genai";
+        /**
+         * 💡 Babel Standalone 환경에서 안정성을 위해 
+         * importmap 대신 직접 URL 임포트를 사용합니다.
+         */
+        import React, { useState, useEffect, useRef } from 'https://esm.sh/react@18.2.0';
+        import { createRoot } from 'https://esm.sh/react-dom@18.2.0/client?deps=react@18.2.0';
+        import { GoogleGenAI } from "https://esm.sh/@google/genai@1.34.0";
 
         // --- Data ---
         const TRANSLATIONS = {
             ko: {
                 nav_home: "홈", nav_experience: "경력", nav_projects: "프로젝트", nav_skills: "기술",
-                hero_title: "조현우", hero_subtitle: "게임 기획자 & 프로젝트 매니저",
-                hero_description: "10년 이상의 경력을 가진 게임 및 어플리케이션 기획 전문가입니다. VR, 모바일, PC 플랫폼의 글로벌 서비스 런칭과 운영에 특화되어 있으며, 생성형 AI를 활용한 기획 혁신을 선도합니다.",
+                hero_title: "조현우", hero_subtitle: "시니어 게임 기획자 & 서비스 매니저",
+                hero_description: "10년 이상의 경력을 가진 게임 산업 전문가입니다. VR, 모바일, PC 플랫폼의 글로벌 서비스 런칭과 운영에 특화되어 있으며, 생성형 AI를 활용한 기획 혁신을 선도합니다.",
                 view_experience: "상세 경력 보기",
                 view_portfolio_video: "포트폴리오 영상 보기",
                 about_label: "About Me",
                 about_title: "10년+ 경력의 게임 기획 전문가",
-                about_description: "데이터 루프와 생성형 AI를 활용하여,",
                 exp_hover_hint: "상세 내용 확인을 위해 마우스를 올리세요",
                 projects_label: "PORTFOLIO REEL",
                 projects_title: "주요 프로젝트 영상",
@@ -242,13 +208,12 @@
             },
             en: {
                 nav_home: "Home", nav_experience: "Experience", nav_projects: "Projects", nav_skills: "Skills",
-                hero_title: "Hyunwoo Cho", hero_subtitle: "Game Planner & Project Manager",
+                hero_title: "Hyunwoo Cho", hero_subtitle: "Senior Game Planner & Service Manager",
                 hero_description: "Expert with 10+ years in game and application planning. Specialized in global launches and operations for VR, Mobile, and PC platforms. Leading planning innovation with Generative AI.",
                 view_experience: "View Detailed Career",
                 view_portfolio_video: "View Portfolio Reel",
                 about_label: "About Me",
                 about_title: "10+ Years Expert Game Planner",
-                about_description: "Leveraging Data Loops and Generative AI,",
                 exp_hover_hint: "Hover over for full details",
                 projects_label: "PORTFOLIO REEL",
                 projects_title: "Featured Projects",
@@ -283,18 +248,10 @@
                 { company: "Fashion Accessories LTD", role: "Designer", period: "2009.05 - 2009.11", highlights: ["영국 현지 제품 및 브로슈어 디자인"] }
             ],
             en: [
-                { company: "Luxon", logo: "./components/images/Logo/룩슨.png", role: "VR Development Dept. Manager", period: "2023.12 - 2024.08", highlights: ["Directed development of LOVE ON (VR Dating Sim)", "Global Launch & Live Ops on Steam, SideQuest, Itch.io", "Planned and implemented VR haptic/interaction systems"] },
-                { company: "Takeone Company", logo: "./components/images/Logo/테이크원 컴퍼니.png", role: "Publishing Service Team Lead", period: "2020.12 - 2022.09", highlights: ["Planned publishing service platform & Team building", "Design planning for BLACKPINK THE GAME Global Service", "Planned features for global compliance (COPPA/GDPR/PSA)"] },
-                { company: "2DC", logo: "./components/images/Logo/2DC.png", role: "New Business Division Director", period: "2020.06 - 2020.09", highlights: ["New business planning for early-stage game platform", "Planned character chat platform & publishing service SDK"] },
-                { company: "Kakao Kids", logo: "./components/images/Logo/카카오키즈.png", role: "New Business Assistant Manager", period: "2019.12 - 2020.05", highlights: ["Business planning & market analysis for 'U-Can-Do'", "Designed gamification content (Level, Badge, Ranking, etc.)"] },
-                { company: "Sunnyside Games", logo: "./components/images/Logo/써니사이드 게임즈.png", role: "Senior Planner", period: "2018.04 - 2019.05", highlights: ["Planning for Triple Hearts (AOS - Unity)", "Global service open & management (KR, VN, TH, US, JP, CN)"] },
-                { company: "Nexon Korea", logo: "./components/images/Logo/넥슨.png", role: "Overseas Business Assistant Manager", period: "2016.11 - 2018.04", highlights: ["NA/JP live service planning for Mabinogi", "Managed large-scale events (e.g., Re:Zero Collaboration)"] },
-                { company: "DMK Factory", logo: "./components/images/Logo/디엠케이 팩토리.png", role: "Planner", period: "2015.03 - 2016.11", highlights: ["Planning for Crystal Hearts (RPG - Unity)", "Level/Balance & BM planning (Gacha, Mileage)", "Achieved top store revenue rankings"] },
-                { company: "Sesisoft", logo: "./components/images/Logo/세시 소프트.png", role: "Assistant Manager", period: "2014.08 - 2015.03", highlights: ["Labyrinthia X2 Planning & PM", "Unity porting of HTML5-based games"] },
-                { company: "Raccoon Soft", logo: "./components/images/Logo/라쿤 소프트.png", role: "Planner", period: "2013.09 - 2014.06", highlights: ["Planning for School 2014 (SNG - Unity)", "Coordinated Netmarble publishing schedule"] },
-                { company: "Joara", logo: "./components/images/Logo/조아라.png", role: "Freelance Writer", period: "2012.12 - 2013.05", highlights: ["Authored and published fantasy novel 'Seven Stars'"] },
-                { company: "Alt1", logo: "./components/images/Logo/(주) 알트원.png", role: "Planner", period: "2012.05 - 2012.12", highlights: ["Twelve Sky 2 planning & domestic/international maintenance"] },
-                { company: "Fashion Accessories LTD", role: "Designer", period: "2009.05 - 2009.11", highlights: ["Product and brochure design in the UK"] }
+                { company: "Luxon", role: "VR Development Dept. Manager", period: "2023.12 - 2024.08", highlights: ["Directed development of LOVE ON (VR Dating Sim)", "Global Launch & Live Ops on Steam, SideQuest, Itch.io", "Planned and implemented VR haptic/interaction systems"] },
+                { company: "Takeone Company", role: "Publishing Service Team Lead", period: "2020.12 - 2022.09", highlights: ["Planned publishing service platform & Team building", "Design planning for BLACKPINK THE GAME Global Service", "Planned features for global compliance (COPPA/GDPR/PSA)"] },
+                { company: "Nexon Korea", role: "Overseas Business Assistant Manager", period: "2016.11 - 2018.04", highlights: ["NA/JP live service planning for Mabinogi", "Managed large-scale events (e.g., Re:Zero Collaboration)"] },
+                { company: "DMK Factory", role: "Planner", period: "2015.03 - 2016.11", highlights: ["Planning for Crystal Hearts (RPG - Unity)", "Level/Balance & BM planning (Gacha, Mileage)", "Achieved top store revenue rankings"] }
             ]
         };
 
@@ -324,44 +281,28 @@
             };
         });
 
+        // --- Helper Components ---
         const Portrait = () => {
             const [visible, setVisible] = useState(false);
-
             useEffect(() => {
                 const triggerAnimation = () => {
                     setVisible(true);
-                    setTimeout(() => setVisible(false), 10000); // Show for 10 seconds
+                    setTimeout(() => setVisible(false), 10000);
                 };
-
-                const interval = setInterval(triggerAnimation, 60000); // Repeat every 1 minute
-
-                // Initial show after 2 seconds
+                const interval = setInterval(triggerAnimation, 60000);
                 const initialTimeout = setTimeout(triggerAnimation, 2000);
-
-                return () => {
-                    clearInterval(interval);
-                    clearTimeout(initialTimeout);
-                };
+                return () => { clearInterval(interval); clearTimeout(initialTimeout); };
             }, []);
-
             return (
-                <div className={`fixed bottom-0 right-0 z-0 w-[30vw] min-w-[300px] pointer-events-none transition-all duration-[3000ms] ease-out transform ${visible ? 'translate-y-0 opacity-80' : 'translate-y-12 opacity-0'}`}>
-                    <div className="relative overflow-visible group">
-                        <img
-                            src="./components/images/chohw/조현우 상반신.png"
-                            alt="Joe"
-                            className="w-full h-auto object-contain [mask-image:linear-gradient(to_left,black_60%,transparent_100%)] [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)] filter drop-shadow(0 0 40px rgba(59,130,246,0.3))"
-                        />
-                        {/* Animated Gradient Overlay */}
+                <div className={`fixed bottom-0 right-0 z-0 w-[40vw] min-w-[300px] pointer-events-none transition-all duration-[3000ms] ease-out transform ${visible ? 'translate-y-0 opacity-80' : 'translate-y-12 opacity-0'}`}>
+                    <div className="relative overflow-visible">
+                        <img src="./components/images/chohw/조현우 상반신.png" alt="Joe" className="w-full h-auto object-contain [mask-image:linear-gradient(to_left,black_60%,transparent_100%)] [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)] filter drop-shadow(0 0 40px rgba(59,130,246,0.3))" />
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-transparent animate-gradient mix-blend-overlay opacity-40"></div>
                     </div>
                 </div>
             );
         };
 
-
-
-        // --- Helper Components ---
         const TypingEffect = ({ lines }) => {
             const [displayLines, setDisplayLines] = useState([]);
             const [lineIndex, setLineIndex] = useState(0);
@@ -390,7 +331,7 @@
             return (
                 <div className="space-y-3">
                     {displayLines.map((line, i) => (
-                        <div key={i} className="flex items-start text-slate-800 text-sm font-bold animate-fadeIn">
+                        <div key={i} className="flex items-start text-slate-800 text-sm font-bold">
                             <span className="text-blue-600 mr-2 shrink-0">›</span>
                             <p className="leading-tight">{line}</p>
                         </div>
@@ -448,9 +389,7 @@
                                 if (i === 0) ctx.moveTo(hx, hy); else ctx.lineTo(hx, hy);
                             }
                             ctx.closePath();
-                            ctx.strokeStyle = color;
-                            ctx.lineWidth = 1;
-                            ctx.stroke();
+                            ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.stroke();
                         }
                     }
                     animationFrameId = requestAnimationFrame(render);
@@ -462,198 +401,58 @@
         };
 
         const GallerySection = ({ t, onImageSelect }) => {
-            const [isDragging, setIsDragging] = useState(false);
-            const [containerWidth, setContainerWidth] = useState(window.innerWidth);
             const [currentIndex, setCurrentIndex] = useState(0);
-
-            const ITEM_SPACING = 250;
-            const TOTAL_ITEMS = GALLERY_ITEMS.length;
-            const TOTAL_WIDTH = TOTAL_ITEMS * ITEM_SPACING;
-
-            const scrollRef = useRef(Math.floor(Math.random() * TOTAL_ITEMS) * ITEM_SPACING);
-            const itemsRef = useRef([]);
+            const scrollRef = useRef(0);
             const containerRef = useRef(null);
-            const sliderRef = useRef(null);
-            const requestRef = useRef();
-            const dragStartRef = useRef(0);
-            const lastDragPosRef = useRef(0);
-            const autoPlayRef = useRef(true);
+            const itemsRef = useRef([]);
+            const ITEM_SPACING = 350;
 
             useEffect(() => {
-                const handleResize = () => setContainerWidth(window.innerWidth);
-                window.addEventListener('resize', handleResize);
-                return () => window.removeEventListener('resize', handleResize);
+                const animate = () => {
+                    scrollRef.current += 1;
+                    const totalWidth = GALLERY_ITEMS.length * ITEM_SPACING;
+                    if (scrollRef.current >= totalWidth) scrollRef.current = 0;
+
+                    const centerX = window.innerWidth / 2;
+                    itemsRef.current.forEach((el, i) => {
+                        if (!el) return;
+                        let itemPos = i * ITEM_SPACING - scrollRef.current;
+                        while (itemPos > totalWidth / 2) itemPos -= totalWidth;
+                        while (itemPos < -totalWidth / 2) itemPos += totalWidth;
+
+                        const dist = Math.abs(itemPos);
+                        const isCenter = dist < ITEM_SPACING / 2;
+                        const scale = isCenter ? 1.4 : 0.8;
+                        const opacity = Math.max(0.1, 1 - dist / (ITEM_SPACING * 2));
+                        const zIndex = 1000 - Math.floor(dist);
+
+                        el.style.transform = `translate3d(${centerX + itemPos}px, -50%, ${-dist}px) scale(${scale})`;
+                        el.style.zIndex = zIndex;
+                        el.style.opacity = opacity;
+                    });
+                    requestAnimationFrame(animate);
+                };
+                requestAnimationFrame(animate);
             }, []);
 
-            const updateGallery = () => {
-                if (!containerRef.current) return;
-                const scrollPos = scrollRef.current;
-                const centerX = containerWidth / 2;
-
-                itemsRef.current.forEach((el, i) => {
-                    if (!el) return;
-                    const itemBasePos = i * ITEM_SPACING;
-                    let diff = itemBasePos - scrollPos;
-
-                    // Infinite wrapping logic
-                    while (diff > TOTAL_WIDTH / 2) diff -= TOTAL_WIDTH;
-                    while (diff < -TOTAL_WIDTH / 2) diff += TOTAL_WIDTH;
-
-                    const distParam = diff / (ITEM_SPACING * 1.5);
-                    const absDist = Math.abs(distParam);
-                    const isCenter = Math.abs(diff) < ITEM_SPACING / 2;
-
-                    const x = centerX + diff;
-                    const z = Math.max(-2000, -absDist * 600);
-                    const rotateY = Math.max(-75, Math.min(75, distParam * -60));
-                    const scale = isCenter ? 1.4 : 0.9;
-                    const opacity = Math.max(0, 1 - absDist * 0.4);
-                    const zIndex = Math.floor(1000 - absDist * 100);
-
-                    // Direct DOM updates for performance
-                    el.style.transform = `translate3d(${x}px, -50%, ${z}px) rotateY(${rotateY}deg) scale(${scale})`;
-                    el.style.zIndex = zIndex;
-                    el.style.opacity = opacity;
-
-                    // Update internal elements for center state
-                    const content = el.querySelector('.item-content');
-                    if (content) {
-                        content.style.filter = isCenter ? 'brightness(1.1)' : 'brightness(0.5)';
-                        if (!isCenter) {
-                            content.style.boxShadow = '0 0 50px rgba(37,99,235,0.3)';
-                        } else {
-                            content.style.boxShadow = 'none';
-                        }
-                    }
-
-                    const sketch = el.querySelector('.sketch-img');
-                    const result = el.querySelector('.result-img');
-                    if (sketch) sketch.style.opacity = isCenter ? '0' : '100';
-                    if (result) result.style.opacity = isCenter ? '100' : '0';
-
-                    const info = el.querySelector('.item-info');
-                    if (info) info.style.opacity = isCenter ? '1' : '0';
-                });
-
-                // Update slider and current index state sparingly
-                const rawIdx = Math.round((scrollPos % TOTAL_WIDTH) / ITEM_SPACING);
-                const normIdx = (rawIdx + TOTAL_ITEMS) % TOTAL_ITEMS;
-                if (normIdx !== currentIndex) {
-                    setCurrentIndex(normIdx);
-                    if (sliderRef.current) sliderRef.current.value = normIdx;
-                }
-            };
-
-            const animate = () => {
-                if (!isDragging && autoPlayRef.current) {
-                    scrollRef.current += 1;
-                    updateGallery();
-                }
-                requestRef.current = requestAnimationFrame(animate);
-            };
-
-            useEffect(() => {
-                requestRef.current = requestAnimationFrame(animate);
-                return () => cancelAnimationFrame(requestRef.current);
-            }, [isDragging, containerWidth]);
-
-            const handleMouseDown = (e) => {
-                setIsDragging(true);
-                autoPlayRef.current = false;
-                dragStartRef.current = e.clientX;
-                lastDragPosRef.current = scrollRef.current;
-            };
-
-            const handleMouseMove = (e) => {
-                if (!isDragging) return;
-                const delta = dragStartRef.current - e.clientX;
-                scrollRef.current = lastDragPosRef.current + delta;
-                updateGallery();
-            };
-
-            const handleMouseUp = () => {
-                setIsDragging(false);
-                autoPlayRef.current = true;
-                // Normalize scroll position to keep numbers small
-                let normalized = scrollRef.current % TOTAL_WIDTH;
-                if (normalized < 0) normalized += TOTAL_WIDTH;
-                scrollRef.current = normalized;
-            };
-
-            const handleSliderChange = (e) => {
-                const idx = parseInt(e.target.value);
-                scrollRef.current = idx * ITEM_SPACING;
-                updateGallery();
-            };
-
             return (
-                <section id="gallery" className="w-full h-[1000px] py-24 bg-slate-950/80 overflow-hidden relative z-10 select-none flex flex-col items-center">
-                    <style>{`
-                        .transform-style-3d { 
-                            transform-style: preserve-3d; 
-                            -webkit-transform-style: preserve-3d;
-                        }
-                        .backface-hidden { 
-                            backface-visibility: hidden; 
-                            -webkit-backface-visibility: hidden;
-                        }
-                        .perspective-container {
-                            perspective: 2000px;
-                            -webkit-perspective: 2000px;
-                        }
-                    `}</style>
-                    <div className="max-w-7xl mx-auto mb-4 text-center px-6">
-                        <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2 block">{t.gallery_label}</p>
-                        <h3 className="text-5xl font-black mb-4 italic uppercase text-white tracking-tighter block">{t.gallery_title}</h3>
+                <section id="gallery" className="w-full h-[800px] py-24 bg-slate-950/80 overflow-hidden relative z-10 select-none">
+                    <div className="max-w-7xl mx-auto mb-12 text-center px-6">
+                        <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2">{t.gallery_label}</p>
+                        <h3 className="text-5xl font-black mb-4 italic uppercase text-white tracking-tighter">{t.gallery_title}</h3>
                         <div className="w-24 h-2 bg-blue-600 rounded-full mx-auto mb-6"></div>
-                        <p className="text-slate-400 max-w-2xl mx-auto text-base leading-relaxed block">{t.gallery_description}</p>
+                        <p className="text-slate-400 max-w-2xl mx-auto text-base leading-relaxed">{t.gallery_description}</p>
                     </div>
 
-                    <div className="max-w-xl w-full px-10 relative z-50 flex items-center gap-6 mb-2">
-                        <span className="text-xs font-black text-blue-500 w-12 text-right">{String(currentIndex + 1).padStart(2, '0')}</span>
-                        <input
-                            ref={sliderRef}
-                            type="range"
-                            min="0"
-                            max={TOTAL_ITEMS - 1}
-                            step="1"
-                            defaultValue={currentIndex}
-                            onChange={handleSliderChange}
-                            className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-150 relative z-50"
-                        />
-                        <span className="text-xs font-black text-slate-600 w-12 text-left">{String(TOTAL_ITEMS).padStart(2, '0')}</span>
-                    </div>
-
-                    <div
-                        className="w-full h-[600px] relative perspective-container cursor-grab active:cursor-grabbing"
-                        onMouseDown={handleMouseDown}
-                        onMouseMove={handleMouseMove}
-                        onMouseUp={handleMouseUp}
-                        onMouseLeave={handleMouseUp}
-                    >
-                        <div ref={containerRef} className="absolute top-0 left-0 w-full h-full transform-style-3d">
+                    <div className="relative w-full h-[500px]" style={{ perspective: '2000px' }}>
+                        <div ref={containerRef} className="absolute inset-0">
                             {GALLERY_ITEMS.map((item, i) => (
-                                <div
-                                    key={item.id}
-                                    ref={el => itemsRef.current[i] = el}
-                                    className="absolute top-1/2 left-0 w-[320px] aspect-[4/5] -translate-x-1/2 -translate-y-1/2 transition-none will-change-transform transform-style-3d backface-hidden"
-                                    onClick={() => {
-                                        const diff = (i * ITEM_SPACING - scrollRef.current + TOTAL_WIDTH / 2) % TOTAL_WIDTH - TOTAL_WIDTH / 2;
-                                        if (Math.abs(diff) < ITEM_SPACING / 2) {
-                                            onImageSelect(item.result);
-                                        } else {
-                                            scrollRef.current = i * ITEM_SPACING;
-                                            updateGallery();
-                                        }
-                                    }}
-                                >
-                                    <div className="item-content w-full h-full rounded-[2rem] overflow-hidden border border-white/5 bg-slate-900 relative group transition-all duration-300 transform-style-3d backface-hidden">
-                                        <img src={item.sketch} className="sketch-img absolute inset-0 w-full h-full object-contain bg-black/50 transition-opacity duration-300" alt="Sketch" />
-                                        <img src={item.result} className="result-img absolute inset-0 w-full h-full object-contain bg-black/50 transition-opacity duration-300" alt="Result" />
-
-                                        <div className="item-info absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/90 to-transparent transition-opacity duration-300 opacity-0 pointer-events-none">
-                                            <span className="px-3 py-1 bg-blue-600 text-white text-[10px] font-black uppercase rounded-full tracking-widest mb-2 inline-block">AI Enhanced</span>
-                                            <h5 className="text-white text-xl font-bold">{item.name}</h5>
+                                <div key={item.id} ref={el => itemsRef.current[i] = el} className="absolute top-1/2 left-0 w-[400px] aspect-video -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-linear">
+                                    <div className="w-full h-full rounded-3xl overflow-hidden border border-white/10 bg-slate-900 shadow-2xl relative group">
+                                        <img src={item.sketch} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-0 group-hover:opacity-100" alt="Sketch" />
+                                        <img src={item.result} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-100 group-hover:opacity-0" alt="Result" />
+                                        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+                                            <h5 className="text-white text-lg font-bold">{item.name}</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -668,128 +467,63 @@
             const [lang, setLang] = useState('ko');
             const [scrolled, setScrolled] = useState(false);
             const [activeVideo, setActiveVideo] = useState(null);
-            const [selectedImage, setSelectedImage] = useState(null);
-            const [isSpeaking, setIsSpeaking] = useState(false);
             const [hoveredExp, setHoveredExp] = useState(null);
             const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-            const [isMusicOn, setIsMusicOn] = useState(false);
             const [isExpExpanded, setIsExpExpanded] = useState(false);
-            const [isProjExpanded, setIsProjExpanded] = useState(false);
-            const bgMusicRef = useRef(null);
-
-            // Gallery State Removed (Moved to GallerySection)
 
             const t = TRANSLATIONS[lang];
-            const currentExp = EXPERIENCES[lang];
+            const currentExp = EXPERIENCES[lang] || EXPERIENCES['ko'];
             const visibleExp = isExpExpanded ? currentExp : currentExp.slice(0, 6);
-            const visibleProjects = isProjExpanded ? PROJECTS : PROJECTS.slice(0, 4);
 
             useEffect(() => {
                 const handleScroll = () => setScrolled(window.scrollY > 50);
                 window.addEventListener('scroll', handleScroll);
-                const loader = document.getElementById('loading-screen');
-                if (loader) setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 800); }, 1000);
+
+                // 로딩 화면 제거 로직 (충분한 지연 시간 확보)
+                const removeLoader = () => {
+                    const loader = document.getElementById('loading-screen');
+                    if (loader) {
+                        loader.style.opacity = '0';
+                        setTimeout(() => loader.remove(), 800);
+                    }
+                };
+
+                // 마운트 직후 실행
+                const timer = setTimeout(removeLoader, 1500);
 
                 const checkLocation = async () => {
-                    const manualLang = localStorage.getItem('manualLang');
-                    if (manualLang) {
-                        setLang(manualLang);
-                    } else {
-                        try {
-                            const res = await fetch('https://ipapi.co/json/');
+                    try {
+                        const res = await fetch('https://ipapi.co/json/').catch(() => null);
+                        if (res) {
                             const data = await res.json();
-                            if (data.country_code !== 'KR') {
-                                setLang('en');
-                                localStorage.setItem('manualLang', 'en');
-                            }
-                        } catch (e) { console.error("Location check failed", e); }
-                    }
+                            if (data.country_code !== 'KR') setLang('en');
+                        }
+                    } catch (e) { console.error("Location init check failed"); }
                 };
                 checkLocation();
 
-                const audio = new Audio('https://files.catbox.moe/uozrce.mp3');
-                audio.loop = true; audio.crossOrigin = "anonymous";
-                bgMusicRef.current = audio;
-
-                const startAudio = () => { if (isMusicOn && bgMusicRef.current) bgMusicRef.current.play().catch(() => { }); };
-                window.addEventListener('click', startAudio, { once: true });
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, [isMusicOn]);
-
-            const toggleMusic = () => {
-                if (!bgMusicRef.current) return;
-                if (isMusicOn) { bgMusicRef.current.pause(); setIsMusicOn(false); }
-                else { bgMusicRef.current.play().catch(() => { }); setIsMusicOn(true); }
-            };
-
-            const handleTts = async () => {
-                if (isSpeaking) return;
-                setIsSpeaking(true);
-                const prevMusicState = isMusicOn;
-                if (prevMusicState) bgMusicRef.current?.pause();
-                try {
-                    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
-                    const textToSpeak = document.body.innerText.substring(0, 1000);
-                    const response = await ai.models.generateContent({
-                        model: "gemini-2.5-flash-preview-tts",
-                        contents: [{ parts: [{ text: textToSpeak }] }],
-                        config: {
-                            responseModalities: [Modality.AUDIO],
-                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } } },
-                        },
-                    });
-                    const base64 = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-                    if (base64) {
-                        const ctx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
-                        const binary = atob(base64);
-                        const dataInt16 = new Int16Array(new Uint8Array([...binary].map(c => c.charCodeAt(0))).buffer);
-                        const buffer = ctx.createBuffer(1, dataInt16.length, 24000);
-                        const channelData = buffer.getChannelData(0);
-                        for (let i = 0; i < dataInt16.length; i++) channelData[i] = dataInt16[i] / 32768.0;
-                        const source = ctx.createBufferSource();
-                        source.buffer = buffer; source.connect(ctx.destination);
-                        source.onended = () => { setIsSpeaking(false); if (prevMusicState) bgMusicRef.current.play().catch(() => { }); };
-                        source.start();
-                    } else { setIsSpeaking(false); if (prevMusicState) bgMusicRef.current.play().catch(() => { }); }
-                } catch (e) { setIsSpeaking(false); if (prevMusicState) bgMusicRef.current.play().catch(() => { }); }
-            };
+                return () => {
+                    window.removeEventListener('scroll', handleScroll);
+                    clearTimeout(timer);
+                };
+            }, []);
 
             return (
-                <div className="relative z-10">
+                <div className="relative min-h-screen">
                     <InteractiveBackground />
 
-                    {/* Header */}
                     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'py-4 glass-morphism shadow-xl' : 'py-8 bg-transparent'}`}>
                         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
                             <div className="text-2xl font-black gradient-text tracking-tighter">Joe</div>
-                            <div className="flex items-center space-x-6">
-                                {/* 배경음악 기능 - 차후 추가 예정
-                                <button onClick={toggleMusic} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isMusicOn ? 'bg-blue-600/20 text-blue-400' : 'text-slate-500'}`}>
-                                    {isMusicOn ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-4z" /></svg> : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>}
-                                </button>
-                                */}
-                                {/* TTS 기능 - 차후 추가 예정
-                                <button onClick={handleTts} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isSpeaking ? 'bg-purple-600 text-white' : 'text-slate-400'}`}>
-                                    {isSpeaking ? <div className="flex space-x-0.5"><div className="w-1 h-3 bg-white animate-bar"></div><div className="w-1 h-3 bg-white animate-bar [animation-delay:0.2s]"></div><div className="w-1 h-3 bg-white animate-bar [animation-delay:0.4s]"></div></div> : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>}
-                                </button>
-                                */}
-                                <button
-                                    onClick={() => {
-                                        const newLang = lang === 'ko' ? 'en' : 'ko';
-                                        setLang(newLang);
-                                        localStorage.setItem('manualLang', newLang);
-                                    }}
-                                    className="bg-slate-800 hover:bg-slate-700 text-[10px] font-black px-4 py-2 rounded-full uppercase text-slate-300 transition-colors"
-                                >
-                                    {lang === 'ko' ? 'EN' : 'KO'}
-                                </button>
-                            </div>
+                            <button onClick={() => setLang(l => l === 'ko' ? 'en' : 'ko')} className="bg-white/5 hover:bg-white/10 text-[10px] font-black px-4 py-2 rounded-full text-slate-300 border border-white/10">
+                                {lang === 'ko' ? 'ENGLISH' : '한국어'}
+                            </button>
                         </div>
                     </nav>
 
-                    <main className="pt-48">
-                        {/* Hero Section */}
-                        <section className="px-6 text-center max-w-4xl mx-auto mb-32 relative z-10">
+                    <main className="pt-48 relative z-10">
+                        {/* Hero */}
+                        <section className="px-6 text-center max-w-4xl mx-auto mb-32">
                             <h2 className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-6 animate-fadeInUp">{t.hero_subtitle}</h2>
                             <h1 className="text-7xl md:text-9xl font-black mb-12 tracking-tighter text-white animate-fadeInUp" style={{ animationDelay: '0.2s' }}>{t.hero_title}</h1>
                             <p className="text-slate-400 text-lg md:text-xl leading-relaxed mb-12 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>{t.hero_description}</p>
@@ -799,166 +533,111 @@
                             </div>
                         </section>
 
-                        {/* Experience Section */}
-                        <section id="experience" className="py-12 px-6 max-w-7xl mx-auto relative z-10">
-                            <div className="mb-10 text-center">
-                                <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2 block">{TRANSLATIONS[lang].about_label}</p>
-                                <h3 className="text-4xl font-black mb-4 italic uppercase text-white block">{TRANSLATIONS[lang].about_title}</h3>
-                                <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full mb-4"></div>
-                                <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest block">{TRANSLATIONS[lang].exp_hover_hint}</p>
+                        {/* Experience */}
+                        <section id="experience" className="py-24 px-6 max-w-7xl mx-auto">
+                            <div className="mb-16 text-center">
+                                <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2">{t.about_label}</p>
+                                <h3 className="text-4xl font-black mb-4 italic text-white">{t.about_title}</h3>
+                                <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full"></div>
                             </div>
                             <div className="experience-grid">
                                 {visibleExp.map((exp, i) => (
-                                    <div key={i}
-                                        onMouseEnter={(e) => { setHoveredExp(i); setMousePos({ x: e.clientX, y: e.clientY }); }}
-                                        onMouseMove={(e) => setMousePos({ x: e.clientX, y: e.clientY })}
-                                        onMouseLeave={() => setHoveredExp(null)}
-                                        className="group p-10 rounded-[2.5rem] bg-slate-900/40 border border-white/5 hover:border-blue-500/50 transition-all cursor-help relative min-h-[220px] flex flex-col justify-between shadow-xl backdrop-blur-md"
-                                    >
+                                    <div key={i} onMouseEnter={(e) => { setHoveredExp(i); setMousePos({ x: e.clientX, y: e.clientY }); }} onMouseMove={(e) => setMousePos({ x: e.clientX, y: e.clientY })} onMouseLeave={() => setHoveredExp(null)} className="group p-10 rounded-[2.5rem] bg-slate-900/40 border border-white/5 hover:border-blue-500/50 transition-all cursor-help min-h-[220px] flex flex-col justify-between backdrop-blur-md">
                                         <div className="text-left">
                                             <span className="text-[10px] font-black text-blue-400 bg-blue-500/10 px-4 py-1.5 rounded-full mb-6 inline-block uppercase tracking-widest border border-blue-500/20">{exp.period}</span>
-                                            <h4 className="text-2xl font-bold text-white group-hover:text-blue-400 transition-colors leading-tight mb-2">{exp.role}</h4>
-                                            {exp.logo ? (
-                                                <div className="h-7 mb-1 relative flex items-center">
-                                                    <img src={exp.logo} alt={exp.company} className="h-full object-contain object-left bg-white rounded px-2 py-0.5" />
-                                                </div>
-                                            ) : (
-                                                <p className="text-[11px] text-slate-500 font-black uppercase tracking-[0.2em]">{exp.company}</p>
-                                            )}
+                                            <h4 className="text-2xl font-bold text-white mb-2">{exp.role}</h4>
+                                            <p className="text-xs text-slate-500 font-black uppercase tracking-widest">{exp.company}</p>
                                         </div>
-                                        <p className="text-sm text-slate-400 mt-8 italic border-t border-white/5 pt-4 line-clamp-1 text-left">{exp.highlights[0]}</p>
-                                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        <p className="text-sm text-slate-400 mt-8 italic border-t border-white/5 pt-4 line-clamp-1">{exp.highlights[0]}</p>
                                     </div>
                                 ))}
                             </div>
-
-                            <div className="mt-10 text-center">
-                                <button
-                                    onClick={() => setIsExpExpanded(!isExpExpanded)}
-                                    className="px-12 py-5 rounded-full border border-slate-700 bg-slate-900/50 hover:border-blue-500 transition-all group mx-auto flex items-center justify-center space-x-3 shadow-lg"
-                                >
-                                    <span className="text-[11px] font-black uppercase tracking-[0.25em] text-slate-400 group-hover:text-white">
-                                        {isExpExpanded ? t.minimize_history : t.view_history}
-                                    </span>
+                            <div className="mt-12 text-center">
+                                <button onClick={() => setIsExpExpanded(!isExpExpanded)} className="px-12 py-5 rounded-full border border-slate-700 bg-slate-900/50 hover:border-blue-500 transition-all text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-white">
+                                    {isExpExpanded ? t.minimize_history : t.view_history}
                                 </button>
                             </div>
                         </section>
 
-                        {/* Experience Detail Popover */}
-                        {hoveredExp !== null && (
-                            <div className="fixed z-[100] pointer-events-none transition-all duration-100" style={{ left: Math.min(mousePos.x + 25, window.innerWidth - 380), top: Math.min(mousePos.y + 25, window.innerHeight - 380) }}>
-                                <div className="bg-white text-slate-900 p-10 rounded-[3rem] shadow-[0_50px_100px_rgba(0,0,0,0.8)] w-[350px] border-l-[14px] border-blue-600 animate-fadeInUp relative overflow-hidden">
-                                    <div className="absolute top-[-10px] right-[-10px] text-[80px] font-black text-slate-100 select-none opacity-40 leading-none">RESUME</div>
-                                    <div className="relative z-10 text-left">
-                                        <div className="pb-4 border-b border-slate-100 mb-6">
-                                            <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest">{currentExp[hoveredExp].period}</span>
-                                            <h5 className="text-2xl font-black text-slate-950 mt-1 leading-none uppercase tracking-tighter">{currentExp[hoveredExp].company}</h5>
-                                        </div>
-                                        <TypingEffect lines={currentExp[hoveredExp].highlights} />
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Projects Section */}
-                        <section id="projects" className="py-12 px-6 bg-slate-950/40 relative z-10">
+                        {/* Projects */}
+                        <section id="projects" className="py-24 px-6 bg-slate-950/40">
                             <div className="max-w-7xl mx-auto">
-                                <div className="mb-10 text-center">
-                                    <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2 block">{t.projects_label}</p>
-                                    <h3 className="text-4xl md:text-5xl font-black mb-4 tracking-tight text-white uppercase italic block">{t.projects_title}</h3>
-                                    <div className="w-24 h-1.5 bg-blue-600 mx-auto rounded-full mb-6"></div>
-                                    <p className="text-slate-400 max-w-2xl mx-auto text-sm leading-relaxed block">{t.projects_subtitle}</p>
+                                <div className="mb-16 text-center">
+                                    <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2">{t.projects_label}</p>
+                                    <h3 className="text-4xl md:text-5xl font-black mb-4 tracking-tight text-white uppercase italic">{t.projects_title}</h3>
+                                    <p className="text-slate-400 text-sm">{t.projects_subtitle}</p>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                                    {visibleProjects.map(p => (
-                                        <div key={p.id} onClick={() => setActiveVideo(p.videoUrl)} className="group cursor-pointer rounded-3xl overflow-hidden bg-slate-900/60 border border-white/5 hover:border-blue-500/40 transition-all shadow-2xl relative">
+                                    {PROJECTS.map(p => (
+                                        <div key={p.id} onClick={() => setActiveVideo(p.videoUrl)} className="group cursor-pointer rounded-3xl overflow-hidden bg-slate-900/60 border border-white/5 hover:border-blue-500/40 transition-all relative">
                                             <div className="aspect-video relative overflow-hidden">
-                                                <img src={`https://img.youtube.com/vi/${p.videoUrl.split('embed/')[1]}/hqdefault.jpg`} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 opacity-40 group-hover:opacity-100 grayscale group-hover:grayscale-0" alt={p.title} />
-                                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-blue-600/20 backdrop-blur-sm">
-                                                    <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-xl"><svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></div>
-                                                </div>
+                                                <img src={`https://img.youtube.com/vi/${p.videoUrl.split('embed/')[1]}/hqdefault.jpg`} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 opacity-60" alt={p.title} />
+                                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-blue-600/20"><svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></div>
                                             </div>
                                             <div className="p-8 text-left">
-                                                <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest block mb-2">{p.company}</span>
-                                                <h4 className="text-lg font-bold text-white mb-3 leading-tight group-hover:text-blue-400 transition-colors">{p.title}</h4>
-                                                <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2 h-8">{p.description[lang]}</p>
+                                                <span className="text-[10px] font-black text-blue-400 uppercase mb-2 block">{p.company}</span>
+                                                <h4 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">{p.title}</h4>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
-                                <div className="mt-10 text-center">
-                                    <button
-                                        onClick={() => setIsProjExpanded(!isProjExpanded)}
-                                        className="px-12 py-4 rounded-2xl border border-blue-500/20 bg-blue-600/5 hover:bg-blue-600/10 hover:border-blue-500 text-white font-bold text-xs uppercase tracking-widest transition-all mx-auto flex items-center justify-center space-x-3 shadow-lg"
-                                    >
-                                        {isProjExpanded ? t.minimize_history : t.explore_projects}
-                                    </button>
-                                </div>
                             </div>
                         </section>
 
-                        {/* Skills Section */}
-                        <section id="skills" className="py-12 px-6 max-w-7xl mx-auto relative z-10">
-                            <div className="mb-10 text-center">
-                                <p className="text-green-500 font-bold tracking-[0.3em] uppercase mb-2 block">{t.skills_label}</p>
-                                <h3 className="text-4xl font-black mb-4 tracking-tight text-white uppercase block">{t.skills_title}</h3>
-                                <div className="w-20 h-1 bg-green-500 mx-auto rounded-full"></div>
+                        {/* Skills */}
+                        <section id="skills" className="py-24 px-6 max-w-7xl mx-auto">
+                            <div className="mb-16 text-center">
+                                <p className="text-green-500 font-bold tracking-[0.3em] uppercase mb-2">{t.skills_label}</p>
+                                <h3 className="text-4xl font-black mb-4 text-white uppercase">{t.skills_title}</h3>
                             </div>
                             <div className="grid md:grid-cols-3 gap-12">
                                 {SKILLS.map((s, i) => (
-                                    <div key={i} className="p-12 rounded-[3.5rem] bg-slate-900/30 border border-white/5 backdrop-blur-sm shadow-inner transition-all hover:bg-slate-900/50 text-left">
-                                        <h4 className="text-[11px] font-black uppercase text-blue-400 mb-10 tracking-[0.3em] pb-4 border-b border-white/5">{s.category}</h4>
+                                    <div key={i} className="p-12 rounded-[3.5rem] bg-slate-900/30 border border-white/5 backdrop-blur-sm">
+                                        <h4 className="text-[11px] font-black uppercase text-blue-400 mb-8 tracking-widest pb-4 border-b border-white/5">{s.category}</h4>
                                         <div className="flex flex-wrap gap-3">
-                                            {s.items.map((item, j) => <span key={j} className="px-5 py-2.5 bg-white/5 rounded-2xl text-[12px] font-bold text-slate-400 border border-white/5 hover:text-white hover:bg-blue-600/20 transition-all">{item}</span>)}
+                                            {s.items.map((item, j) => <span key={j} className="px-4 py-2 bg-white/5 rounded-xl text-[12px] font-bold text-slate-400">{item}</span>)}
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </section>
 
-                        {/* AI Gallery - Infinite Flow Implementation */}
-                        <GallerySection t={t} onImageSelect={setSelectedImage} />
+                        <GallerySection t={t} onImageSelect={() => { }} />
                     </main>
 
-                    {/* Footer */}
-                    <footer className="py-24 border-t border-white/5 bg-slate-950 text-center relative overflow-hidden z-10">
-                        <div className="text-3xl font-black gradient-text mb-10 tracking-tighter">Joe</div>
-                        <div className="flex justify-center space-x-12 mb-16 text-[11px] font-black text-slate-500 uppercase tracking-widest">
-                            <a href="mailto:mrs86@naver.com" className="hover:text-blue-400 transition-colors">mrs86@naver.com</a>
-                            <a href="tel:010-3366-4848" className="hover:text-blue-400 transition-colors">010-3366-4848</a>
+                    {/* Popover */}
+                    {hoveredExp !== null && (
+                        <div className="fixed z-[100] pointer-events-none" style={{ left: Math.min(mousePos.x + 20, window.innerWidth - 320), top: Math.min(mousePos.y + 20, window.innerHeight - 300) }}>
+                            <div className="bg-white p-10 rounded-[3rem] w-[300px] border-l-[10px] border-blue-600 shadow-2xl animate-fadeInUp">
+                                <TypingEffect lines={currentExp[hoveredExp].highlights} />
+                            </div>
                         </div>
-                        <p className="text-[10px] text-slate-700 font-bold uppercase tracking-[0.4em] mb-12 max-w-xl mx-auto px-6">{t.footer_text}</p>
-                        <div className="opacity-20"><span className="text-[9px] font-mono border border-slate-800 px-6 py-2 rounded-full uppercase tracking-[0.5em]">System Ver. 1.0</span></div>
+                    )}
+
+                    <footer className="py-24 border-t border-white/5 bg-slate-950 text-center relative z-10">
+                        <div className="text-3xl font-black gradient-text mb-8">Joe</div>
+                        <p className="text-[10px] text-slate-600 font-bold uppercase tracking-[0.4em] mb-4">{t.footer_text}</p>
+                        <p className="text-[9px] text-slate-800 font-mono">System Ver. 1.0 (Babel Unified)</p>
                     </footer>
 
-                    {/* Video Modal */}
                     {activeVideo && (
-                        <div className="fixed inset-0 z-[200] flex items-center justify-center p-8 bg-black/95 backdrop-blur-3xl animate-fadeIn" onClick={() => setActiveVideo(null)}>
-                            <div className="relative w-full max-w-5xl aspect-video rounded-[3.5rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,1)] border border-white/10 ring-1 ring-white/20 animate-zoomIn bg-black">
-                                <button onClick={() => setActiveVideo(null)} className="absolute top-8 right-8 z-[210] text-white/50 hover:text-white transition-colors"><svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg></button>
-                                <iframe src={`${activeVideo}?autoplay=1&rel=0`} className="w-full h-full" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe>
+                        <div className="fixed inset-0 z-[200] flex items-center justify-center p-8 bg-black/95 backdrop-blur-xl animate-fadeIn" onClick={() => setActiveVideo(null)}>
+                            <div className="relative w-full max-w-5xl aspect-video rounded-3xl overflow-hidden bg-black shadow-2xl border border-white/10">
+                                <iframe src={`${activeVideo}?autoplay=1`} className="w-full h-full" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe>
                             </div>
                         </div>
                     )}
 
-                    {/* Image Gallery Modal */}
-                    {selectedImage && (
-                        <div className="fixed inset-0 z-[300] flex items-center justify-center p-8 bg-black/98 backdrop-blur-3xl animate-fadeIn cursor-zoom-out" onClick={() => setSelectedImage(null)}>
-                            <div className="relative max-w-7xl max-h-full">
-                                <button onClick={() => setSelectedImage(null)} className="absolute -top-12 right-0 text-white/50 hover:text-white transition-colors"><svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg></button>
-                                <img src={selectedImage} className="max-w-full max-h-[85vh] rounded-3xl shadow-2xl border border-white/10 animate-zoomIn object-contain" alt="Gallery Zoomed" />
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Portrait Restoration */}
                     <Portrait />
                 </div>
             );
         };
 
-        const root = createRoot(document.getElementById('root'));
-        root.render(<App />);
+        const rootElement = document.getElementById('root');
+        if (rootElement) {
+            const root = createRoot(rootElement);
+            root.render(<App />);
+        }
     </script>
 </body>
 
