@@ -421,58 +421,179 @@
         };
 
         const GallerySection = ({ t, onImageSelect }) => {
+            const [isDragging, setIsDragging] = useState(false);
+            const [containerWidth, setContainerWidth] = useState(window.innerWidth);
             const [currentIndex, setCurrentIndex] = useState(0);
-            const scrollRef = useRef(0);
-            const containerRef = useRef(null);
+
+            const ITEM_SPACING = 250;
+            const TOTAL_ITEMS = GALLERY_ITEMS.length;
+            const TOTAL_WIDTH = TOTAL_ITEMS * ITEM_SPACING;
+
+            const scrollRef = useRef(Math.floor(Math.random() * TOTAL_ITEMS) * ITEM_SPACING);
             const itemsRef = useRef([]);
-            const ITEM_SPACING = 350;
+            const containerRef = useRef(null);
+            const sliderRef = useRef(null);
+            const requestRef = useRef();
+            const dragStartRef = useRef(0);
+            const lastDragPosRef = useRef(0);
+            const autoPlayRef = useRef(true);
 
             useEffect(() => {
-                const animate = () => {
-                    scrollRef.current += 1;
-                    const totalWidth = GALLERY_ITEMS.length * ITEM_SPACING;
-                    if (scrollRef.current >= totalWidth) scrollRef.current = 0;
-
-                    const centerX = window.innerWidth / 2;
-                    itemsRef.current.forEach((el, i) => {
-                        if (!el) return;
-                        let itemPos = i * ITEM_SPACING - scrollRef.current;
-                        while (itemPos > totalWidth / 2) itemPos -= totalWidth;
-                        while (itemPos < -totalWidth / 2) itemPos += totalWidth;
-
-                        const dist = Math.abs(itemPos);
-                        const isCenter = dist < ITEM_SPACING / 2;
-                        const scale = isCenter ? 1.4 : 0.8;
-                        const opacity = Math.max(0.1, 1 - dist / (ITEM_SPACING * 2));
-                        const zIndex = 1000 - Math.floor(dist);
-
-                        el.style.transform = `translate3d(${centerX + itemPos}px, -50%, ${-dist}px) scale(${scale})`;
-                        el.style.zIndex = zIndex;
-                        el.style.opacity = opacity;
-                    });
-                    requestAnimationFrame(animate);
-                };
-                requestAnimationFrame(animate);
+                const handleResize = () => setContainerWidth(window.innerWidth);
+                window.addEventListener('resize', handleResize);
+                return () => window.removeEventListener('resize', handleResize);
             }, []);
 
+            const updateGallery = () => {
+                if (!containerRef.current) return;
+                const scrollPos = scrollRef.current;
+                const centerX = containerWidth / 2;
+
+                itemsRef.current.forEach((el, i) => {
+                    if (!el) return;
+                    const itemBasePos = i * ITEM_SPACING;
+                    let diff = itemBasePos - scrollPos;
+
+                    while (diff > TOTAL_WIDTH / 2) diff -= TOTAL_WIDTH;
+                    while (diff < -TOTAL_WIDTH / 2) diff += TOTAL_WIDTH;
+
+                    const distParam = diff / (ITEM_SPACING * 1.5);
+                    const absDist = Math.abs(distParam);
+                    const isCenter = Math.abs(diff) < ITEM_SPACING / 2;
+
+                    const x = centerX + diff;
+                    const z = Math.max(-2000, -absDist * 600);
+                    const rotateY = Math.max(-75, Math.min(75, distParam * -60));
+                    const scale = isCenter ? 1.4 : 0.9;
+                    const opacity = Math.max(0, 1 - absDist * 0.4);
+                    const zIndex = Math.floor(1000 - absDist * 100);
+
+                    el.style.transform = `translate3d(${x}px, -50%, ${z}px) rotateY(${rotateY}deg) scale(${scale})`;
+                    el.style.zIndex = zIndex;
+                    el.style.opacity = opacity;
+
+                    const content = el.querySelector('.item-content');
+                    if (content) {
+                        content.style.filter = isCenter ? 'brightness(1.1)' : 'brightness(0.5)';
+                        content.style.boxShadow = isCenter ? 'none' : '0 0 50px rgba(37,99,235,0.3)';
+                    }
+
+                    const sketch = el.querySelector('.sketch-img');
+                    const result = el.querySelector('.result-img');
+                    if (sketch) sketch.style.opacity = isCenter ? '0' : '100';
+                    if (result) result.style.opacity = isCenter ? '100' : '0';
+
+                    const info = el.querySelector('.item-info');
+                    if (info) info.style.opacity = isCenter ? '1' : '0';
+                });
+
+                const rawIdx = Math.round((scrollPos % TOTAL_WIDTH) / ITEM_SPACING);
+                const normIdx = (rawIdx + TOTAL_ITEMS) % TOTAL_ITEMS;
+                if (normIdx !== currentIndex) {
+                    setCurrentIndex(normIdx);
+                    if (sliderRef.current) sliderRef.current.value = normIdx;
+                }
+            };
+
+            const animate = () => {
+                if (!isDragging && autoPlayRef.current) {
+                    scrollRef.current += 1;
+                    updateGallery();
+                }
+                requestRef.current = requestAnimationFrame(animate);
+            };
+
+            useEffect(() => {
+                requestRef.current = requestAnimationFrame(animate);
+                return () => cancelAnimationFrame(requestRef.current);
+            }, [isDragging, containerWidth]);
+
+            const handleMouseDown = (e) => {
+                setIsDragging(true);
+                autoPlayRef.current = false;
+                dragStartRef.current = e.clientX;
+                lastDragPosRef.current = scrollRef.current;
+            };
+
+            const handleMouseMove = (e) => {
+                if (!isDragging) return;
+                const delta = dragStartRef.current - e.clientX;
+                scrollRef.current = lastDragPosRef.current + delta;
+                updateGallery();
+            };
+
+            const handleMouseUp = () => {
+                setIsDragging(false);
+                autoPlayRef.current = true;
+                let normalized = scrollRef.current % TOTAL_WIDTH;
+                if (normalized < 0) normalized += TOTAL_WIDTH;
+                scrollRef.current = normalized;
+            };
+
+            const handleSliderChange = (e) => {
+                const idx = parseInt(e.target.value);
+                scrollRef.current = idx * ITEM_SPACING;
+                updateGallery();
+            };
+
             return (
-                <section id="gallery" className="w-full h-[800px] py-24 bg-slate-950/80 overflow-hidden relative z-10 select-none">
-                    <div className="max-w-7xl mx-auto mb-12 text-center px-6">
-                        <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2">{t.gallery_label}</p>
-                        <h3 className="text-5xl font-black mb-4 italic uppercase text-white tracking-tighter">{t.gallery_title}</h3>
+                <section id="gallery" className="w-full h-[1000px] py-24 bg-slate-950/80 overflow-hidden relative z-10 select-none flex flex-col items-center">
+                    <style>{`
+                        .transform-style-3d { transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
+                        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+                        .perspective-container { perspective: 2000px; -webkit-perspective: 2000px; }
+                    `}</style>
+                    <div className="max-w-7xl mx-auto mb-4 text-center px-6">
+                        <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2 block">{t.gallery_label}</p>
+                        <h3 className="text-5xl font-black mb-4 italic uppercase text-white tracking-tighter block">{t.gallery_title}</h3>
                         <div className="w-24 h-2 bg-blue-600 rounded-full mx-auto mb-6"></div>
-                        <p className="text-slate-400 max-w-2xl mx-auto text-base leading-relaxed">{t.gallery_description}</p>
+                        <p className="text-slate-400 max-w-2xl mx-auto text-base leading-relaxed block">{t.gallery_description}</p>
                     </div>
 
-                    <div className="relative w-full h-[500px]" style={{ perspective: '2000px' }}>
-                        <div ref={containerRef} className="absolute inset-0">
+                    <div className="max-w-xl w-full px-10 relative z-50 flex items-center gap-6 mb-2">
+                        <span className="text-xs font-black text-blue-500 w-12 text-right">{String(currentIndex + 1).padStart(2, '0')}</span>
+                        <input
+                            ref={sliderRef}
+                            type="range"
+                            min="0"
+                            max={TOTAL_ITEMS - 1}
+                            step="1"
+                            defaultValue={currentIndex}
+                            onChange={handleSliderChange}
+                            className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-150 relative z-50"
+                        />
+                        <span className="text-xs font-black text-slate-600 w-12 text-left">{String(TOTAL_ITEMS).padStart(2, '0')}</span>
+                    </div>
+
+                    <div
+                        className="w-full h-[600px] relative perspective-container cursor-grab active:cursor-grabbing"
+                        onMouseDown={handleMouseDown}
+                        onMouseMove={handleMouseMove}
+                        onMouseUp={handleMouseUp}
+                        onMouseLeave={handleMouseUp}
+                    >
+                        <div ref={containerRef} className="absolute top-0 left-0 w-full h-full transform-style-3d">
                             {GALLERY_ITEMS.map((item, i) => (
-                                <div key={item.id} ref={el => itemsRef.current[i] = el} className="absolute top-1/2 left-0 w-[400px] aspect-video -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-linear">
-                                    <div className="w-full h-full rounded-3xl overflow-hidden border border-white/10 bg-slate-900 shadow-2xl relative group">
-                                        <img src={item.sketch} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-0 group-hover:opacity-100" alt="Sketch" />
-                                        <img src={item.result} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-100 group-hover:opacity-0" alt="Result" />
-                                        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                                            <h5 className="text-white text-lg font-bold">{item.name}</h5>
+                                <div
+                                    key={item.id}
+                                    ref={el => itemsRef.current[i] = el}
+                                    className="absolute top-1/2 left-0 w-[320px] aspect-[4/5] -translate-x-1/2 -translate-y-1/2 transition-none will-change-transform transform-style-3d backface-hidden"
+                                    onClick={() => {
+                                        const diff = (i * ITEM_SPACING - scrollRef.current + TOTAL_WIDTH / 2) % TOTAL_WIDTH - TOTAL_WIDTH / 2;
+                                        if (Math.abs(diff) < ITEM_SPACING / 2) {
+                                            onImageSelect(item.result);
+                                        } else {
+                                            scrollRef.current = i * ITEM_SPACING;
+                                            updateGallery();
+                                        }
+                                    }}
+                                >
+                                    <div className="item-content w-full h-full rounded-[2rem] overflow-hidden border border-white/5 bg-slate-900 relative group transition-all duration-300 transform-style-3d backface-hidden">
+                                        <img src={item.sketch} className="sketch-img absolute inset-0 w-full h-full object-cover bg-black/50 transition-opacity duration-300" alt="Sketch" />
+                                        <img src={item.result} className="result-img absolute inset-0 w-full h-full object-cover bg-black/50 transition-opacity duration-300" alt="Result" />
+                                        <div className="item-info absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/90 to-transparent transition-opacity duration-300 opacity-0 pointer-events-none">
+                                            <span className="px-3 py-1 bg-blue-600 text-white text-[10px] font-black uppercase rounded-full tracking-widest mb-2 inline-block">AI Enhanced</span>
+                                            <h5 className="text-white text-xl font-bold">{item.name}</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -487,6 +608,7 @@
             const [lang, setLang] = useState('ko');
             const [scrolled, setScrolled] = useState(false);
             const [activeVideo, setActiveVideo] = useState(null);
+            const [selectedImage, setSelectedImage] = useState(null);
             const [hoveredExp, setHoveredExp] = useState(null);
             const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
             const [isExpExpanded, setIsExpExpanded] = useState(false);
@@ -622,8 +744,18 @@
                             </div>
                         </section>
 
-                        <GallerySection t={t} onImageSelect={() => { }} />
+                        <GallerySection t={t} onImageSelect={setSelectedImage} />
                     </main>
+
+                    {/* Image Gallery Modal */}
+                    {selectedImage && (
+                        <div className="fixed inset-0 z-[300] flex items-center justify-center p-8 bg-black/98 backdrop-blur-3xl animate-fadeIn cursor-zoom-out" onClick={() => setSelectedImage(null)}>
+                            <div className="relative max-w-7xl max-h-full">
+                                <button onClick={() => setSelectedImage(null)} className="absolute -top-12 right-0 text-white/50 hover:text-white transition-colors"><svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg></button>
+                                <img src={selectedImage} className="max-w-full max-h-[85vh] rounded-3xl shadow-2xl border border-white/10 animate-zoomIn object-contain" alt="Gallery Zoomed" />
+                            </div>
+                        </div>
+                    )}
 
                     {/* Popover */}
                     {hoveredExp !== null && (
