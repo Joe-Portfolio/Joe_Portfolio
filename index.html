@@ -855,12 +855,12 @@
                                 {[...Array(9)].map((_, i) => (
                                     <div
                                         key={i}
-                                        onClick={() => onImageSelect(`./components/images/projects/project_${activeTab}_${i + 1}.png`)}
+                                        onClick={() => onImageSelect(`./components/images/Project/${activeTab}/${String(i + 1).padStart(2, '0')}.png`)}
                                         style={{ animationDelay: `${i * 0.05}s` }}
                                         className="aspect-square rounded-xl bg-slate-900 border border-white/5 overflow-hidden cursor-zoom-in hover:border-blue-500/50 transition-all group animate-zoomIn"
                                     >
                                         <img
-                                            src={`./components/images/projects/project_${activeTab}_${i + 1}.png`}
+                                            src={`./components/images/Project/${activeTab}/${String(i + 1).padStart(2, '0')}.png`}
                                             alt={`Project ${activeTab} Screen ${i + 1}`}
                                             className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity"
                                             onError={(e) => { e.target.src = 'https://via.placeholder.com/400x400/0f172a/3b82f6?text=Screenshot+' + (i + 1); }}
