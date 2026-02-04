@@ -36,6 +36,8 @@
             padding: 0;
             overflow-x: hidden;
             scroll-behavior: smooth;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         .glass-morphism {
@@ -143,6 +145,53 @@
             animation: gradient 5s ease infinite;
         }
 
+        /* Responsive Breakpoints & 4K Optimization */
+        @media (min-width: 2560px) {
+            .max-w-7xl {
+                max-width: 1800px;
+            }
+
+            .max-w-4xl {
+                max-width: 1400px;
+            }
+
+            html {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 832px) {
+            .text-7xl {
+                font-size: 3.5rem;
+            }
+
+            .text-9xl {
+                font-size: 4.5rem;
+            }
+
+            .px-6 {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .py-24 {
+                padding-top: 4rem;
+                padding-bottom: 4rem;
+            }
+
+            /* AI Project Taps Mobile */
+            #ai-projects .flex-shrink-0 {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+                font-size: 0.75rem;
+            }
+
+            /* AI Project Grid Mobile */
+            .ai-project-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+
         @keyframes zoomIn {
             from {
                 opacity: 0;
@@ -248,44 +297,42 @@
                 about_label: "About Me",
                 about_title: "10년+ 경력의 게임 기획 전문가",
                 exp_hover_hint: "상세 내용 확인을 위해 마우스를 올리세요",
-                projects_label: "PORTFOLIO REEL",
+                projects_label: "Selected Projects",
                 projects_title: "주요 프로젝트 영상",
-                projects_subtitle: "핵심 프로젝트 런칭 영상입니다. 클릭하여 상세 내용을 확인하세요.",
-                skills_label: "TECHNICAL STACK",
-                skills_title: "기술 및 역량",
-                gallery_label: "CREATIVE PIPELINE",
-                gallery_title: "AI Creative Workflow",
-                gallery_description: "직접 드로잉한 스케치를 생성형 AI로 리터칭하여 시각화 퀄리티를 극대화하는 과정입니다.",
-                gallery_label_sketch: "Sketch",
-                gallery_label_ai: "AI Enhanced",
-                footer_text: "위의 모든 기재사항은 사실과 다름없음을 확인합니다. 작성자 조현우.",
+                projects_subtitle: "기획 및 서비스 관점에서 참여한 주요 프로젝트들의 실제 구동 영상입니다.",
+                skills_label: "Tech Stack",
+                skills_title: "전문 분야 및 역량",
                 view_history: "전체 경력 보기",
-                minimize_history: "경력 요약하기",
-                explore_projects: "더 많은 프로젝트 보기"
+                minimize_history: "간략히 보기",
+                explore_projects: "프로젝트 더보기",
+                gallery_label: "Creative Work",
+                gallery_title: "생성형 AI를 활용한 비쥬얼 노벨 아트워크",
+                gallery_description: "Stable Diffusion 및 Midjourney를 활용하여 기획 의도에 맞게 생성된 이미지들입니다. 실제 게임 엔진에 탑재되어 서비스 가능한 수준의 퀄리티를 지향합니다.",
+                footer_text: "© 2026 Joe-Portfolio. All Rights Reserved.",
+                close: "닫기"
             },
             en: {
                 nav_home: "Home", nav_experience: "Experience", nav_projects: "Projects", nav_skills: "Skills",
-                hero_title: "Hyunwoo Cho", hero_subtitle: "Senior Game Planner & Service Manager",
-                hero_description: "Expert with 10+ years in game and application planning. Specialized in global launches and operations for VR, Mobile, and PC platforms. Leading planning innovation with Generative AI.",
-                view_experience: "View Detailed Career",
-                view_portfolio_video: "View Portfolio Reel",
+                hero_title: "Joe Cho", hero_subtitle: "Senior Game Designer & Service Manager",
+                hero_description: "Extensive experience in the game industry over 10 years. Expert in global service launching and operations for VR, Mobile, and PC platforms, leading innovation with Generative AI.",
+                view_experience: "View History",
+                view_portfolio_video: "Watch Portfolio",
                 about_label: "About Me",
-                about_title: "10+ Years Expert Game Planner",
-                exp_hover_hint: "Hover over for full details",
-                projects_label: "PORTFOLIO REEL",
-                projects_title: "Featured Projects",
-                projects_subtitle: "Core project showcases. Click to watch detailed videos.",
-                skills_label: "TECHNICAL STACK",
-                skills_title: "Skills & Expertise",
-                gallery_label: "CREATIVE PIPELINE",
-                gallery_title: "AI Creative Workflow",
-                gallery_description: "Maximizing visualization quality by retouching hand-drawn sketches with Generative AI.",
-                gallery_label_sketch: "Sketch",
-                gallery_label_ai: "AI Enhanced",
-                footer_text: "I confirm that all information provided is true. Author: Hyunwoo Cho.",
-                view_history: "Full Career History",
-                minimize_history: "Show Less",
-                explore_projects: "Explore All Projects"
+                about_title: "Game Design Expert with 10+ Years",
+                exp_hover_hint: "Hover to see details",
+                projects_label: "Selected Projects",
+                projects_title: "Key Project Videos",
+                projects_subtitle: "Actual footage of key projects participated from planning and service perspectives.",
+                skills_label: "Tech Stack",
+                skills_title: "Professional Skills",
+                view_history: "View Full History",
+                minimize_history: "View Less",
+                explore_projects: "Explore More",
+                gallery_label: "Creative Work",
+                gallery_title: "Visual Novel Artwork with Generative AI",
+                gallery_description: "Images generated using Stable Diffusion and Midjourney to align with planning intents. Aiming for production-ready quality integrated into game engines.",
+                footer_text: "© 2026 Joe-Portfolio. All Rights Reserved.",
+                close: "Close"
             }
         };
 
@@ -778,9 +825,9 @@
                         ))}
                     </div>
 
-                    <div key={activeTab} className="grid lg:grid-cols-2 gap-16 animate-fadeIn">
+                    <div key={activeTab} className="grid lg:grid-cols-2 gap-12 lg:gap-16 animate-fadeIn">
                         <div>
-                            <div className="ai-project-grid mb-8">
+                            <div className="ai-project-grid gap-3 lg:gap-4 mb-8">
                                 {[...Array(9)].map((_, i) => (
                                     <div
                                         key={i}
@@ -798,19 +845,19 @@
                                 ))}
                             </div>
 
-                            <div className="flex gap-4 items-center">
-                                <span className="text-white font-bold">{project.linkText}</span>
+                            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                                <span className="text-white font-bold text-sm lg:text-base">{project.linkText}</span>
                                 {project.isDownload ? (
-                                    <a href={project.linkUrl} download className="px-6 py-2 bg-slate-800 text-blue-400 rounded-full font-bold text-xs hover:bg-slate-700 transition-all border border-blue-500/20">Download PDF</a>
+                                    <a href={project.linkUrl} download className="px-6 py-2 bg-slate-800 text-blue-400 rounded-full font-bold text-[10px] lg:text-xs hover:bg-slate-700 transition-all border border-blue-500/20">Download PDF</a>
                                 ) : (
-                                    <a href={project.linkUrl} target="_blank" className="px-6 py-2 bg-slate-800 text-blue-400 rounded-full font-bold text-xs hover:bg-slate-700 transition-all border border-blue-500/20">{project.linkUrl}</a>
+                                    <a href={project.linkUrl} target="_blank" className="px-6 py-2 bg-slate-800 text-blue-400 rounded-full font-bold text-[10px] lg:text-xs hover:bg-slate-700 transition-all border border-blue-500/20 truncate max-w-full">{project.linkUrl}</a>
                                 )}
                             </div>
                         </div>
 
-                        <div className="space-y-8">
-                            <h4 className="text-3xl font-black text-white leading-tight">{project.name}</h4>
-                            <div className="p-8 rounded-3xl bg-slate-900/60 border border-white/5 backdrop-blur-md">
+                        <div className="space-y-6 lg:space-y-8">
+                            <h4 className="text-2xl lg:text-3xl font-black text-white leading-tight">{project.name}</h4>
+                            <div className="p-6 lg:p-8 rounded-3xl bg-slate-900/60 border border-white/5 backdrop-blur-md">
                                 <div className="space-y-4">
                                     <p className="text-blue-400 font-bold mb-4">Work Days : {project.workDays}</p>
                                     <ul className="space-y-2">
