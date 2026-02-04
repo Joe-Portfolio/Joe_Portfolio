@@ -220,13 +220,22 @@
             }
         }
 
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
         }
 
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #60a5fa;
         }
 
         @keyframes slideUp {
@@ -306,7 +315,7 @@
                 minimize_history: "간략히 보기",
                 explore_projects: "프로젝트 더보기",
                 gallery_label: "Creative Work",
-                gallery_title: "생성형 AI를 활용한 비쥬얼 노벨 아트워크",
+                gallery_title: "생성형 AI를 활용한 아트워크",
                 gallery_description: "Stable Diffusion 및 Midjourney를 활용하여 기획 의도에 맞게 생성된 이미지들입니다. 실제 게임 엔진에 탑재되어 서비스 가능한 수준의 퀄리티를 지향합니다.",
                 footer_text: "© 2026 Joe-Portfolio. All Rights Reserved.",
                 close: "닫기"
@@ -478,9 +487,14 @@
                 return () => { clearInterval(interval); clearTimeout(initialTimeout); };
             }, []);
             return (
-                <div className={`fixed bottom-0 right-0 z-0 w-[40vw] min-w-[300px] pointer-events-none transition-all duration-[3000ms] ease-out transform ${visible ? 'translate-y-0 opacity-80' : 'translate-y-12 opacity-0'}`}>
-                    <div className="relative overflow-visible">
-                        <img src="./components/images/chohw/조현우 상반신.png" alt="Joe" className="w-full h-auto object-contain [mask-image:linear-gradient(to_left,black_60%,transparent_100%)] [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)] filter drop-shadow(0 0 40px rgba(59,130,246,0.3))" />
+                <div className={`fixed bottom-0 right-0 z-0 w-[30vw] min-w-[300px] pointer-events-none transition-all duration-[3000ms] ease-out transform ${visible ? 'translate-y-0 opacity-80' : 'translate-y-12 opacity-0'}`}>
+                    <div className="relative overflow-visible group">
+                        <img
+                            src="./components/images/chohw/조현우 상반신.png"
+                            alt="Joe"
+                            className="w-full h-auto object-contain [mask-image:linear-gradient(to_left,black_60%,transparent_100%)] [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)] filter drop-shadow(0 0 40px rgba(59,130,246,0.3))"
+                        />
+                        {/* Animated Gradient Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-transparent animate-gradient mix-blend-overlay opacity-40"></div>
                     </div>
                 </div>
@@ -771,25 +785,33 @@
         const AIProjectSection = ({ onImageSelect }) => {
             const [activeTab, setActiveTab] = useState('A');
             const [isDragging, setIsDragging] = useState(false);
+            const [hasMoved, setHasMoved] = useState(false);
             const scrollRef = useRef(null);
             const startX = useRef(0);
             const scrollLeft = useRef(0);
 
             const handleMouseDown = (e) => {
                 setIsDragging(true);
+                setHasMoved(false);
                 startX.current = e.pageX - scrollRef.current.offsetLeft;
                 scrollLeft.current = scrollRef.current.scrollLeft;
             };
 
             const handleMouseLeave = () => setIsDragging(false);
-            const handleMouseUp = () => setIsDragging(false);
+            const handleMouseUp = () => {
+                setTimeout(() => setIsDragging(false), 50);
+            };
 
             const handleMouseMove = (e) => {
                 if (!isDragging) return;
-                e.preventDefault();
                 const x = e.pageX - scrollRef.current.offsetLeft;
-                const walk = (x - startX.current) * 2;
+                const walk = (x - startX.current) * 1.5;
+                if (Math.abs(walk) > 5) setHasMoved(true);
                 scrollRef.current.scrollLeft = scrollLeft.current - walk;
+            };
+
+            const handleTabClick = (id) => {
+                if (!hasMoved) setActiveTab(id);
             };
 
             const project = AI_PROJECTS.find(p => p.id === activeTab);
@@ -802,27 +824,29 @@
                         <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full"></div>
                     </div>
 
-                    <div
-                        ref={scrollRef}
-                        onMouseDown={handleMouseDown}
-                        onMouseLeave={handleMouseLeave}
-                        onMouseUp={handleMouseUp}
-                        onMouseMove={handleMouseMove}
-                        className="flex gap-4 overflow-x-auto pb-8 mb-12 hide-scrollbar cursor-grab active:cursor-grabbing select-none snap-x"
-                    >
-                        {AI_PROJECTS.map((p, idx) => (
-                            <button
-                                key={p.id}
-                                onClick={() => setActiveTab(p.id)}
-                                style={{ animationDelay: `${idx * 0.1}s` }}
-                                className={`flex-shrink-0 px-8 py-4 rounded-full font-black text-sm tracking-widest transition-all snap-start animate-slideUp ${activeTab === p.id
-                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30 ring-2 ring-blue-400'
-                                    : 'bg-slate-900 text-slate-500 hover:text-white border border-white/5'
-                                    }`}
-                            >
-                                Project {p.id}
-                            </button>
-                        ))}
+                    <div className="relative mb-12">
+                        <div
+                            ref={scrollRef}
+                            onMouseDown={handleMouseDown}
+                            onMouseLeave={handleMouseLeave}
+                            onMouseUp={handleMouseUp}
+                            onMouseMove={handleMouseMove}
+                            className="flex gap-4 overflow-x-auto py-6 px-2 custom-scrollbar cursor-grab active:cursor-grabbing select-none snap-x scroll-smooth"
+                        >
+                            {AI_PROJECTS.map((p, idx) => (
+                                <button
+                                    key={p.id}
+                                    onClick={() => handleTabClick(p.id)}
+                                    style={{ animationDelay: `${idx * 0.1}s` }}
+                                    className={`flex-shrink-0 px-8 py-4 rounded-full font-black text-sm tracking-widest transition-all snap-start animate-slideUp ${activeTab === p.id
+                                        ? 'bg-blue-600 text-white shadow-xl shadow-blue-600/40 ring-4 ring-blue-500/30'
+                                        : 'bg-slate-900/50 text-slate-500 hover:text-white border border-white/5'
+                                        }`}
+                                >
+                                    Project {p.id}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
                     <div key={activeTab} className="grid lg:grid-cols-2 gap-12 lg:gap-16 animate-fadeIn">
