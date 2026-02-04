@@ -318,7 +318,12 @@
                 gallery_title: "생성형 AI를 활용한 아트워크",
                 gallery_description: "Stable Diffusion 및 Midjourney를 활용하여 기획 의도에 맞게 생성된 이미지들입니다. 실제 게임 엔진에 탑재되어 서비스 가능한 수준의 퀄리티를 지향합니다.",
                 footer_text: "© 2026 Joe-Portfolio. All Rights Reserved.",
-                close: "닫기"
+                close: "닫기",
+                ai_project_title: "바이브 코딩, 프로토 제작, 사업 제안",
+                work_days: "작업 기간",
+                details_label: "주요 작업 내역",
+                next_updates: "향후 업데이트 방향",
+                download_pdf: "제안서 다운로드"
             },
             en: {
                 nav_home: "Home", nav_experience: "Experience", nav_projects: "Projects", nav_skills: "Skills",
@@ -338,10 +343,15 @@
                 minimize_history: "View Less",
                 explore_projects: "Explore More",
                 gallery_label: "Creative Work",
-                gallery_title: "Visual Novel Artwork with Generative AI",
+                gallery_title: "Artwork with Generative AI",
                 gallery_description: "Images generated using Stable Diffusion and Midjourney to align with planning intents. Aiming for production-ready quality integrated into game engines.",
                 footer_text: "© 2026 Joe-Portfolio. All Rights Reserved.",
-                close: "Close"
+                close: "Close",
+                ai_project_title: "Vibe Coding, Prototyping, Business Proposal",
+                work_days: "Working Day",
+                details_label: "Key Details",
+                next_updates: "Future Updates",
+                download_pdf: "Download Proposal"
             }
         };
 
@@ -394,85 +404,166 @@
             };
         });
 
-        const AI_PROJECTS = [
-            {
-                id: 'A',
-                name: 'The Legacy Of The Triple A_괴도 트리플 A의 유산',
-                linkText: '게임 플레이',
-                linkUrl: 'https://hwcho1986.github.io/The_Legacy_Of_The_Triple_A/',
-                workDays: '10~15일(Ver.프로토)',
-                details: [
-                    '기획 및 스토리 집필',
-                    'Gemimi를 이용하여 웹 비쥬얼 노벨 엔진 구현',
-                    'Nano Banana를 이용하여 이미지 리소스 제작',
-                    'Suno를 이용하여 사운드 및 OST 제작',
-                    'Google Sheet를 이용하여 데이터 테이블 관리'
-                ],
-                updates: [
-                    'ChatGPT를 이용하여 국가별 언어 대응',
-                    'TTS를 이용하여 캐릭터 목소리 삽입',
-                    '웹 비쥬얼 노벨 엔진 연출 타입 추가 및 애니메이션 효과 제작',
-                    '효과음 및 환경음 삽입',
-                    '이미지 디테일 업',
-                    '백엔드 제작 및 로그 삽입',
-                    '플레이 타임 및 이탈율 체크',
-                    '퀴즈 난도 및 힌트 재정리',
-                    '구글 로그인을 구현하고 계정별 세이브 데이터 구현, 스킵 구현 등'
-                ]
-            },
-            {
-                id: 'L',
-                name: '모바일 청첩장 플랫폼',
-                linkText: '모바일 청첩장 보러가기',
-                linkUrl: 'https://highhighcouple.github.io/Wedding_Invitation/',
-                downloadText: '사업화 제안',
-                downloadUrl: './components/Documents/The_Custom_Wedding_Build.pdf',
-                workDays: '3일(Ver.프로토)',
-                details: [
-                    '기획 및 화면 구성',
-                    'Gemimi를 이용하여 프론트/백 엔드 구현',
-                    'Kakao Map API를 이용하여 지도 연동'
-                ],
-                updates: [
-                    '평생 남는 모바일 청첩장 사이트 제작',
-                    '해당 사이트 이용 시 데이터 수집',
-                    '결혼 기념일 메일링 알람',
-                    '해당 빅 데이터로 결혼 관련 정보 및 결혼 서비스 제공'
-                ]
-            },
-            {
-                id: 'W',
-                name: 'My Wedding Planner',
-                linkText: '사업 계획서 보러가기',
-                linkUrl: './components/Documents/My_Wedding_Planner.pdf',
-                isDownload: true,
-                workDays: '1일(Ver.프로토)',
-                details: [
-                    '기획 및 화면 구성',
-                    'Gemimi를 이용하여 프론트 엔드 구현'
-                ],
-                updates: [
-                    '결혼 정보 통합 플랫폼 제작 (크롤링/리서치)',
-                    '하나의 앱에서 견적 확인 및 투명한 결혼 비용 추구',
-                    '현명한 소비를 위한 가이드 기능 구현'
-                ]
-            },
-            {
-                id: 'G',
-                name: 'GTA T_Grand Tactical Army Trainig',
-                linkText: '게임 플레이',
-                linkUrl: 'https://gpggtv-rgb.github.io/Grand_Tactical_Army_Trainig/',
-                workDays: '1일(Ver.프로토)',
-                details: [
-                    'Gemimi를 이용하여 웹 게임 프로토 타이핑'
-                ],
-                updates: [
-                    '서버 연동을 통한 서바이벌 게임 제작 예정',
-                    '자기장 시스템, 무기 및 장비 파밍 시스템',
-                    '웹 기반 탑뷰 형태의 배틀로얄 스타일 구현'
-                ]
-            }
-        ];
+        const AI_PROJECTS_DATA = {
+            ko: [
+                {
+                    id: 'A',
+                    name: 'The Legacy Of The Triple A_괴도 트리플 A의 유산',
+                    linkText: '게임 플레이',
+                    linkUrl: 'https://hwcho1986.github.io/The_Legacy_Of_The_Triple_A/',
+                    workDays: '10~15일(Ver.프로토)',
+                    details: [
+                        '기획 및 스토리 집필',
+                        'Gemimi를 이용하여 웹 비쥬얼 노벨 엔진 구현',
+                        'Nano Banana를 이용하여 이미지 리소스 제작',
+                        'Suno를 이용하여 사운드 및 OST 제작',
+                        'Google Sheet를 이용하여 데이터 테이블 관리'
+                    ],
+                    updates: [
+                        'ChatGPT를 이용하여 국가별 언어 대응',
+                        'TTS를 이용하여 캐릭터 목소리 삽입',
+                        '웹 비쥬얼 노벨 엔진 연출 타입 추가 및 애니메이션 효과 제작',
+                        '효과음 및 환경음 삽입',
+                        '이미지 디테일 업',
+                        '백엔드 제작 및 로그 삽입',
+                        '플레이 타임 및 이탈율 체크',
+                        '퀴즈 난도 및 힌트 재정리',
+                        '구글 로그인을 구현하고 계정별 세이브 데이터 구현, 스킵 구현 등'
+                    ]
+                },
+                {
+                    id: 'L',
+                    name: '모바일 청첩장 플랫폼',
+                    linkText: '모바일 청첩장 보러가기',
+                    linkUrl: 'https://highhighcouple.github.io/Wedding_Invitation/',
+                    downloadText: '사업화',
+                    downloadUrl: './components/Documents/The_Custom_Wedding_Build.pdf',
+                    workDays: '3일(Ver.프로토)',
+                    details: [
+                        '기획 및 화면 구성',
+                        'Gemimi를 이용하여 프론트/백 엔드 구현',
+                        'Kakao Map API를 이용하여 지도 연동'
+                    ],
+                    updates: [
+                        '평생 남는 모바일 청첩장 사이트 제작',
+                        '해당 사이트 이용 시 데이터 수집',
+                        '결혼 기념일 메일링 알람',
+                        '해당 빅 데이터로 결혼 관련 정보 및 결혼 서비스 제공'
+                    ]
+                },
+                {
+                    id: 'W',
+                    name: 'My Wedding Planner',
+                    linkText: '사업 계획서 보러가기',
+                    linkUrl: './components/Documents/My_Wedding_Planner.pdf',
+                    isDownload: true,
+                    workDays: '1일(Ver.프로토)',
+                    details: [
+                        '기획 및 화면 구성',
+                        'Gemimi를 이용하여 프론트 엔드 구현'
+                    ],
+                    updates: [
+                        '결혼 정보 통합 플랫폼 제작 (크롤링/리서치)',
+                        '하나의 앱에서 견적 확인 및 투명한 결혼 비용 추구',
+                        '현명한 소비를 위한 가이드 기능 구현'
+                    ]
+                },
+                {
+                    id: 'G',
+                    name: 'GTA T_Grand Tactical Army Trainig',
+                    linkText: '게임 플레이',
+                    linkUrl: 'https://gpggtv-rgb.github.io/Grand_Tactical_Army_Trainig/',
+                    workDays: '1일(Ver.프로토)',
+                    details: [
+                        'Gemimi를 이용하여 웹 게임 프로토 타이핑'
+                    ],
+                    updates: [
+                        '서버 연동을 통한 서바이벌 게임 제작 예정',
+                        '자기장 시스템, 무기 및 장비 파밍 시스템',
+                        '웹 기반 탑뷰 형태의 배틀로얄 스타일 구현'
+                    ]
+                }
+            ],
+            en: [
+                {
+                    id: 'A',
+                    name: 'The Legacy Of The Triple A',
+                    linkText: 'Play Game',
+                    linkUrl: 'https://hwcho1986.github.io/The_Legacy_Of_The_Triple_A/',
+                    workDays: '10~15 Days (Ver. Proto)',
+                    details: [
+                        'Planning and story writing',
+                        'Implemented web visual novel engine using Gemini',
+                        'Created image resources using Nano Banana',
+                        'Produced sound and OST using Suno',
+                        'Managed data tables using Google Sheets'
+                    ],
+                    updates: [
+                        'Multilingual support using ChatGPT',
+                        'Integrated character voices using TTS',
+                        'Added directive types and animation effects for VN engine',
+                        'Inserted sound effects and ambient sounds',
+                        'Image detail enhancement',
+                        'Backend development and logging',
+                        'Playtime and churn rate tracking',
+                        'Reorganized quiz difficulty and hints',
+                        'Google login, account-based save data, skip features, etc.'
+                    ]
+                },
+                {
+                    id: 'L',
+                    name: 'Mobile Wedding Invitation Platform',
+                    linkText: 'View Mobile Invitation',
+                    linkUrl: 'https://highhighcouple.github.io/Wedding_Invitation/',
+                    downloadText: 'Business',
+                    downloadUrl: './components/Documents/The_Custom_Wedding_Build.pdf',
+                    workDays: '3 Days (Ver. Proto)',
+                    details: [
+                        'Planning and wireframing',
+                        'Front/Back-end implementation using Gemini',
+                        'Map integration using Kakao Map API'
+                    ],
+                    updates: [
+                        'Created a permanent mobile wedding invitation site',
+                        'Data collection upon site usage',
+                        'Wedding anniversary mailing alerts',
+                        'Providing wedding-related info and services using big data'
+                    ]
+                },
+                {
+                    id: 'W',
+                    name: 'My Wedding Planner',
+                    linkText: 'View Business Plan',
+                    linkUrl: './components/Documents/My_Wedding_Planner.pdf',
+                    isDownload: true,
+                    workDays: '1 Day (Ver. Proto)',
+                    details: [
+                        'Planning and wireframing',
+                        'Front-end implementation using Gemini'
+                    ],
+                    updates: [
+                        'Created an integrated wedding information platform (crawling/research)',
+                        'Quote verification and cost transparency within a single app',
+                        'Guided features for smart wedding consumption'
+                    ]
+                },
+                {
+                    id: 'G',
+                    name: 'GTA T_Grand Tactical Army Training',
+                    linkText: 'Play Game',
+                    linkUrl: 'https://gpggtv-rgb.github.io/Grand_Tactical_Army_Trainig/',
+                    workDays: '1 Day (Ver. Proto)',
+                    details: [
+                        'Web game prototyping using Gemini'
+                    ],
+                    updates: [
+                        'Survival game development with server integration',
+                        'Magnetic field, weapon, and equipment farming systems',
+                        'Web-based top-down battle royale style implementation'
+                    ]
+                }
+            ]
+        };
 
         // --- Helper Components ---
         const Portrait = () => {
@@ -782,7 +873,7 @@
             );
         };
 
-        const AIProjectSection = ({ onImageSelect }) => {
+        const AIProjectSection = ({ lang, t, onImageSelect }) => {
             const [activeTab, setActiveTab] = useState('A');
             const [isDragging, setIsDragging] = useState(false);
             const [hasMoved, setHasMoved] = useState(false);
@@ -814,13 +905,14 @@
                 if (!hasMoved) setActiveTab(id);
             };
 
-            const project = AI_PROJECTS.find(p => p.id === activeTab);
+            const projects = AI_PROJECTS_DATA[lang] || AI_PROJECTS_DATA['ko'];
+            const project = projects.find(p => p.id === activeTab);
 
             return (
                 <section id="ai-projects" className="py-24 px-6 max-w-7xl mx-auto">
                     <div className="mb-16 text-center">
                         <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2">AI Project</p>
-                        <h3 className="text-4xl font-black mb-4 italic text-white uppercase tracking-tighter">바이브 코딩, 프로토 제작, 사업 제안</h3>
+                        <h3 className="text-4xl font-black mb-4 italic text-white uppercase tracking-tighter">{t.ai_project_title}</h3>
                         <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full"></div>
                     </div>
 
@@ -833,7 +925,7 @@
                             onMouseMove={handleMouseMove}
                             className="flex gap-4 overflow-x-auto py-6 px-2 custom-scrollbar cursor-grab active:cursor-grabbing select-none snap-x scroll-smooth"
                         >
-                            {AI_PROJECTS.map((p, idx) => (
+                            {projects.map((p, idx) => (
                                 <button
                                     key={p.id}
                                     onClick={() => handleTabClick(p.id)}
@@ -872,7 +964,7 @@
                             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                                 <span className="text-white font-bold text-sm lg:text-base">{project.linkText}</span>
                                 {project.isDownload ? (
-                                    <a href={project.linkUrl} download className="px-6 py-2 bg-slate-800 text-blue-400 rounded-full font-bold text-[10px] lg:text-xs hover:bg-slate-700 transition-all border border-blue-500/20">Download PDF</a>
+                                    <a href={project.linkUrl} download className="px-6 py-2 bg-slate-800 text-blue-400 rounded-full font-bold text-[10px] lg:text-xs hover:bg-slate-700 transition-all border border-blue-500/20">{lang === 'ko' ? '프로토 다운로드' : 'Download Proto'}</a>
                                 ) : (
                                     <a href={project.linkUrl} target="_blank" className="px-6 py-2 bg-slate-800 text-blue-400 rounded-full font-bold text-[10px] lg:text-xs hover:bg-slate-700 transition-all border border-blue-500/20 truncate max-w-full">{project.linkUrl}</a>
                                 )}
@@ -883,39 +975,39 @@
                             <h4 className="text-2xl lg:text-3xl font-black text-white leading-tight">{project.name}</h4>
                             <div className="p-6 lg:p-8 rounded-3xl bg-slate-900/60 border border-white/5 backdrop-blur-md">
                                 <div className="space-y-4">
-                                    <p className="text-blue-400 font-bold mb-4">Work Days : {project.workDays}</p>
+                                    <p className="text-blue-400 font-bold mb-4">{t.work_days} : {project.workDays}</p>
                                     <ul className="space-y-2">
-                                        {project.details.map((detail, i) => (
-                                            <li key={i} className="text-slate-300 text-sm flex items-start gap-3">
-                                                <span className="text-blue-600 font-black mt-1 shrink-0">›</span>
-                                                {detail}
+                                        <li className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">{t.details_label}</li>
+                                        {project.details.map((d, i) => (
+                                            <li key={i} className="flex gap-3 text-slate-300 text-sm">
+                                                <span className="text-blue-500">•</span>
+                                                {d}
                                             </li>
                                         ))}
                                     </ul>
                                 </div>
 
-                                <div className="mt-8 pt-8 border-t border-white/5">
-                                    <p className="text-slate-500 font-bold mb-4 text-xs uppercase tracking-widest">- 추가 업데이트 방향</p>
+                                <div className="pt-6 border-t border-white/5">
+                                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">{t.next_updates}</p>
                                     <ul className="space-y-2">
-                                        {project.updates.map((update, i) => (
-                                            <li key={i} className="text-slate-400 text-xs flex items-start gap-3 leading-relaxed">
-                                                <span className="text-slate-600 mt-1 shrink-0">◦</span>
-                                                {update}
+                                        {project.updates.map((u, i) => (
+                                            <li key={i} className="flex gap-3 text-slate-400 text-xs italic">
+                                                <span className="text-blue-900">»</span>
+                                                {u}
                                             </li>
                                         ))}
                                     </ul>
                                 </div>
-
-                                {project.downloadUrl && (
-                                    <div className="mt-8 pt-8 border-t border-white/5">
-                                        <a href={project.downloadUrl} download className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 rounded-2xl border border-blue-600/20 transition-all group">
-                                            <span className="font-black text-sm">{project.downloadText} 제안서 다운로드</span>
-                                            <svg className="w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
-                                        </a>
-                                    </div>
-                                )}
                             </div>
                         </div>
+                        {project.downloadUrl && (
+                            <div className="mt-8 pt-8 border-t border-white/5">
+                                <a href={project.downloadUrl} download className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 rounded-2xl border border-blue-600/20 transition-all group">
+                                    <span className="font-black text-sm">{project.downloadText} {t.download_pdf}</span>
+                                    <svg className="w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+                                </a>
+                            </div>
+                        )}
                     </div>
                 </section>
             );
@@ -995,7 +1087,7 @@
                         </section>
 
                         {/* AI Project */}
-                        <AIProjectSection onImageSelect={setSelectedImage} />
+                        <AIProjectSection lang={lang} t={t} onImageSelect={setSelectedImage} />
 
                         {/* Experience */}
                         <section id="experience" className="py-24 px-6 max-w-7xl mx-auto">
