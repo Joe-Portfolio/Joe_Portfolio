@@ -158,6 +158,43 @@
         .animate-zoomIn {
             animation: zoomIn 0.3s ease-out forwards;
         }
+
+        .ai-project-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .ai-project-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slideUp {
+            animation: slideUp 0.6s ease-out forwards;
+        }
     </style>
 </head>
 
@@ -300,6 +337,86 @@
                 result: `./components/images/gallery/gallery_${num}_ai.png`
             };
         });
+
+        const AI_PROJECTS = [
+            {
+                id: 'A',
+                name: 'The Legacy Of The Triple A_괴도 트리플 A의 유산',
+                linkText: '게임 플레이',
+                linkUrl: 'https://hwcho1986.github.io/The_Legacy_Of_The_Triple_A/',
+                workDays: '10~15일(Ver.프로토)',
+                details: [
+                    '기획 및 스토리 집필',
+                    'Gemimi를 이용하여 웹 비쥬얼 노벨 엔진 구현',
+                    'Nano Banana를 이용하여 이미지 리소스 제작',
+                    'Suno를 이용하여 사운드 및 OST 제작',
+                    'Google Sheet를 이용하여 데이터 테이블 관리'
+                ],
+                updates: [
+                    'ChatGPT를 이용하여 국가별 언어 대응',
+                    'TTS를 이용하여 캐릭터 목소리 삽입',
+                    '웹 비쥬얼 노벨 엔진 연출 타입 추가 및 애니메이션 효과 제작',
+                    '효과음 및 환경음 삽입',
+                    '이미지 디테일 업',
+                    '백엔드 제작 및 로그 삽입',
+                    '플레이 타임 및 이탈율 체크',
+                    '퀴즈 난도 및 힌트 재정리',
+                    '구글 로그인을 구현하고 계정별 세이브 데이터 구현, 스킵 구현 등'
+                ]
+            },
+            {
+                id: 'L',
+                name: '모바일 청첩장 플랫폼',
+                linkText: '모바일 청첩장 보러가기',
+                linkUrl: 'https://highhighcouple.github.io/Wedding_Invitation/',
+                downloadText: '사업화 제안',
+                downloadUrl: './components/Documents/The_Custom_Wedding_Build.pdf',
+                workDays: '3일(Ver.프로토)',
+                details: [
+                    '기획 및 화면 구성',
+                    'Gemimi를 이용하여 프론트/백 엔드 구현',
+                    'Kakao Map API를 이용하여 지도 연동'
+                ],
+                updates: [
+                    '평생 남는 모바일 청첩장 사이트 제작',
+                    '해당 사이트 이용 시 데이터 수집',
+                    '결혼 기념일 메일링 알람',
+                    '해당 빅 데이터로 결혼 관련 정보 및 결혼 서비스 제공'
+                ]
+            },
+            {
+                id: 'W',
+                name: 'My Wedding Planner',
+                linkText: '사업 계획서 보러가기',
+                linkUrl: './components/Documents/My_Wedding_Planner.pdf',
+                isDownload: true,
+                workDays: '1일(Ver.프로토)',
+                details: [
+                    '기획 및 화면 구성',
+                    'Gemimi를 이용하여 프론트 엔드 구현'
+                ],
+                updates: [
+                    '결혼 정보 통합 플랫폼 제작 (크롤링/리서치)',
+                    '하나의 앱에서 견적 확인 및 투명한 결혼 비용 추구',
+                    '현명한 소비를 위한 가이드 기능 구현'
+                ]
+            },
+            {
+                id: 'G',
+                name: 'GTA T_Grand Tactical Army Trainig',
+                linkText: '게임 플레이',
+                linkUrl: 'https://gpggtv-rgb.github.io/Grand_Tactical_Army_Trainig/',
+                workDays: '1일(Ver.프로토)',
+                details: [
+                    'Gemimi를 이용하여 웹 게임 프로토 타이핑'
+                ],
+                updates: [
+                    '서버 연동을 통한 서바이벌 게임 제작 예정',
+                    '자기장 시스템, 무기 및 장비 파밍 시스템',
+                    '웹 기반 탑뷰 형태의 배틀로얄 스타일 구현'
+                ]
+            }
+        ];
 
         // --- Helper Components ---
         const Portrait = () => {
@@ -597,7 +714,135 @@
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const AIProjectSection = ({ onImageSelect }) => {
+            const [activeTab, setActiveTab] = useState('A');
+            const [isDragging, setIsDragging] = useState(false);
+            const scrollRef = useRef(null);
+            const startX = useRef(0);
+            const scrollLeft = useRef(0);
+
+            const handleMouseDown = (e) => {
+                setIsDragging(true);
+                startX.current = e.pageX - scrollRef.current.offsetLeft;
+                scrollLeft.current = scrollRef.current.scrollLeft;
+            };
+
+            const handleMouseLeave = () => setIsDragging(false);
+            const handleMouseUp = () => setIsDragging(false);
+
+            const handleMouseMove = (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.pageX - scrollRef.current.offsetLeft;
+                const walk = (x - startX.current) * 2;
+                scrollRef.current.scrollLeft = scrollLeft.current - walk;
+            };
+
+            const project = AI_PROJECTS.find(p => p.id === activeTab);
+
+            return (
+                <section id="ai-projects" className="py-24 px-6 max-w-7xl mx-auto">
+                    <div className="mb-16 text-center">
+                        <p className="text-blue-500 font-bold tracking-[0.3em] uppercase mb-2">AI Project</p>
+                        <h3 className="text-4xl font-black mb-4 italic text-white uppercase tracking-tighter">바이브 코딩, 프로토 제작, 사업 제안</h3>
+                        <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full"></div>
+                    </div>
+
+                    <div
+                        ref={scrollRef}
+                        onMouseDown={handleMouseDown}
+                        onMouseLeave={handleMouseLeave}
+                        onMouseUp={handleMouseUp}
+                        onMouseMove={handleMouseMove}
+                        className="flex gap-4 overflow-x-auto pb-8 mb-12 hide-scrollbar cursor-grab active:cursor-grabbing select-none snap-x"
+                    >
+                        {AI_PROJECTS.map((p, idx) => (
+                            <button
+                                key={p.id}
+                                onClick={() => setActiveTab(p.id)}
+                                style={{ animationDelay: `${idx * 0.1}s` }}
+                                className={`flex-shrink-0 px-8 py-4 rounded-full font-black text-sm tracking-widest transition-all snap-start animate-slideUp ${activeTab === p.id
+                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30 ring-2 ring-blue-400'
+                                    : 'bg-slate-900 text-slate-500 hover:text-white border border-white/5'
+                                    }`}
+                            >
+                                Project {p.id}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div key={activeTab} className="grid lg:grid-cols-2 gap-16 animate-fadeIn">
+                        <div>
+                            <div className="ai-project-grid mb-8">
+                                {[...Array(8)].map((_, i) => (
+                                    <div
+                                        key={i}
+                                        onClick={() => onImageSelect(`./components/images/projects/project_${activeTab}_${i + 1}.png`)}
+                                        style={{ animationDelay: `${i * 0.05}s` }}
+                                        className="aspect-video rounded-xl bg-slate-900 border border-white/5 overflow-hidden cursor-zoom-in hover:border-blue-500/50 transition-all group animate-zoomIn"
+                                    >
+                                        <img
+                                            src={`./components/images/projects/project_${activeTab}_${i + 1}.png`}
+                                            alt={`Project ${activeTab} Screen ${i + 1}`}
+                                            className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity"
+                                            onError={(e) => { e.target.src = 'https://via.placeholder.com/320x180/0f172a/3b82f6?text=Screenshot+' + (i + 1); }}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex gap-4 items-center">
+                                <span className="text-white font-bold">{project.linkText}</span>
+                                {project.isDownload ? (
+                                    <a href={project.linkUrl} download className="px-6 py-2 bg-slate-800 text-blue-400 rounded-full font-bold text-xs hover:bg-slate-700 transition-all border border-blue-500/20">Download PDF</a>
+                                ) : (
+                                    <a href={project.linkUrl} target="_blank" className="px-6 py-2 bg-slate-800 text-blue-400 rounded-full font-bold text-xs hover:bg-slate-700 transition-all border border-blue-500/20">{project.linkUrl}</a>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="space-y-8">
+                            <h4 className="text-3xl font-black text-white leading-tight">{project.name}</h4>
+                            <div className="p-8 rounded-3xl bg-slate-900/60 border border-white/5 backdrop-blur-md">
+                                <div className="space-y-4">
+                                    <p className="text-blue-400 font-bold mb-4">Work Days : {project.workDays}</p>
+                                    <ul className="space-y-2">
+                                        {project.details.map((detail, i) => (
+                                            <li key={i} className="text-slate-300 text-sm flex items-start gap-3">
+                                                <span className="text-blue-600 font-black mt-1 shrink-0">›</span>
+                                                {detail}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div className="mt-8 pt-8 border-t border-white/5">
+                                    <p className="text-slate-500 font-bold mb-4 text-xs uppercase tracking-widest">- 추가 업데이트 방향</p>
+                                    <ul className="space-y-2">
+                                        {project.updates.map((update, i) => (
+                                            <li key={i} className="text-slate-400 text-xs flex items-start gap-3 leading-relaxed">
+                                                <span className="text-slate-600 mt-1 shrink-0">◦</span>
+                                                {update}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                {project.downloadUrl && (
+                                    <div className="mt-8 pt-8 border-t border-white/5">
+                                        <a href={project.downloadUrl} download className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 rounded-2xl border border-blue-600/20 transition-all group">
+                                            <span className="font-black text-sm">{project.downloadText} 제안서 다운로드</span>
+                                            <svg className="w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+                                        </a>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -676,6 +921,9 @@
                                 <button onClick={() => setActiveVideo('https://www.youtube.com/embed/mlGaxMZkyx8')} className="px-10 py-4 border border-slate-700 hover:border-slate-500 text-white rounded-full font-bold transition-all">{t.view_portfolio_video}</button>
                             </div>
                         </section>
+
+                        {/* AI Project */}
+                        <AIProjectSection onImageSelect={setSelectedImage} />
 
                         {/* Experience */}
                         <section id="experience" className="py-24 px-6 max-w-7xl mx-auto">
