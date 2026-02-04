@@ -612,16 +612,19 @@
             const [hoveredExp, setHoveredExp] = useState(null);
             const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
             const [isExpExpanded, setIsExpExpanded] = useState(false);
+            const [isProjectsExpanded, setIsProjectsExpanded] = useState(false);
 
             const t = TRANSLATIONS[lang];
             const currentExp = EXPERIENCES[lang] || EXPERIENCES['ko'];
             const visibleExp = isExpExpanded ? currentExp : currentExp.slice(0, 6);
 
+            const visibleProjects = isProjectsExpanded ? PROJECTS : PROJECTS.slice(0, 6);
+
             useEffect(() => {
                 const handleScroll = () => setScrolled(window.scrollY > 50);
                 window.addEventListener('scroll', handleScroll);
 
-                // 로딩 화면 제거 로직 (충분한 지연 시간 확보)
+                // 로딩 화면 제거 로직
                 const removeLoader = () => {
                     const loader = document.getElementById('loading-screen');
                     if (loader) {
@@ -630,7 +633,6 @@
                     }
                 };
 
-                // 마운트 직후 실행
                 const timer = setTimeout(removeLoader, 1500);
 
                 const checkLocation = async () => {
@@ -709,8 +711,8 @@
                                     <h3 className="text-4xl md:text-5xl font-black mb-4 tracking-tight text-white uppercase italic">{t.projects_title}</h3>
                                     <p className="text-slate-400 text-sm">{t.projects_subtitle}</p>
                                 </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                                    {PROJECTS.map(p => (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                                    {visibleProjects.map(p => (
                                         <div key={p.id} onClick={() => setActiveVideo(p.videoUrl)} className="group cursor-pointer rounded-3xl overflow-hidden bg-slate-900/60 border border-white/5 hover:border-blue-500/40 transition-all relative">
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img src={`https://img.youtube.com/vi/${p.videoUrl.split('embed/')[1]}/hqdefault.jpg`} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 opacity-60" alt={p.title} />
@@ -722,6 +724,11 @@
                                             </div>
                                         </div>
                                     ))}
+                                </div>
+                                <div className="text-center">
+                                    <button onClick={() => setIsProjectsExpanded(!isProjectsExpanded)} className="px-12 py-5 rounded-full border border-slate-700 bg-slate-900/50 hover:border-blue-500 transition-all text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-white">
+                                        {isProjectsExpanded ? t.minimize_history : t.explore_projects}
+                                    </button>
                                 </div>
                             </div>
                         </section>
