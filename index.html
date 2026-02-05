@@ -721,13 +721,6 @@
                 return () => window.removeEventListener('resize', handleResize);
             }, []);
 
-            const handleCopyEmail = (e) => {
-                e.preventDefault();
-                navigator.clipboard.writeText('mrs86@naver.com').then(() => {
-                    setShowCopyToast(true);
-                    setTimeout(() => setShowCopyToast(false), 2000);
-                });
-            };
 
             const updateGallery = () => {
                 if (!containerRef.current) return;
@@ -1039,6 +1032,14 @@
             const [isExpExpanded, setIsExpExpanded] = useState(false);
             const [isProjectsExpanded, setIsProjectsExpanded] = useState(false);
             const [showCopyToast, setShowCopyToast] = useState(false);
+
+            const handleCopyEmail = (e) => {
+                e.preventDefault();
+                navigator.clipboard.writeText('mrs86@naver.com').then(() => {
+                    setShowCopyToast(true);
+                    setTimeout(() => setShowCopyToast(false), 2000);
+                });
+            };
 
             const t = TRANSLATIONS[lang];
             const currentExp = EXPERIENCES[lang] || EXPERIENCES['ko'];
